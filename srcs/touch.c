@@ -30,7 +30,7 @@ t_edit  *ctrl_touch(t_edit *ed, t_froz *fz, char c)
             printf("%c [%i][%i][%i]\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2]);
             ed = ed->next;
         }
-        printf("%c [%i][%i][%i]\n\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2]);
+        printf("%c [%i][%i][%i] %i%i\n\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], g_nb->tb[0], g_nb->tb[1]);
     }
     return (ed);
 }
@@ -39,7 +39,6 @@ t_edit  *extern_touch(t_edit *ed, t_froz *fz)
 {
     while (ed->rpz[2] == 0) //se mettre au nv cursor
         ed = ed->next;
-    init_cursor(ed);
     if (fz->buf[0] == 27 && fz->buf[1] == 91 && fz->buf[2] == 68 && ed->rpz[0] == 0)  // left
     {
         ed->prev->rpz[2] = ed->rpz[2] - 1;

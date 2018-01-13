@@ -38,18 +38,24 @@ void    print_shell(t_edit *ed)
 
 void	put_cursor(t_edit *ed)
 {
-
     tputs(tgetstr("rc", NULL), 0, ft_put);
     while (ed->rpz[2] == 0)
         ed = ed->next;
-	ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa((ed->rpz[2]- 1)), "C")));
+    if (ed->rpz[2] % g_nb->tb[0] != 0 && ed->rpz[2] / g_nb->tb[0] > 0)
+        ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa(ed->rpz[2] / g_nb->tb[0]),"B")));
+	ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa((ed->rpz[2] - 1) % g_nb->tb[0]), "C")));
+
 }
 
 void    init_cursor(t_edit *ed)
 {
     while (ed->rpz[2] == 0)
         ed = ed->next;
-    ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa((ed->rpz[2] % g_nb->tb[0])),"D")));	
+    give_max();
+    // max len et non cursor
+    if (ed->rpz[2] % g_nb->tb[0] != 0 && (ed->rpz[2]) / g_nb->tb[0] > 0)
+        ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa((ed->rpz[2] / g_nb->tb[0])), "A")));
+    ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa(ed->rpz[2] % g_nb->tb[0]),"D")));	
     tputs(tgetstr("sc", NULL), 0, ft_put);
     // sleep(1);    
 }

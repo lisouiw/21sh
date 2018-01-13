@@ -1,5 +1,22 @@
 #include "../twenty.h"
 
+void    free_ed(t_edit **ed)
+{
+    if ((*ed)->rpz[0] == 1 && (*ed)->rpz[1] == 1)
+        return;
+    while ((*ed)->rpz[0] == 0)
+        *ed = (*ed)->next;
+    while ((*ed)->rpz[1] == 0)
+    {
+        *ed = (*ed)->next;
+        free((*ed)->prev);
+    }
+    (*ed)->rpz[0] = 1;
+    (*ed)->rpz[2] = 3;
+    (*ed)->prev = *ed;
+    (*ed)->next = *ed;
+}
+
 int         main(void)
 {
     t_froz  *fz;
@@ -14,13 +31,20 @@ int         main(void)
         read(0, &fz->buf, 4);
         // printf("%i %i %i\n", fz->buf[0], fz->buf[1], fz->buf[2]);
         if (fz->buf[0] == 10)
-            ;
+        {
+            ft_putchar('\n');
+            ft_putstr(">>"); 
+            free_ed(&ed);        
+
+        }
         // env = treat_cmd();
         else
             ed = touch(ed, fz);
         init_data(&fz);
     }
 }
+
+
 
 t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs)
 {
