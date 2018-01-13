@@ -57,8 +57,9 @@ typedef struct      s_his
 }                   t_his;    
 
 // main
-void        init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs);
+t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs);
 t_froz      *init_fz(t_froz *fz);
+void    init_data(t_froz **fz);
 
 // term
 int		init(void);
@@ -73,8 +74,20 @@ t_env	*give_env(t_env *env);
 
 //ed
 void    modif_edit(t_edit **ed, t_edit **nw);
-t_edit  *add_edit(t_edit *ed, char *c, t_edit *nw);
+t_edit  *add_ed(t_edit *ed, char c, t_edit *nw);
 t_edit  *init_edit(t_edit *init);
-t_edit  *erase_edit(t_edit *ed);
+t_edit  *erase_ed(t_edit *ed);
+
+//touch
+t_edit  *touch(t_edit *ed, t_froz *fz);
+t_edit  *ctrl_touch(t_edit *ed, t_froz *fz, char c);
+t_edit  *extern_touch(t_edit *ed, t_froz *fz);
+
+//print_shell
+int		ft_put(int c);
+void	my_tputs(t_edit *ed);
+void    print_shell(t_edit *ed);
+void	put_cursor(t_edit *ed);
+void    init_cursor(t_edit *ed);
 
 #endif

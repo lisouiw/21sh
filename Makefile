@@ -7,7 +7,7 @@ SRCDIR = srcs
 
 FLAGS = -Wall -Werror -Wextra -g
 
-SRCS =  main.c term.c ed.c env.c
+SRCS =  main.c term.c ed.c env.c touch.c print_shell.c
 SRC_N = $(addprefix $(SRCDIR)/, $(SRCS))
 
 OBJDIR = objs

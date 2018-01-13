@@ -7,11 +7,12 @@ int         main(void)
     t_edit  *ed;
     t_his   *hs;
 
-    init_shell(&fz, &env, &ed, &hs);
+    g_nb = init_shell(&fz, &env, &ed, &hs);
+
     while (42)
     {
         read(0, &fz->buf, 4);
-        printf("%i %i %i\n", fz->buf[0], fz->buf[1], fz->buf[2]);
+        // printf("%i %i %i\n", fz->buf[0], fz->buf[1], fz->buf[2]);
         if (fz->buf[0] == 10)
             ;
         // env = treat_cmd();
@@ -21,13 +22,23 @@ int         main(void)
     }
 }
 
-void        init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs)
+t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs)
 {
+    struct ttysize	ts;
+
     set_up_term();
+    tputs(tgetstr("cl", NULL), 0, ft_put);
     *env = give_env(NULL);
     *ed = init_edit(NULL);
     *fz = init_fz(NULL);
     *hs = NULL;
+    ft_putstr(">>");
+    if (!(g_nb = (t_num*)malloc(sizeof(t_num))))
+        return (NULL);
+    ioctl(1, TIOCGSIZE, &ts);
+    g_nb->tb[0] = ts.ts_cols;
+	g_nb->tb[1] = ts.ts_lines;
+    return (g_nb);
 }
 
 t_froz      *init_fz(t_froz *fz)

@@ -11,11 +11,11 @@ void    modif_edit(t_edit **ed, t_edit **nw)
     return;
 }
 
-t_edit  *add_edit(t_edit *ed, char *c, t_edit *nw)
+t_edit  *add_ed(t_edit *ed, char c, t_edit *nw)
 {
     if (!(nw = (t_edit*)malloc(sizeof(t_edit))))
         return(ed);
-    nw->c[0] = *c;
+    nw->c[0] = c;
     nw->rpz[0] = 0;
     nw->rpz[1] = 0;
     nw->rpz[2] = 0;
@@ -33,12 +33,10 @@ t_edit  *add_edit(t_edit *ed, char *c, t_edit *nw)
     }
     else
     {
-        // printf("im not the one |%c|%c|\n", *c, new->c[0]);
         nw->next = ed;
         nw->prev = ed->prev;
         ed->prev->next = nw;
         ed->prev = nw;
-        // printf("im not the one |%c|%c| |%i|%i|\n", *c, new->c[0], new->rpz[0], new->rpz[1]);
     }
     return(nw);
 }
@@ -52,13 +50,13 @@ t_edit  *init_edit(t_edit *init)
     init->prev = init;
     init->rpz[0] = 1;
     init->rpz[1] = 1;
-    init->rpz[2] = 2;
+    init->rpz[2] = 3;
     init->rpz[3] = 0;
     init->rpz[4] = 0; 
     return(init);
 }
 
-t_edit  *erase_edit(t_edit *ed)
+t_edit  *erase_ed(t_edit *ed)
 {
     t_edit  *erase;
 
