@@ -33,6 +33,7 @@ int         main(void)
         if (fz->buf[0] == 10)
         {
             ft_putchar('\n');
+            tputs(tgetstr("sc", NULL), 0, ft_put);
             ft_putstr(">>"); 
             free_ed(&ed);        
 
@@ -52,6 +53,7 @@ t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs)
 
     set_up_term();
     tputs(tgetstr("cl", NULL), 0, ft_put);
+    tputs(tgetstr("sc", NULL), 0, ft_put);
     *env = give_env(NULL);
     *ed = init_edit(NULL);
     *fz = init_fz(NULL);

@@ -89,5 +89,7 @@ void	my_tputs(t_edit *ed);
 void    print_shell(t_edit *ed);
 void	put_cursor(t_edit *ed);
 void    init_cursor(t_edit *ed);
+void	save_init(t_edit *ed);
+
 
 #endif

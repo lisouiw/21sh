@@ -2,6 +2,7 @@
 
 t_edit  *touch(t_edit *ed, t_froz *fz)
 {
+    init_cursor(ed);
     if (fz->buf[1] == 0 && fz->buf[2] == 0)
     {
         if (fz->buf[0] > 0 && fz->buf[0] < 27)
@@ -30,8 +31,9 @@ t_edit  *ctrl_touch(t_edit *ed, t_froz *fz, char c)
             printf("%c [%i][%i][%i]\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2]);
             ed = ed->next;
         }
-        printf("%c [%i][%i][%i] %i%i\n\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], g_nb->tb[0], g_nb->tb[1]);
+        printf("%c [%i][%i][%i] %i | %i\n\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], g_nb->tb[0], g_nb->tb[1]);
     }
+    sleep(3);
     return (ed);
 }
 
