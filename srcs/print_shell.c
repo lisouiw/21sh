@@ -37,7 +37,9 @@ void    print_shell(t_edit *ed)
 
 void	put_cursor(t_edit *ed)
 {
-	// save_init(ed);
+	sleep(1);
+	save_init(ed);
+	sleep(1);
     tputs(tgetstr("rc", NULL), 0, ft_put);
     while (ed->rpz[2] == 0)
         ed = ed->next;
@@ -49,7 +51,7 @@ void	put_cursor(t_edit *ed)
 		ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa((ed->rpz[2] - 1) % g_nb->tb[0]), "C")));
 
 }
-
+////////////////
 void	save_init(t_edit *ed)
 {
 	int		i;
@@ -63,18 +65,20 @@ void	save_init(t_edit *ed)
 		ed = ed->next;
 	}
 	
-	if (i % g_nb->tb[0] !=  1 && i % g_nb->tb[0] !=  0)
+	if (i > g_nb->tb[0)
+		ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa((ed->rpz[2] / g_nb->tb[0])),"A")));
+	if (i % g_nb->tb[0] == 0)
 		ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa(g_nb->tb[0]), "D")));
 	else
 		ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa((i - 1) % g_nb->tb[0]), "D")));
-	if (i % g_nb->tb[0] ==  1)
-		ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa((ed->rpz[2] / g_nb->tb[0])),"A")));
+	// if (i % g_nb->tb[0] ==  1)
+	// 	ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa((ed->rpz[2] / g_nb->tb[0])),"A")));
 	
 	// if (i >= g_nb->tb[0])
 	// 	sleep(5);
 	
 }
-
+///////////
 void    init_cursor(t_edit *ed)
 {
 
