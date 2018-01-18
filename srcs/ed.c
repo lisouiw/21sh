@@ -60,7 +60,6 @@ t_edit  *erase_ed(t_edit *ed)
 {
     t_edit  *erase;
 
-    init_cursor(ed);
     while(ed->rpz[2] == 0)
         ed = ed->next;
     if (ed->rpz[0] == 1)

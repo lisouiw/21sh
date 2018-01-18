@@ -2,19 +2,24 @@
 
 t_edit  *touch(t_edit *ed, t_froz *fz)
 {
-    init_cursor(ed);
     if (fz->buf[1] == 0 && fz->buf[2] == 0)
     {
         if (fz->buf[0] > 0 && fz->buf[0] < 27)
             ed = ctrl_touch(ed, fz, fz->buf[0]);
         else if (fz->buf[0] == 127)
+        {
             ed = erase_ed(ed);
+            fz->nb[0] = fz->nb[0] - 1;
+        }
         else
+        {
             ed = add_ed(ed, fz->buf[0], NULL);
+            fz->nb[0] = fz->nb[0] + 1;
+        }
     }
     else
         ed = extern_touch(ed, fz);
-    print_shell(ed);
+    print_shell(ed, fz);
     return (ed);
 }
 
@@ -31,7 +36,7 @@ t_edit  *ctrl_touch(t_edit *ed, t_froz *fz, char c)
             printf("%c [%i][%i][%i]\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2]);
             ed = ed->next;
         }
-        printf("%c [%i][%i][%i] %i | %i\n\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], g_nb->tb[0], g_nb->tb[1]);
+        printf("%c [%i][%i][%i]\n i = %i ->%i | %i\n\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], fz->nb[0], g_nb->tb[0], g_nb->tb[1]);
     }
     sleep(3);
     return (ed);

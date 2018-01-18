@@ -31,6 +31,7 @@ typedef struct      s_froz
     char            buf[3];
     char            *paste;
     char            *cmd;
+    int             nb[1];
 }                   t_froz;
 
 typedef struct		s_env
@@ -43,6 +44,11 @@ typedef struct		s_env
 typedef struct      s_edit
 {
     int             rpz[5];
+    // 0: debut list
+    // 1: fin list
+    // 2: cursor position
+    // 3: 
+    // 4: 
     char            c[1];
     struct  s_edit  *next;
     struct  s_edit  *prev;
@@ -60,6 +66,8 @@ typedef struct      s_his
 t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs);
 t_froz      *init_fz(t_froz *fz);
 void    init_data(t_froz **fz);
+void    cursor_end(t_froz *fz);
+
 
 // term
 int		init(void);
@@ -86,10 +94,8 @@ t_edit  *extern_touch(t_edit *ed, t_froz *fz);
 //print_shell
 int		ft_put(int c);
 void	my_tputs(t_edit *ed);
-void    print_shell(t_edit *ed);
 void	put_cursor(t_edit *ed);
-void    init_cursor(t_edit *ed);
-void	save_init(t_edit *ed);
-
+void	save_init(t_froz *fz);
+void    print_shell(t_edit *ed, t_froz *fz);
 
 #endif

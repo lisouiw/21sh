@@ -32,20 +32,32 @@ int         main(void)
         // printf("%i %i %i\n", fz->buf[0], fz->buf[1], fz->buf[2]);
         if (fz->buf[0] == 10)
         {
+            cursor_end(fz);
             ft_putchar('\n');
+            // env = treat_cmd();
             tputs(tgetstr("sc", NULL), 0, ft_put);
             ft_putstr(">>"); 
             free_ed(&ed);        
-
+            fz->nb[0] = 3;
         }
-        // env = treat_cmd();
         else
             ed = touch(ed, fz);
         init_data(&fz);
     }
 }
 
-
+void    cursor_end(t_froz *fz)
+{
+    int     i;
+    
+    tputs(tgetstr("rc", NULL), 0, ft_put);
+    i = fz->nb[0];
+	ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa(g_nb->tb[0]), "C")));
+	if (i > g_nb->tb[0] && i % g_nb->tb[0] == 0)
+		ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa((i / g_nb->tb[0]) - 1),"B")));
+	else if (i > (g_nb->tb[0]))
+		ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa((i / g_nb->tb[0])),"B")));
+}
 
 t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs)
 {
@@ -53,11 +65,11 @@ t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs)
 
     set_up_term();
     tputs(tgetstr("cl", NULL), 0, ft_put);
-    tputs(tgetstr("sc", NULL), 0, ft_put);
     *env = give_env(NULL);
     *ed = init_edit(NULL);
     *fz = init_fz(NULL);
     *hs = NULL;
+    tputs(tgetstr("sc", NULL), 0, ft_put);
     ft_putstr(">>");
     if (!(g_nb = (t_num*)malloc(sizeof(t_num))))
         return (NULL);
@@ -74,6 +86,7 @@ t_froz      *init_fz(t_froz *fz)
     fz->buf[0] = 0;
     fz->buf[1] = 0;
     fz->buf[2] = 0;
+    fz->nb[0] = 3;
     return (fz);
 }
 
