@@ -42,7 +42,7 @@ int         main(void)
             
         }
         else
-            ed = touch(ed, fz, hs);
+            ed = touch(ed, &fz, &hs);
         init_data(&fz);
     }
 }

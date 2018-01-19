@@ -71,6 +71,8 @@ t_froz      *init_fz(t_froz *fz);
 void    init_data(t_froz **fz);
 void    cursor_end(t_froz *fz);
 void    init_for_new(t_his **hs, t_froz **fz);
+void    free_ed(t_edit **ed);
+
 
 // term
 int		init(void);
@@ -90,11 +92,12 @@ t_edit  *init_edit(t_edit *init);
 t_edit  *erase_ed(t_edit *ed);
 
 //touch
-t_edit  *touch(t_edit *ed, t_froz *fz, t_his *hs);
-t_edit  *extern_touch(t_edit *ed, t_froz *fz, t_his **hs);
+t_edit  *touch(t_edit *ed, t_froz **fz, t_his **hs);
+t_edit  *extern_touch(t_edit *ed, t_froz **fz, t_his **hs);
 t_edit  *left_right(t_edit *ed, t_froz *fz);
-t_his   *histo(t_his *hs, char c);
-
+// t_his   *histo(t_his *hs, char c);
+int     the_same(t_edit *ed, t_his *hs);
+t_his   *histo(t_his *hs, char c, t_edit **ed, t_froz **fz);
 
 //print_shell
 int		ft_put(int c);

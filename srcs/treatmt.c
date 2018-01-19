@@ -14,51 +14,13 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz *fz)
         if (fz->nb[0] % g_nb->tb[0] != 1)
             ft_putchar('\n');
         if (add_his(*cmd, hs, NULL, fz))
-        env = launchcmd(hs, env);
+            env = launchcmd(hs, env);
 
     }
     else //parsing no good
         ;
     return (env);
 }
-
-// t_his   *add_his(t_edit *cmd, t_his *hs, t_his *nw, t_froz *fz)
-// {
-//     int     i;
-
-//     i = -1;
-//     fz->nb[0] = fz->nb[0] - 3;
-//     if (!(nw = (t_his*)malloc(sizeof(t_his))))
-//         return (NULL);
-//     if (!(nw->cmd = (char*)malloc((fz->nb[0] + 1)* sizeof(char))))
-//         return (NULL);
-//     while (++i < fz->nb[0])
-//     {
-//         nw->cmd[i] = cmd->c[0];
-//         cmd = cmd->next;
-//     }
-//     nw->cmd[i] = '\0';
-//     if (if_only(nw->cmd, ' '))
-//     {
-//         free(nw->cmd);
-//         free(nw);
-//         return(hs);
-//     }
-//     if (hs == NULL)
-//     {
-//         nw->next = NULL;
-//         nw->prev = NULL;
-//     }
-//     else
-//     {
-//         while (hs->prev != NULL)
-//             hs = hs->prev;
-//         nw->next = hs;
-//         nw->prev = hs->prev;
-//         hs->prev = nw;
-//     }
-//     return (nw);
-// }
 
 
 int     add_his(t_edit *cmd, t_his **hs, t_his *nw, t_froz *fz)
