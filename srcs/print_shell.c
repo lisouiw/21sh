@@ -24,7 +24,7 @@ void    print_shell(t_edit *ed, t_froz *fz)
 	i = 3;
     tputs(tgetstr("rc", NULL), 0, ft_put);
 	tputs(tgetstr("cd", NULL), 0, ft_put);
-	ft_putstr(">>");
+	ft_putstr("\033[0;33;40m>>\033[0m");
 	while (ed->rpz[0] == 0)
 		ed = ed->next;
 	while (ed->rpz[1] == 0)
