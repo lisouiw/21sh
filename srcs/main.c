@@ -63,6 +63,21 @@ void    cursor_end(t_froz *fz)
 		ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa((i / g_nb->tb[0])),"B")));
 }
 
+t_his   *init_hs(t_his *hs, t_his *next)
+{
+    if (!(hs = (t_his*)malloc(sizeof(t_his))))
+        return(NULL);
+    if (!(next = (t_his*)malloc(sizeof(t_his))))
+        return(NULL);
+    hs->cmd = NULL;
+    next->cmd = NULL;
+    next->prev = hs;
+    next->next = NULL;
+    hs->next = next;
+    hs->prev = NULL;
+    return (hs);
+}
+
 t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs)
 {
     struct ttysize	ts;
@@ -72,7 +87,7 @@ t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs)
     *env = give_env(NULL);
     *ed = init_edit(NULL);
     *fz = init_fz(NULL);
-    *hs = NULL;
+    *hs = init_hs(NULL, NULL);
     tputs(tgetstr("sc", NULL), 0, ft_put);
             ft_putstr("\033[0;33;40m>>\033[0m");
     if (!(g_nb = (t_num*)malloc(sizeof(t_num))))
@@ -112,6 +127,6 @@ void    init_for_new(t_his **hs, t_froz **fz)
     (*fz)->mode[2] = 1;
     if (*hs == NULL)
         return;
-    while ((*hs)->prev != NULL)
+    while ((*hs)->prev != NULL && (*hs)->cmd != NULL)
         *hs = (*hs)->prev;
 }

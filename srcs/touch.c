@@ -47,22 +47,29 @@ t_his   *histo(t_his *hs, char c, t_edit **ed, t_froz **fz)
 
     i = -1;
     free_ed(&(*ed));   
-    if (c == 65 && (hs->next != NULL || (*fz)->mode[2] == 1))  //historique : haut
+    if (c == 65 && hs->next != NULL)  //historique : haut
     {
+        hs = hs->next;
+        if (hs->cmd == NULL)
+        {
+            (*fz)->nb[0] = 3;
+            return(hs);
+        }
         while (hs->cmd[++i])
             *ed = add_ed(*ed, hs->cmd[i], NULL);
-        if (hs->next != NULL)
-            hs = hs->next;
-        (*fz)->mode[2] = (hs->next != NULL) ? 1 : 2;
-        
+        (*fz)->nb[0] = i + 3;
     }
-    else if (c == 66 && (hs->prev != NULL || (*fz)->mode[2] == 1)) //historique : bas
+    else if (c == 66 && hs->prev != NULL) //historique : bas
     {
+        hs = hs->prev;
+        if (hs->cmd == NULL)
+        {
+            (*fz)->nb[0] = 3;
+            return(hs);
+        }
         while (hs->cmd[++i])
             *ed = add_ed(*ed, hs->cmd[i], NULL);
-        if (hs->prev != NULL)
-            hs = hs->prev;
-        (*fz)->mode[2] = (hs->prev != NULL) ? 1 : 2;
+        (*fz)->nb[0] = i + 3;
     }
     return (hs);
 }

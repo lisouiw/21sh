@@ -60,7 +60,6 @@ typedef struct      s_edit
 typedef struct      s_his
 {
     char            *cmd;
-    // struct  t_edit  *ed;
     struct  s_his   *next;
     struct  s_his   *prev;
 }                   t_his;    
