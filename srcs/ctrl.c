@@ -12,6 +12,8 @@ t_edit  *ctrl_touch(t_edit *ed, t_froz *fz, char c, t_his *hs)
         ed = up_down(ed, c);
     else if (c == 11 || c == 12)
         ed = home_end(ed, c);
+    // else if copier/couper/coller
+    //     ;
     return (ed);
 }
 

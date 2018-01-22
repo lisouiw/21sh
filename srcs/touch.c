@@ -35,9 +35,6 @@ t_edit  *extern_touch(t_edit *ed, t_froz **fz, t_his **hs)
         ed = left_right(ed, *fz);
     else if (*hs && (*fz)->mode[2] > 0 && (*fz)->buf[0] == 27 && (*fz)->buf[1] == 91 && ((*fz)->buf[2] == 65 || (*fz)->buf[2] == 66)) //historique : haut/bas
         *hs = histo(*hs, (*fz)->buf[2], &ed, &(*fz));
-
-    //27 91 65 haut
-    //27 91 66 bas
     return (ed);
 }
 

@@ -92,29 +92,3 @@ void	print_tab(char **ta, int i)
 	}
 	putchar('\n');
 }
-
-// t_env	*exec_giv(char *line, t_env *env, char **cut, int *i)
-// {
-// 	i = 0;
-// 	if (!(cut = ft_strsplit(line, ' ')) || !cut[0])
-// 		;
-// 	// else if (ft_strcmp("echo", cut[0]) == 0)
-// 	// 	print_tab(cut, 0);
-// 	// else if (ft_strcmp("env", cut[0]) == 0)
-// 	// 	ecriture_info(env);
-// 	// else if (ft_strcmp("setenv", cut[0]) == 0)
-// 	// {
-// 	// 	while (cut[1] && cut[++(*i)])
-// 	// 		b_export(cut[*i], &env);
-// 	// }
-// 	// else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
-// 	// 	b_unset(cut, &env, 0);
-// 	// else if (ft_strcmp("cd", cut[0]) == 0)
-// 	// 	b_cd(cut[1], &env);
-// 	// else if (ft_strcmp(line, "exit") == 0 && free_for_exit(line, cut, env))
-// 	// 	exit(0);
-// 	else
-// 		b_other(cut, env);
-// 	// free_tab(cut);
-// 	return (env);
-// }

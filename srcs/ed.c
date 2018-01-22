@@ -1,5 +1,22 @@
 #include "../twenty.h"
 
+void    free_ed(t_edit **ed)
+{
+    if ((*ed)->rpz[0] == 1 && (*ed)->rpz[1] == 1)
+        return;
+    while ((*ed)->rpz[0] == 0)
+        *ed = (*ed)->next;
+    while ((*ed)->rpz[1] == 0)
+    {
+        *ed = (*ed)->next;
+        free((*ed)->prev);
+    }
+    (*ed)->rpz[0] = 1;
+    (*ed)->rpz[2] = 3;
+    (*ed)->prev = *ed;
+    (*ed)->next = *ed;
+}
+
 void    modif_edit(t_edit **ed, t_edit **nw)
 {
     if ((*ed)->rpz[0] == 1)

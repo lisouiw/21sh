@@ -13,11 +13,19 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz *fz)
     {
         if (fz->nb[0] % g_nb->tb[0] != 1)
             ft_putchar('\n');
-        if (add_his(*cmd, hs, NULL, fz))
-            env = launchcmd(hs, env);
+        add_his(*cmd, &(*hs), NULL, fz);
+        env = launchcmd(hs, env);
     }
     else //parsing no good
+    {
         ;
+        // heredoc
+        // pipe
+        // dquote
+        // quote
+        // cmdand
+        // cmdor
+    }
     return (env);
 }
 
@@ -42,8 +50,6 @@ int     add_his(t_edit *cmd, t_his **hs, t_his *nw, t_froz *fz)
         *hs = (*hs)->prev;
     if (if_only(nw->cmd, ' ') || ((*hs)->next->cmd && ft_strcmp(nw->cmd, (*hs)->next->cmd) == 0 ))
     {
-        printf("nw = %s && hs n= %s && %s\n", nw->cmd, (*hs)->next->cmd, (*hs)->cmd);
-        exit(0);
         free(nw->cmd);
         free(nw);
         return(0);
@@ -52,6 +58,7 @@ int     add_his(t_edit *cmd, t_his **hs, t_his *nw, t_froz *fz)
     nw->next = (*hs)->next;
     nw->prev = *hs;
     (*hs)->next = nw;
+    *hs = (*hs)->next;
     return (1);
 }
 
