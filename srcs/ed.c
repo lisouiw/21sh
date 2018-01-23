@@ -1,6 +1,6 @@
 #include "../twenty.h"
 
-void    free_ed(t_edit **ed)
+void    free_ed(t_edit **ed, t_froz *fz)
 {
     if ((*ed)->rpz[0] == 1 && (*ed)->rpz[1] == 1)
         return;
@@ -12,7 +12,7 @@ void    free_ed(t_edit **ed)
         free((*ed)->prev);
     }
     (*ed)->rpz[0] = 1;
-    (*ed)->rpz[2] = 3;
+    (*ed)->rpz[2] = giv_last(fz);
     (*ed)->prev = *ed;
     (*ed)->next = *ed;
 }

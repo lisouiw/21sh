@@ -16,13 +16,8 @@ int         main(void)
         if (fz->buf[0] == 10)
         {
             cursor_end(fz);
-
-            env = treat_cmd(env, &ed, &hs, fz);
-            tputs(tgetstr("sc", NULL), 0, ft_put);
-            ft_putstr("\033[0;33;40m>>\033[0m");
-            free_ed(&ed);     
-            init_for_new(&hs, &fz);
-            
+            env = treat_cmd(env, &ed, &hs, &fz);
+            init_for_new(&hs, &fz, &ed);
         }
         else
             ed = touch(ed, &fz, &hs);

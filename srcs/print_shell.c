@@ -21,10 +21,10 @@ void    print_shell(t_edit *ed, t_froz *fz)
 {
 	int			i;
 	
-	i = 3;
+	i = giv_last(fz);
     tputs(tgetstr("rc", NULL), 0, ft_put);
 	tputs(tgetstr("cd", NULL), 0, ft_put);
-	ft_putstr("\033[0;33;40m>>\033[0m");
+	put_prompt(fz);
 	while (ed->rpz[0] == 0)
 		ed = ed->next;
 	while (ed->rpz[1] == 0)

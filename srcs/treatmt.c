@@ -1,30 +1,30 @@
 #include "../twenty.h"
 
-t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz *fz)
+t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
 {
     while ((*cmd)->rpz[0] == 0)
         *cmd = (*cmd)->next;
-    if ((*cmd)->c[0] == '\0') // quand il n'y a rien
-    {
+    if ((*fz)->nb[0] % g_nb->tb[0] != 1)
         ft_putchar('\n');
+
+    if ((*cmd)->c[0] == '\0') // quand il n'y a rien
         return(env);
-    }
-    else if (1) // parsing good
+    else if ((parsing(*cmd, &(*fz)))) // parsing good
     {
-        if (fz->nb[0] % g_nb->tb[0] != 1)
-            ft_putchar('\n');
-        add_his(*cmd, &(*hs), NULL, fz);
+        add_his(*cmd, &(*hs), NULL, *fz);
         env = launchcmd(hs, env);
+        free((*fz)->cmd);
+        (*fz)->cmd = NULL;
     }
     else //parsing no good
     {
-        ;
-        // heredoc
-        // pipe
-        // dquote
+        // (*fz)->cmd = ed_str(*cmd, *fz, NULL);
         // quote
+        // dquote
+        // pipe
         // cmdand
         // cmdor
+        // heredoc
     }
     return (env);
 }
@@ -32,23 +32,28 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz *fz)
 
 int     add_his(t_edit *cmd, t_his **hs, t_his *nw, t_froz *fz)
 {
-    int     i;
+    // int     i;
 
-    i = -1;
-    fz->nb[0] = fz->nb[0] - 3;
+    // i = -1;
+    // fz->nb[0] = fz->nb[0] - giv_last(fz);
+    if (cmd)
+        ;
     if (!(nw = (t_his*)malloc(sizeof(t_his))))
         return(0);
-    if (!(nw->cmd = (char*)malloc((fz->nb[0] + 1)* sizeof(char))))
-        return (0);
-    while (++i < fz->nb[0])
-    {
-        nw->cmd[i] = cmd->c[0];
-        cmd = cmd->next;
-    }
-    nw->cmd[i] = '\0';
+    nw->cmd = ft_strdup(fz->cmd);
+    
+    
+    // if (!(nw->cmd = (char*)malloc((fz->nb[0] + 1)* sizeof(char))))
+    //     return (0);
+    // while (++i < fz->nb[0])
+    // {
+    //     nw->cmd[i] = cmd->c[0];
+    //     cmd = cmd->next;
+    // }
+    // nw->cmd[i] = '\0';
     while ((*hs)->prev != NULL && (*hs)->cmd != NULL)
         *hs = (*hs)->prev;
-    if (if_only(nw->cmd, ' ') || ((*hs)->next->cmd && ft_strcmp(nw->cmd, (*hs)->next->cmd) == 0 ))
+    if (if_only(nw->cmd, ' ')|| ((*hs)->next->cmd && ft_strcmp(nw->cmd, (*hs)->next->cmd) == 0 ))
     {
         free(nw->cmd);
         free(nw);

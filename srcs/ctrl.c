@@ -11,13 +11,13 @@ t_edit  *ctrl_touch(t_edit *ed, t_froz *fz, char c, t_his *hs)
     else if (c == 1 || c == 17)
         ed = up_down(ed, c);
     else if (c == 11 || c == 12)
-        ed = home_end(ed, c);
+        ed = home_end(ed, c, fz);
     // else if copier/couper/coller
     //     ;
     return (ed);
 }
 
-t_edit  *home_end(t_edit *ed, char c)
+t_edit  *home_end(t_edit *ed, char c, t_froz *fz)
 {
     int     i;
 
@@ -26,7 +26,7 @@ t_edit  *home_end(t_edit *ed, char c)
         ed->rpz[2] = 0;
         while (ed->rpz[0] == 0)
             ed = ed->next;
-        ed->rpz[2] = 3;    
+        ed->rpz[2] = giv_last(fz);    
     }
     else if (c == 12 && ed->rpz[1] == 0) //ctrl l
     {
@@ -58,6 +58,7 @@ t_edit  *up_down(t_edit *ed, char c)
     }
     else if (c == 17) //ctrl q
     {
+        exit(0);
         while (ed->rpz[0] == 0 && i < g_nb->tb[0] && ++i)
             ed = ed->prev;
         ed->rpz[2] = cur - i;
@@ -109,7 +110,7 @@ void    ctrl_de_test(t_edit *ed, t_froz *fz, char c, t_his *hs)
             printf("%c [%i][%i][%i]\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2]);
             ed = ed->next;
         }
-        printf("%c [%i][%i][%i]\n i = %i ->%i | %i\n\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], fz->nb[0], g_nb->tb[0], g_nb->tb[1]);
+        printf("%c [%i][%i][%i]\n i = %i ->%i | %i\n fz->cmd = {%s} && mode[3] == %i\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], fz->nb[0], g_nb->tb[0], g_nb->tb[1], fz->cmd, fz->mode[3]);
     }
     else if (c == 14) // ctrl n
     {

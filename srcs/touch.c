@@ -43,30 +43,30 @@ t_his   *histo(t_his *hs, char c, t_edit **ed, t_froz **fz)
     int     i;
 
     i = -1;
-    free_ed(&(*ed));   
+    free_ed(&(*ed), *fz);   
     if (c == 65 && hs->next != NULL)  //historique : haut
     {
         hs = hs->next;
         if (hs->cmd == NULL)
         {
-            (*fz)->nb[0] = 3;
+            (*fz)->nb[0] = giv_last(*fz);
             return(hs);
         }
         while (hs->cmd[++i])
             *ed = add_ed(*ed, hs->cmd[i], NULL);
-        (*fz)->nb[0] = i + 3;
+        (*fz)->nb[0] = i + giv_last(*fz);
     }
     else if (c == 66 && hs->prev != NULL) //historique : bas
     {
         hs = hs->prev;
         if (hs->cmd == NULL)
         {
-            (*fz)->nb[0] = 3;
+            (*fz)->nb[0] = giv_last(*fz);
             return(hs);
         }
         while (hs->cmd[++i])
             *ed = add_ed(*ed, hs->cmd[i], NULL);
-        (*fz)->nb[0] = i + 3;
+        (*fz)->nb[0] = i + giv_last(*fz);
     }
     return (hs);
 }
