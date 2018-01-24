@@ -10,7 +10,7 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
         return(env);
     else if ((parsing(*cmd, &(*fz)))) // parsing good
     {
-        add_his(*cmd, &(*hs), NULL, *fz);
+        add_his(&(*hs), NULL, *fz);
         env = launchcmd(hs, env);
         free((*fz)->cmd);
         (*fz)->cmd = NULL;
@@ -29,25 +29,11 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
 }
 
 
-int     add_his(t_edit *cmd, t_his **hs, t_his *nw, t_froz *fz)
+int     add_his(t_his **hs, t_his *nw, t_froz *fz)
 {
-    // int     i;
-
-    // i = -1;
-    // fz->nb[0] = fz->nb[0] - giv_last(fz);
-    if (cmd)
-        ;
     if (!(nw = (t_his*)malloc(sizeof(t_his))))
         return(0);
     nw->cmd = ft_strdup(fz->cmd);
-    // if (!(nw->cmd = (char*)malloc((fz->nb[0] + 1)* sizeof(char))))
-    //     return (0);
-    // while (++i < fz->nb[0])
-    // {
-    //     nw->cmd[i] = cmd->c[0];
-    //     cmd = cmd->next;
-    // }
-    // nw->cmd[i] = '\0';
     while ((*hs)->prev != NULL && (*hs)->cmd != NULL)
         *hs = (*hs)->prev;
     if (if_only(nw->cmd, ' ')|| ((*hs)->next->cmd && ft_strcmp(nw->cmd, (*hs)->next->cmd) == 0 ))

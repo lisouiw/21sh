@@ -151,7 +151,7 @@ t_his   *histo(t_his *hs, char c, t_edit **ed, t_froz **fz);
 t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz);
 t_env   *launchcmd(t_his **cmd, t_env *env);
 t_env	*exec_giv(char *line, t_env *env, char **cut, int *i);
-int     add_his(t_edit *cmd, t_his **hs, t_his *nw, t_froz *fz);
+int     add_his(t_his **hs, t_his *nw, t_froz *fz);
 
 t_edit  *giv_position(t_edit *ed, int i);
 void    put_my_cur(int nb, char c);

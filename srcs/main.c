@@ -34,25 +34,13 @@ void    cursor_end(t_edit *ed)
         ed = ed->next;
     i = ed->rpz[3];
     if (i % g_nb->tb[0] == 1)
-    {
         put_my_cur(g_nb->tb[0], 'D');
-	    // ft_putstr(ft_strjoin("\033[", ft_strjoin((nb = ft_itoa(g_nb->tb[0])), "D")));
-    }
     else
-    {
         put_my_cur(g_nb->tb[0], 'C');
-        // ft_putstr(ft_strjoin("\033[", ft_strjoin((nb = ft_itoa(g_nb->tb[0])), "C")));
-    }
     if (i > g_nb->tb[0] && i % g_nb->tb[0] == 0)
-    {
         put_my_cur(((i / g_nb->tb[0]) - 1), 'B');
-        // ft_putstr(ft_strjoin("\033[", ft_strjoin((nb = ft_itoa(i / g_nb->tb[0]) - 1), "B")));
-    }
     else if (i > (g_nb->tb[0]))
-    {
         put_my_cur((i / g_nb->tb[0]), 'B');
-        // ft_putstr(ft_strjoin("\033[", ft_strjoin((nb = ft_itoa(i / g_nb->tb[0])), "B")));
-    }
 }
 
 void    put_my_cur(int nb, char c)
@@ -64,6 +52,4 @@ void    put_my_cur(int nb, char c)
     ft_putstr(i);
     ft_putchar(c);
     free(i);
-    // ft_putstr(ft_strjoin("\033[", ft_strjoin((nb = ft_itoa(g_nb->tb[0])), "D")));
-    
 }

@@ -42,6 +42,8 @@ t_edit  *home_end(t_edit *ed, char c, t_froz *fz)
     return(ed);
 }
 
+/// a change up and down rpz[2] to rpz[3]
+
 t_edit  *up_down(t_edit *ed, char c)
 {
     int     i;
