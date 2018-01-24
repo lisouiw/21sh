@@ -83,19 +83,19 @@ t_edit  *giv_position(t_edit *ed, int i)
         ed = ed->next;
     while (ed->rpz[1] == 0)
     {
-        if (ed->c[0] == '\n')
+        if (ed->c[0] == '\n' && i % g_nb->tb[0] != 0)
         {
-            if (i % g_nb->tb[0] == 0)
-                i = i + 1;
-            else
-                i = (((i / g_nb->tb[0]) + 1) * g_nb->tb[0]) + 1;
+            ed->rpz[3] = i;
+            ed = ed->next;
+            i = (((i / g_nb->tb[0]) +1 ) * g_nb->tb[0]) + 1;
+            ed->rpz[3] = i;
         }
-        ed->rpz[3] = i;
+        else
+            ed->rpz[3] = i;
         ++i;
         ed = ed->next;
     }
     ed->rpz[3] = i;
-    sleep(50);
     return (ed);
 }
 

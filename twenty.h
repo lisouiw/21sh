@@ -50,7 +50,7 @@ typedef struct		s_env
 
 typedef struct      s_edit
 {
-    int             rpz[5];
+    int             rpz[4];
     // 0: debut list
     // 1: fin list
     // 2: cursor position
@@ -108,7 +108,7 @@ t_his   *init_hs(t_his *hs, t_his *next);
 void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed);
 
 // main
-void    cursor_end(t_froz *fz);
+void    cursor_end(t_edit *ed);
 
 // parsing
 int     parsing(t_edit *ed, t_froz **fz);
@@ -118,7 +118,8 @@ int     parsing(t_edit *ed, t_froz **fz);
 int		ft_put(int c);
 void	my_tputs(t_edit *ed);
 void	put_cursor(t_edit *ed);
-void	save_init(t_froz *fz);
+// void	save_init(t_froz *fz);
+void	save_init(t_edit *ed);
 void    print_shell(t_edit *ed, t_froz *fz);
 
 //prompt

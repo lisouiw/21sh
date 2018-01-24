@@ -15,7 +15,7 @@ int         main(void)
         // exit(0);
         if (fz->buf[0] == 10)
         {
-            cursor_end(fz);
+            cursor_end(ed);
             env = treat_cmd(env, &ed, &hs, &fz);
             init_for_new(&hs, &fz, &ed);
         }
@@ -25,12 +25,14 @@ int         main(void)
     }
 }
 
-void    cursor_end(t_froz *fz)
+void    cursor_end(t_edit *ed)
 {
     int     i;
     
     tputs(tgetstr("rc", NULL), 0, ft_put);
-    i = fz->nb[0];
+    while (ed->rpz[1] == 0)
+        ed = ed->next;
+    i = ed->rpz[3];
     if (i % g_nb->tb[0] == 1)
 	    ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa(g_nb->tb[0]), "D")));
     else

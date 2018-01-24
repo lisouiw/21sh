@@ -68,7 +68,7 @@ void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed)
     (*fz)->mode[1] = 0;
     (*fz)->mode[2] = 1;
     if (*hs == NULL)
-        return;
-    while ((*hs)->prev != NULL && (*hs)->cmd != NULL)
+        exit(0);
+    while ((*hs)->prev != NULL)
         *hs = (*hs)->prev;
 }
