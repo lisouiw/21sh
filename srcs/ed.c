@@ -20,6 +20,9 @@ void    free_ed(t_edit **ed, t_froz *fz)
 
 void    modif_edit(t_edit **ed, t_edit **nw)
 {
+    t_edit *tmp;
+
+    tmp = *ed;
     if ((*ed)->rpz[0] == 1)
     {
         (*ed)->rpz[0] = 0;
@@ -28,6 +31,16 @@ void    modif_edit(t_edit **ed, t_edit **nw)
     (*nw)->rpz[3] = (*ed)->rpz[3];
     (*ed)->rpz[3] = (*nw)->rpz[3] + 1;
     (*ed)->rpz[2] = (*ed)->rpz[2] + 1;
+    if (tmp->rpz[1] == 0 && tmp->rpz[3] >= tmp->next->rpz[3])
+    {
+        // printf("%i, %i\n", tmp->rpz[3], tmp->next->rpz[3]);
+        while (tmp->rpz[1] == 0)
+        {
+            tmp->next->rpz[3] = tmp->rpz[3] + 1;
+            tmp = tmp->next;
+        }
+        // sleep(1);
+    }
 }
 
 t_edit  *add_ed(t_edit *ed, char c, t_edit *nw)
@@ -39,7 +52,7 @@ t_edit  *add_ed(t_edit *ed, char c, t_edit *nw)
     nw->c[0] = c;
     nw->rpz[0] = 0;
     nw->rpz[1] = 0;
-    nw->rpz[4] = 0;
+    nw->rpz[2] = 0;
     modif_edit(&ed, &nw);
     if (ed->rpz[0] == 1 && ed->rpz[1] == 1)
     {

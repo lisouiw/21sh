@@ -41,8 +41,6 @@ int     add_his(t_edit *cmd, t_his **hs, t_his *nw, t_froz *fz)
     if (!(nw = (t_his*)malloc(sizeof(t_his))))
         return(0);
     nw->cmd = ft_strdup(fz->cmd);
-    
-    
     // if (!(nw->cmd = (char*)malloc((fz->nb[0] + 1)* sizeof(char))))
     //     return (0);
     // while (++i < fz->nb[0])

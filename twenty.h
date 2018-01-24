@@ -152,5 +152,6 @@ t_env   *launchcmd(t_his **cmd, t_env *env);
 t_env	*exec_giv(char *line, t_env *env, char **cut, int *i);
 int     add_his(t_edit *cmd, t_his **hs, t_his *nw, t_froz *fz);
 
+t_edit  *giv_position(t_edit *ed, int i);
 
 #endif
