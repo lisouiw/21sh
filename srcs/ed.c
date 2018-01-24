@@ -73,7 +73,7 @@ t_edit  *add_ed(t_edit *ed, char c, t_edit *nw)
 t_edit  *init_edit(t_edit *init)
 {
     if (!(init = (t_edit*)malloc(sizeof(t_edit))))
-        return(NULL);
+        return (NULL);
     init->c[0] = '\0';
     init->next = init;
     init->prev = init;
@@ -105,7 +105,6 @@ t_edit  *erase_ed(t_edit *ed)
     {
         ed = ed->next;
         ed->rpz[3] = ++i;     
-    
     }
     free(erase);
     return(ed);

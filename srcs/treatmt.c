@@ -92,8 +92,8 @@ t_env	*exec_giv(char *line, t_env *env, char **cut, int *i)
 	// 	b_unset(cut, &env, 0);
 	// else if (ft_strcmp("cd", cut[0]) == 0)
 	// 	b_cd(cut[1], &env);
-	// else if (ft_strcmp(line, "exit") == 0 && free_for_exit(line, cut, env))
-	// 	exit(0);
+	else if (ft_strcmp(line, "exit") == 0 && free_for_exit(line, cut, env))
+		exit(0);
 	else
 		b_other(cut, env);
 	// free_tab(cut);
