@@ -5,7 +5,7 @@ t_edit  *touch(t_edit *ed, t_froz **fz, t_his **hs)
     if ((*fz)->buf[1] == 0 && (*fz)->buf[2] == 0)
     {
         if ((*fz)->buf[0] > 0 && (*fz)->buf[0] < 27)
-            ed = ctrl_touch(ed, *fz, (*fz)->buf[0], *hs);
+            ed = ctrl_touch(ed, &(*fz), (*fz)->buf[0], *hs);
         else if ((*fz)->buf[0] == 127)
         {
             while (ed->rpz[2] == 0)
@@ -97,7 +97,7 @@ t_edit  *giv_position(t_edit *ed, int i)
     }
     if (ed->prev->c[0] == '\n' && i % g_nb->tb[0] != 0)
     {
-        i = (((i / g_nb->tb[0]) +1 ) * g_nb->tb[0]) + 1;
+        i = (((i / g_nb->tb[0]) + 1 ) * g_nb->tb[0]) + 1;
         ed->rpz[3] = i;
     }
     else
@@ -110,11 +110,25 @@ t_edit  *left_right(t_edit *ed, t_froz *fz)
 {
     if (fz->buf[2] == 68 && ed->rpz[0] == 0)  // left
     {
+        if (fz->mode[0] == 1 || fz->mode[1] == 1)
+        {
+            if (ed->rpz[4] == 1 && ed->prev->rpz[4] == 0)
+                ed->prev->rpz[4] = 1;
+            else
+                ed->rpz[4] = 0;
+        }
         ed->prev->rpz[2] = ed->rpz[2] - 1;
         ed->rpz[2] = 0;
     }
     else if (fz->buf[2] == 67 && ed->next->rpz[0] == 0) //right
     {
+        if (fz->mode[0] == 1 || fz->mode[1] == 1)
+        {        
+            if (ed->rpz[4] == 1 && ed->next->rpz[4] == 0)
+                ed->next->rpz[4] = 1;
+            else
+                ed->rpz[4] = 0;
+        }
         ed->next->rpz[2] = ed->rpz[2] + 1;   
         ed->rpz[2] = 0;
     }

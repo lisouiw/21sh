@@ -6,16 +6,16 @@ int		ft_put(int c)
 		return (1);
 }
 
-void	my_tputs(t_edit *ed)
+void	my_tputs(t_edit *ed, t_froz *fz)
 {
-	// if (ed->rpz[4] == 1)
-	// 	tputs(tgetstr("us", NULL), 0, ft_put);
-	// if (ed->rpz[3] == 1)
-	// 	tputs(tgetstr("so", NULL), 0, ft_put);
+	if (ed->rpz[4] == 1 && fz->mode[0] == 1)
+		tputs(tgetstr("us", NULL), 0, ft_put);
+	else if (ed->rpz[4] == 1 && fz->mode[1] == 1)
+		tputs(tgetstr("so", NULL), 0, ft_put);
 	if (ed->c[0] != '\n')
 		ft_putchar(ed->c[0]);
-	// tputs(tgetstr("se", NULL), 0, ft_put);
-	// tputs(tgetstr("ue", NULL), 0, ft_put);
+	tputs(tgetstr("se", NULL), 0, ft_put);
+	tputs(tgetstr("ue", NULL), 0, ft_put);
 }
 
 void    print_shell(t_edit *ed, t_froz *fz)
@@ -27,7 +27,7 @@ void    print_shell(t_edit *ed, t_froz *fz)
 		ed = ed->next;
 	while (ed->rpz[1] == 0)
 	{
-		my_tputs(ed);
+		my_tputs(ed, fz);
 		if (ed->next->rpz[3] % g_nb->tb[0] == 1)
 			ft_putchar('\n');
 		ed = ed->next;

@@ -1,5 +1,8 @@
 #include "../twenty.h"
 
+//quote laisse en raw
+//dquote interprete certaine variable
+
 int     parsing(t_edit *ed, t_froz **fz)
 {
     char *nw;
@@ -19,6 +22,8 @@ int     parsing(t_edit *ed, t_froz **fz)
     }
     while (ed->rpz[0] == 0)
         ed = ed->next;
+    if (parsing_quote)
+        exit(0);
     if (ed->c[0] == 39)
         (*fz)->mode[3] = 1;
     else if (ed->c[0] == 34)

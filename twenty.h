@@ -50,12 +50,12 @@ typedef struct		s_env
 
 typedef struct      s_edit
 {
-    int             rpz[4];
+    int             rpz[5];
     // 0: debut list
     // 1: fin list
     // 2: cursor position
     // 3: placement
-    // 4: 
+    // 4: copier/ coller
     char            c[1];
     struct  s_edit  *next;
     struct  s_edit  *prev;
@@ -71,7 +71,7 @@ typedef struct      s_his
 
 //ctrl 
 void    ctrl_de_test(t_edit *ed, t_froz *fz, char c, t_his *hs);
-t_edit  *ctrl_touch(t_edit *ed, t_froz *fz, char c, t_his *hs);
+t_edit  *ctrl_touch(t_edit *ed, t_froz **fz, char c, t_his *hs);
 t_edit  *move_word(t_edit *ed, char c);
 t_edit  *up_down(t_edit *ed, char c);
 t_edit  *home_end(t_edit *ed, char c, t_froz *fz);
@@ -113,12 +113,16 @@ void    cursor_end(t_edit *ed);
 // parsing
 int     parsing(t_edit *ed, t_froz **fz);
 
+// pascutcopy
+t_edit  *paste(t_edit *ed);
+t_edit  *copy(t_edit *ed, t_froz **fz);
+t_edit  *cut(t_edit *ed, t_froz **fz);
+char    *keep_paste(t_edit **ed, char *s);
 
 // print_shell
 int		ft_put(int c);
-void	my_tputs(t_edit *ed);
+void	my_tputs(t_edit *ed, t_froz *fz);
 void	put_cursor(t_edit *ed);
-// void	save_init(t_froz *fz);
 void	save_init(t_edit *ed);
 void    print_shell(t_edit *ed, t_froz *fz);
 

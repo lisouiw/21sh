@@ -14,6 +14,7 @@ void    free_ed(t_edit **ed, t_froz *fz)
     (*ed)->rpz[0] = 1;
     (*ed)->rpz[2] = giv_last(fz);
     (*ed)->rpz[3] = giv_last(fz);
+    (*ed)->rpz[4] = 0;
     (*ed)->prev = *ed;
     (*ed)->next = *ed;
 }
@@ -32,6 +33,7 @@ void    modif_edit(t_edit **ed, t_edit **nw)
     (*nw)->rpz[1] = 0;
     (*nw)->rpz[2] = 0;
     (*nw)->rpz[3] = (*ed)->rpz[3];
+    (*nw)->rpz[4] = 0;
     (*ed)->rpz[3] = (*nw)->rpz[3] + 1;
     (*ed)->rpz[2] = (*ed)->rpz[2] + 1;
     if (tmp->rpz[1] == 0 && tmp->rpz[3] >= tmp->next->rpz[3])
@@ -86,6 +88,7 @@ t_edit  *init_edit(t_edit *init)
     init->rpz[1] = 1;
     init->rpz[2] = 3;
     init->rpz[3] = 3;
+    init->rpz[4] = 0;
     return(init);
 }
 
