@@ -9,8 +9,13 @@ int     parsing(t_edit *ed, t_froz **fz)
         (*fz)->cmd = ed_str(ed, NULL, (*fz)->nb[0] - giv_last(*fz));
     else 
     {
-        nw = ft_strjoin("\n", ed_str(ed, NULL, (*fz)->nb[0] - giv_last(*fz)));
-        (*fz)->cmd = ft_strjoin((*fz)->cmd, nw);  
+        if (ed->rpz[0] == 1 && ed->rpz[1] == 1)
+            (*fz)->cmd = ft_strjoin((*fz)->cmd, "\n\0");  
+        else
+        {
+            nw = ft_strjoin("\n", ed_str(ed, NULL, (*fz)->nb[0] - giv_last(*fz)));
+            (*fz)->cmd = ft_strjoin((*fz)->cmd, nw);  
+        }
     }
     while (ed->rpz[0] == 0)
         ed = ed->next;

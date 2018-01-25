@@ -38,7 +38,9 @@ t_edit  *extern_touch(t_edit *ed, t_froz **fz, t_his **hs)
     if ((*fz)->buf[0] == 27 && (*fz)->buf[1] == 91 && ((*fz)->buf[2] == 68 || (*fz)->buf[2] == 67))  // left/right
         ed = left_right(ed, *fz);
     else if (*hs && (*fz)->mode[2] > 0 && (*fz)->buf[0] == 27 && (*fz)->buf[1] == 91 && ((*fz)->buf[2] == 65 || (*fz)->buf[2] == 66)) //historique : haut/bas
+    { 
         *hs = histo(*hs, (*fz)->buf[2], &ed, &(*fz));
+    }
     return (ed);
 }
 
@@ -76,6 +78,33 @@ t_his   *histo(t_his *hs, char c, t_edit **ed, t_froz **fz)
     }
     return (hs);
 }
+
+t_edit  *giv_position(t_edit *ed, int i)
+{
+    while (ed->rpz[0] == 0)
+        ed = ed->next;
+    while (ed->rpz[1] == 0)
+    {
+        if (ed->prev->c[0] == '\n' && i % g_nb->tb[0] != 0)
+        {
+            i = (((i / g_nb->tb[0]) +1 ) * g_nb->tb[0]) + 1;
+            ed->rpz[3] = i;
+        }
+        else
+            ed->rpz[3] = i;
+        ++i;
+        ed = ed->next;
+    }
+    if (ed->prev->c[0] == '\n' && i % g_nb->tb[0] != 0)
+    {
+        i = (((i / g_nb->tb[0]) +1 ) * g_nb->tb[0]) + 1;
+        ed->rpz[3] = i;
+    }
+    else
+        ed->rpz[3] = i;
+    return (ed);
+}
+
 
 t_edit  *left_right(t_edit *ed, t_froz *fz)
 {

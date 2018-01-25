@@ -64,6 +64,8 @@ void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed)
     tputs(tgetstr("sc", NULL), 0, ft_put);
     put_prompt_init(&(*fz));
     free_ed(&(*ed), *fz);
+    (*ed)->rpz[2] = giv_last(*fz);
+    (*ed)->rpz[3] = giv_last(*fz);
     (*fz)->mode[0] = 0;
     (*fz)->mode[1] = 0;
     (*fz)->mode[2] = 1;

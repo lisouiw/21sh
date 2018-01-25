@@ -6,7 +6,7 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
         *cmd = (*cmd)->next;
     if ((*fz)->nb[0] % g_nb->tb[0] != 1)
         ft_putchar('\n');
-    if ((*cmd)->c[0] == '\0' && (*fz)->cmd == NULL) // quand il n'y a rien
+    if ((*cmd)->c[0] == '\0' && (*fz)->cmd == NULL && (*fz)->mode[3] != 0)  // quand il n'y a rien
         return(env);
     else if ((parsing(*cmd, &(*fz)))) // parsing good
     {
