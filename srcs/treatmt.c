@@ -12,6 +12,7 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
     {
         add_his(&(*hs), NULL, *fz);
         env = launchcmd((*fz)->cmd, env);
+        // remplacer (*fz)->cmd en struct ex 
         free((*fz)->cmd);
         (*fz)->cmd = NULL;
     }

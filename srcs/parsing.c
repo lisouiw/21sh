@@ -1,24 +1,97 @@
 #include "../twenty.h"
 
+///////// POur printf ex
+
+    // while (ex->prev != NULL)
+    //     ex = ex->prev;
+    // printf("----------------------------------\n");    
+    // while (ex->next != NULL)
+    // {
+    //     printf("%s\n", ex->cmd);
+    //     ex = ex->next;
+    // }
+    // printf("%s\n", ex->cmd);
+    // printf("----------------------------------\n");    
+
+/////////////////////////////////////////////////////////
+
 // && 
 // ||
 // |
 // ;
 // ' '
-// 
+// >>
+// <<
+// &>
+//
 
 //quote laisse en raw
 //dquote interprete certaine variable
 
-t_cmd   *giv_tab(char *s, int i, int in, t_cmd *ex)
+// int     parsing_elem(t_cmd *ex)
+// {
+
+    // | = 3;
+    // && = 4;
+    // || = 5;
+    // << = 6;  <<[-]word
+
+
+    // >>
+    // &> >&    ->     >&word        &>word    >word 2>&1
+    //              [n]<&word    [n]>&word
+    //              [n]<&digit-  [n]>&digit-
+    // >    ->  [n]>word
+    // <    ->  [n]<word
+
+
+// }
+
+void    print_ex(t_cmd *ex)
+{
+    while (ex->prev != NULL)
+        ex = ex->prev;
+    printf("----------------------------------\n");    
+    while (ex->next != NULL)
+    {
+        printf("[%s]->%i\n", ex->cmd, ex->type);
+        ex = ex->next;
+    }
+    printf("[%s]->%i\n", ex->cmd, ex->type);
+    printf("----------------------------------\n");  
+}
+
+int     parse_type(t_cmd **ex)
+{
+    char    c;
+
+    while ((*ex)->prev != NULL)
+        *ex = (*ex)->prev;
+    while ((*ex)->next != NULL)
+    {
+        c = (*ex)->cmd[0];
+        if ( c == '&' || c == '|' || c == ';' || c == '>' || c == '<')
+            (*ex)->type = 1;
+        else
+            (*ex)->type = 0;
+        *ex = (*ex)->next;
+    }
+    c = (*ex)->cmd[0];
+    if ( c == '&' || c == '|' || c == ';' || c == '>' || c == '<')
+        (*ex)->type = 1;
+    else
+        (*ex)->type = 0;
+    return (0);
+}
+
+t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex)
 {
     t_cmd   *nw;
 
+    if (i == in)
+        return (ex);
     if (ex->cmd == NULL)
-    {
         ex->cmd = ft_strsub(s, in , i - in);
-        printf("%s\n", ex->cmd);
-    }
     else
     {
         if (!(nw = (t_cmd*)malloc(sizeof(t_cmd))))
@@ -28,15 +101,12 @@ t_cmd   *giv_tab(char *s, int i, int in, t_cmd *ex)
         nw->prev = ex;
         nw->next = NULL;
         ex = ex->next;
-        printf("%s\n", ex->cmd);
     }
-
-    // space dont save
     return (ex);
 }
 
 
-t_cmd   *giv_cmd(char *s, int i, int in ,t_cmd *ex)
+t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex)
 {
     int     q;
 
@@ -51,24 +121,16 @@ t_cmd   *giv_cmd(char *s, int i, int in ,t_cmd *ex)
                 q = (q == 0) ? 2 : 0;
             ++i;
         }
-        ex = giv_tab(s, i, in, ex);
-         while (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != ' ' && s[i] != '>' && s[i] != '<') && s[i])
+        ex = sub_into_ex(s, i, in, ex);
+        in = i;
+        while (s[i] == ' ')
             ++i;
         in = i;
- 
-        //cut entre i et in
-        //cut a parti de in jusqua difference
+        while (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>' && s[i] != '<') && s[i])
+            ++i;
+        ex = sub_into_ex(s, i, in, ex);
+        in = i;
     }
-    // while (ex->prev != NULL)
-    //     ex = ex->prev;
-    // while (ex->next != NULL)
-    // {
-    //     printf("%s\n", ex->cmd);
-    //     ex = ex->next;
-    // }
-    // sleep(30);
-    
-    printf("----------------------------------\n");    
     return (ex);
 }
 
@@ -86,7 +148,9 @@ int     parsing_op(char *s, t_cmd **ex)
     (*ex)->prev = NULL;
     while (s[i] == ' ')
         ++i;
-    *ex = giv_cmd(s, i, i, *ex);
+    *ex = separate_cmd(s, i, i, *ex);
+    i = parse_type(&(*ex));
+    print_ex(*ex);
     return (0);
 }
 
@@ -117,9 +181,9 @@ int     parsing(t_edit *ed, t_froz **fz)
     (*fz)->cmd = join_cmd((*fz)->cmd, ed, *fz);
     while (ed->rpz[0] == 0)
         ed = ed->next;
-    if (((*fz)->mode[3] = parsing_quote((*fz)->cmd)))
+    if (((*fz)->mode[3] = parsing_quote((*fz)->cmd))) //parsing_quote
         ;
-    else if (((*fz)->mode[3] = parsing_op((*fz)->cmd, &ex)))
+    else if (((*fz)->mode[3] = parsing_op((*fz)->cmd, &ex))) // parsing_op
         ;
     // else if (ed->c[0] == '|')
     //     (*fz)->mode[3] = 3;
