@@ -66,8 +66,16 @@ typedef struct      s_his
     char            *cmd;
     struct  s_his   *next;
     struct  s_his   *prev;
-}                   t_his;    
+}                   t_his;
 
+typedef struct      s_cmd
+{
+    char            *cmd;
+    int             type;   //cmd : 0
+                            //ctrl op : 1
+    struct  s_cmd   *next;
+    struct  s_cmd   *prev;
+}                   t_cmd;        
 
 //ctrl 
 void    ctrl_de_test(t_edit *ed, t_froz *fz, char c, t_his *hs);
@@ -97,8 +105,10 @@ char	**list_to_tab(t_env *env, char **tab_env);
 void	b_other(char **cut, t_env *env);
 void	print_tab(char **ta, int i);
 
-//giv_info
+//giv_str
 char    *ed_str(t_edit *cmd, char *s, int nb);
+char    *join_cmd(char *cmd, t_edit *ed, t_froz *fz);
+
 
 // init
 t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs);
@@ -109,6 +119,7 @@ void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed);
 
 // main
 void    cursor_end(t_edit *ed);
+void    put_my_cur(int nb, char c);
 
 // parsing
 int     parsing(t_edit *ed, t_froz **fz);
@@ -149,16 +160,15 @@ t_edit  *touch(t_edit *ed, t_froz **fz, t_his **hs);
 t_edit  *extern_touch(t_edit *ed, t_froz **fz, t_his **hs);
 t_edit  *left_right(t_edit *ed, t_froz *fz);
 t_his   *histo(t_his *hs, char c, t_edit **ed, t_froz **fz);
+t_edit  *giv_position(t_edit *ed, int i);
 
 
 // treatmt
 t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz);
-t_env   *launchcmd(t_his **cmd, t_env *env);
 t_env	*exec_giv(char *line, t_env *env, char **cut, int *i);
 int     add_his(t_his **hs, t_his *nw, t_froz *fz);
+t_env   *launchcmd(char *cmd, t_env *env);
 
-t_edit  *giv_position(t_edit *ed, int i);
-void    put_my_cur(int nb, char c);
 
 
 #endif

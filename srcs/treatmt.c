@@ -11,7 +11,7 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
     else if ((parsing(*cmd, &(*fz)))) // parsing good
     {
         add_his(&(*hs), NULL, *fz);
-        env = launchcmd(hs, env);
+        env = launchcmd((*fz)->cmd, env);
         free((*fz)->cmd);
         (*fz)->cmd = NULL;
     }
@@ -51,12 +51,12 @@ int     add_his(t_his **hs, t_his *nw, t_froz *fz)
 }
 
 
-t_env   *launchcmd(t_his **cmd, t_env *env)
+t_env   *launchcmd(char *cmd, t_env *env)
 {
     int     i;
 
     i = 0;
-    env = exec_giv((*cmd)->cmd, env, NULL, &i);
+    env = exec_giv(cmd, env, NULL, &i);
     return (env);
 }
 
