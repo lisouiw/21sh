@@ -35,6 +35,14 @@ typedef struct      s_froz
                     // cmdand   4
                     // cmdor    5
                     // heredoc  6
+                    // Redirecting Input    7 ([n]<word)
+                    // Redirecting Output   8 ([n]>word)
+                    // Appending Redirected Output  9 ([n]>>word)
+                    // Redirecting Standard Output and Standard Error   10
+                    // Duplicating File Descriptors 11 ([n]<&word   [n]>&word)
+                    // Moving File Descriptors  12 (n]<&digit-   [n]>&digit-)
+
+
     char            buf[3]; // buffer pour lire le char tape
     char            *paste; // la chaine a coller
     char            *cmd; // keep cmd car imcomplete
@@ -73,6 +81,7 @@ typedef struct      s_cmd
     char            *cmd;
     int             type;   //cmd : 0
                             //ctrl op : 1
+    int             start; //index where the string were sub
     struct  s_cmd   *next;
     struct  s_cmd   *prev;
 }                   t_cmd;        
