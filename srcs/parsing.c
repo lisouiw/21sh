@@ -1,20 +1,5 @@
 #include "../twenty.h"
 
-///////// POur printf ex
-
-    // while (ex->prev != NULL)
-    //     ex = ex->prev;
-    // printf("----------------------------------\n");    
-    // while (ex->next != NULL)
-    // {
-    //     printf("%s\n", ex->cmd);
-    //     ex = ex->next;
-    // }
-    // printf("%s\n", ex->cmd);
-    // printf("----------------------------------\n");    
-
-/////////////////////////////////////////////////////////
-
 // && 
 // ||
 // |
@@ -59,103 +44,6 @@
         // [n]<&word   [n]>&word
     // Moving File Descriptors 12
         // [n]<&digit-   [n]>&digit-
-
-
-// }
-t_cmd   *parse_ampersand(t_cmd *ex, char *s)
-{
-    if (ft_strcmp(ex->cmd, "&&") == 0)
-        ex->type = 4;
-    else if (ft_strcmp(ex->cmd, ">&") == 0 || ft_strcmp(ex->cmd, "&>") == 0 ||ft_strcmp(ex->cmd, "<&") == 0) || ft_strcmp(ex->cmd, "&<") == 0)
-        ex = parse_redirec(ex, s);
-    else
-        ex->type = 1;    
-    // else if (ft_strcmp(ex->cmd, "||") == 0)
-    
-    
-    return (ex);
-}
-
-t_cmd   *parse_pipe_or(t_cmd *ex)
-{
-    if (ft_strcmp(ex->cmd, "|") == 0)
-        ex->type = 3;
-    else if (ft_strcmp(ex->cmd, "||") == 0)
-        ex->type = 5;
-    else
-        ex->type = -1;
-    return (ex);
-}
-
-t_cmd   *giv_type(t_cmd *ex, char *s)
-{
-    if (ex->cmd[0] == '&')
-        ex = parse_pipe_or(ex);
-    else if (ex->cmd[0] == '&')
-        ex = parse_ampersand(ex, s);
-
-    // else if (ex->cmd[0] == '')
-    // else if (ex->cmd[0] == '')
-    // else if (ex->cmd[0] == '')
-    // else if (ex->cmd[0] == '')
-    // else if (ex->cmd[0] == '')
-    
-    return (ex);
-}
-
-t_cmd   *parse_op_int(t_cmd *ex, char *s) // give op ctrl specifique type and 
-{
-    while (ex->prev != NULL) // debut de la chaine 
-        ex = ex->prev;
-    while (ex->next != NULL)
-    {
-        if (ex->type == 1)
-            ex = giv_type(ex, s);
-        ex = ex->next;
-    }
-    if (ex->type == 1)
-        ex = giv_type(ex, s);
-    while (ex->prev != NULL) // debut de la chaine 
-        ex = ex->prev;
-    return (ex);
-}
-
-void    print_ex(t_cmd *ex)
-{
-    while (ex->prev != NULL)
-        ex = ex->prev;
-    printf("----------------------------------\n");    
-    while (ex->next != NULL)
-    {
-        printf("[%s]->[%i][%i]\n", ex->cmd, ex->type, ex->start);
-        ex = ex->next;
-    }
-    printf("[%s]->[%i][%i]\n", ex->cmd, ex->type, ex->start);
-    printf("----------------------------------\n");  
-}
-
-int     parse_type(t_cmd **ex) // give at first a type
-{
-    char    c;
-
-    while ((*ex)->prev != NULL)
-        *ex = (*ex)->prev;
-    while ((*ex)->next != NULL)
-    {
-        c = (*ex)->cmd[0];
-        if ( c == '&' || c == '|' || c == ';' || c == '>' || c == '<')
-            (*ex)->type = 1;
-        else
-            (*ex)->type = 0;
-        *ex = (*ex)->next;
-    }
-    c = (*ex)->cmd[0];
-    if ( c == '&' || c == '|' || c == ';' || c == '>' || c == '<')
-        (*ex)->type = 1;
-    else
-        (*ex)->type = 0;
-    return (0);
-}
 
 t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex) //sub and put into ex
 {
@@ -224,7 +112,7 @@ int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
         ++i;
     *ex = separate_cmd(s, i, i, *ex); //separate by simple word and metacharactere
     i = parse_type(&(*ex)); // give at first a type as cmd(0) or a op ctrl(1)
-    ex = parse_op_int(*ex, s); // give all op ctrl specifique type and parse redirection proprely
+    *ex = parse_op_int(*ex, s); // give all op ctrl specifique type and parse redirection proprely
     print_ex(*ex);
     return (0);
 }

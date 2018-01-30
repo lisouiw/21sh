@@ -41,7 +41,7 @@ typedef struct      s_froz
                     // Redirecting Standard Output and Standard Error   10
                     // Duplicating File Descriptors 11 ([n]<&word   [n]>&word)
                     // Moving File Descriptors  12 (n]<&digit-   [n]>&digit-)
-
+                    // ;         13
 
     char            buf[3]; // buffer pour lire le char tape
     char            *paste; // la chaine a coller
@@ -130,7 +130,30 @@ void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed);
 void    cursor_end(t_edit *ed);
 void    put_my_cur(int nb, char c);
 
+// parsing_tools
+
+int     isnumber(char *s);
+void    print_ex(t_cmd *ex);
+
+// parsing_type_fct
+
+t_cmd   *parse_redirec(t_cmd *ex, char *s);
+t_cmd   *parse_ampersand(t_cmd *ex, char *s);
+t_cmd   *parse_great_than(t_cmd *ex, char *s);
+t_cmd   *parse_less_than(t_cmd *ex, char *s);
+t_cmd   *parse_pipe_or(t_cmd *ex);
+
+// parsing_type
+
+t_cmd   *giv_type(t_cmd *ex, char *s);
+t_cmd   *parse_op_int(t_cmd *ex, char *s);
+int     parse_type(t_cmd **ex);
+
 // parsing
+t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex);
+t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex);
+int     parsing_op(char *s, t_cmd **ex);
+int     parsing_quote(char *s);
 int     parsing(t_edit *ed, t_froz **fz);
 
 // pascutcopy
