@@ -125,6 +125,7 @@ t_froz  *init_fz(t_froz *fz);
 void    init_data(t_froz **fz);
 t_his   *init_hs(t_his *hs, t_his *next);
 void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed);
+t_cmd   *init_ex(t_cmd *ex);
 
 // main
 void    cursor_end(t_edit *ed);
@@ -154,7 +155,7 @@ t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex);
 t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex);
 int     parsing_op(char *s, t_cmd **ex);
 int     parsing_quote(char *s);
-int     parsing(t_edit *ed, t_froz **fz);
+int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex);
 
 // pascutcopy
 t_edit  *paste(t_edit *ed);
@@ -197,10 +198,10 @@ t_edit  *giv_position(t_edit *ed, int i);
 
 // treatmt
 t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz);
-t_env	*exec_giv(char *line, t_env *env, char **cut, int *i);
+// t_env	*exec_giv(char *line, t_env *env, char **cut, int *i);
 int     add_his(t_his **hs, t_his *nw, t_froz *fz);
-t_env   *launchcmd(char *cmd, t_env *env);
-
+t_env   *launchcmd(t_cmd *ex, t_env *env);
+t_env	*exec_giv(char **ar, t_env *env);
 
 
 #endif

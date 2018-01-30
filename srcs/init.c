@@ -70,7 +70,17 @@ void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed)
     (*fz)->mode[1] = 0;
     (*fz)->mode[2] = 1;
     if (*hs == NULL)
-        exit(0);
+        return;
     while ((*hs)->prev != NULL)
         *hs = (*hs)->prev;
+}
+
+t_cmd   *init_ex(t_cmd *ex)
+{
+    if (!(ex = (t_cmd*)malloc(sizeof(t_cmd))))
+        return (0);
+    ex->type = 0;
+    ex->next = NULL;
+    ex->prev = NULL;
+    return (ex);
 }

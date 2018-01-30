@@ -37,10 +37,9 @@ void	free_tab(char **array)
 			ft_strdel(&array[i]);
 			free(array[i]);
 		}
-		free(array);
 	}
-	else if (array == NULL)
-		free(array);
+	free(array);
+	array = NULL;
 }
 
 int		free_for_exit(char *line, char **cut, t_env *env)

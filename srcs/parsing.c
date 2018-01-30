@@ -83,6 +83,7 @@ t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex) // sep word && metachar
                 q = (q == 0) ? 2 : 0;
             ++i;
         }
+   
         ex = sub_into_ex(s, i, in, ex);
         in = i;
         while (s[i] == ' ')
@@ -98,17 +99,10 @@ t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex) // sep word && metachar
 
 int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
 {
-
     int     i;
-
+        
     i = 0;
-    if (!(*ex = (t_cmd*)malloc(sizeof(t_cmd))))
-        return (0);
-    (*ex)->cmd = NULL;
-    (*ex)->type = 0;
-    (*ex)->next = NULL;
-    (*ex)->prev = NULL;
-    while (s[i] == ' ')
+    while (s[i] && s[i] == ' ')
         ++i;
     *ex = separate_cmd(s, i, i, *ex); //separate by simple word and metacharactere
     i = parse_type(&(*ex)); // give at first a type as cmd(0) or a op ctrl(1)
@@ -134,19 +128,19 @@ int     parsing_quote(char *s) //if all quotes are closed
     return (i);
 }
 
-int     parsing(t_edit *ed, t_froz **fz)
+int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex)
 {
     char    *nw;
-    t_cmd   *ex;
 
     nw = NULL;
-    ex = NULL;
     (*fz)->cmd = join_cmd((*fz)->cmd, ed, *fz);
     while (ed->rpz[0] == 0)
         ed = ed->next;
+    
+        
     if (((*fz)->mode[3] = parsing_quote((*fz)->cmd))) //parsing_quote
         ;
-    else if (((*fz)->mode[3] = parsing_op((*fz)->cmd, &ex))) // parsing_op
+    else if (((*fz)->mode[3] = parsing_op((*fz)->cmd, &(*ex)))) // parsing_op
         ;
     // else if (ed->c[0] == '|')
     //     (*fz)->mode[3] = 3;
