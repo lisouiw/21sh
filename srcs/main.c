@@ -20,7 +20,7 @@ int         main(void)
             init_for_new(&hs, &fz, &ed);
         }
         else
-            ed = touch(ed, &fz, &hs);
+            ed = touch(&ed, &fz, &hs);
         init_data(&fz);
     }
 }

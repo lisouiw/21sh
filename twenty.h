@@ -87,8 +87,8 @@ typedef struct      s_cmd
 }                   t_cmd;        
 
 //ctrl 
+void    ctrl_touch(t_edit **ed, t_froz **fz, char c, t_his *hs);
 void    ctrl_de_test(t_edit *ed, t_froz *fz, char c, t_his *hs);
-t_edit  *ctrl_touch(t_edit *ed, t_froz **fz, char c, t_his *hs);
 t_edit  *move_word(t_edit *ed, char c);
 t_edit  *up_down(t_edit *ed, char c);
 t_edit  *home_end(t_edit *ed, char c, t_froz *fz);
@@ -165,8 +165,10 @@ int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex);
 // pascutcopy
 t_edit  *paste(t_edit *ed);
 t_edit  *copy(t_edit *ed, t_froz **fz);
-t_edit  *cut(t_edit *ed, t_froz **fz);
+// t_edit  *cut(t_edit *ed, t_froz **fz);
 char    *keep_paste(t_edit **ed, char *s);
+void    cut(t_edit **ed, t_froz **fz);
+
 
 // print_shell
 int		ft_put(int c);
@@ -194,7 +196,7 @@ int		set_up_term(void);
 int     if_only(char *s, char c);
 
 // touch
-t_edit  *touch(t_edit *ed, t_froz **fz, t_his **hs);
+t_edit  *touch(t_edit **ed, t_froz **fz, t_his **hs);
 t_edit  *extern_touch(t_edit *ed, t_froz **fz, t_his **hs);
 t_edit  *left_right(t_edit *ed, t_froz *fz);
 t_his   *histo(t_his *hs, char c, t_edit **ed, t_froz **fz);

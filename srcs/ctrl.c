@@ -1,24 +1,26 @@
 #include "../twenty.h"
 
-t_edit  *ctrl_touch(t_edit *ed, t_froz **fz, char c, t_his *hs)
+void    ctrl_touch(t_edit **ed, t_froz **fz, char c, t_his *hs)
 {
-    while (ed->rpz[2] == 0) /// INIT jusqua curseur
-        ed = ed->next;
+    while ((*ed)->rpz[2] == 0) /// INIT jusqua curseur
+        *ed = (*ed)->next;
     if (c == 20 || c == 14)
-        ctrl_de_test(ed, *fz, c , hs);
+        ctrl_de_test(*ed, *fz, c , hs);
     else if (c == 5 || c == 23)
-        ed = move_word(ed, c);
+        *ed = move_word(*ed, c);
     else if (c == 1 || c == 17)
-        ed = up_down(ed, c);
+        *ed = up_down(*ed, c);
     else if (c == 11 || c == 12)
-        ed = home_end(ed, c, *fz);
+        *ed = home_end(*ed, c, *fz);
     else if (c == 2) //copier B
-        ed = copy(ed, &(*fz));
+        *ed = copy(*ed, &(*fz));
     else if (c == 24) //couper X
-        ed = cut(ed, &(*fz));    
+    {
+        cut(&(*ed), &(*fz));
+        // ctrl_de_test(*ed, NULL, 20, NULL);
+    }    
     else if (c == 22) //coller V
-        ed = paste(ed);
-    return (ed);
+        *ed = paste(*ed);
 }
 
 t_edit  *home_end(t_edit *ed, char c, t_froz *fz)
@@ -113,18 +115,24 @@ t_edit  *move_word(t_edit *ed, char c)
 
 void    ctrl_de_test(t_edit *ed, t_froz *fz, char c, t_his *hs)
 {
+    if (fz)
+        ;
     if (c == 20) // ctrl T Lire ed avec rpz
     {
         while (ed->rpz[0] == 0)
+        {
+            printf("ss\n");
             ed = ed->next;
+        }
         while (ed->rpz[1] == 0)
         {
             printf("%c [%i][%i][%i][%i][%i]\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], ed->rpz[3], ed->rpz[4]);
             ed = ed->next;
         }
+        printf("%c [%i][%i][%i][%i][%i]\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], ed->rpz[3], ed->rpz[4]);
         // printf("%c [%i][%i][%i][%i]\n i = %i ->%i | %i\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], ed->rpz[3], fz->nb[0], g_nb->tb[0], g_nb->tb[1]);
         
-        printf("%c [%i][%i][%i][%i][%i]\n i = %i ->%i | %i\n fz->cmd = {%s} && fz->paste = {%s} && mode[3] == %i\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], ed->rpz[3], ed->rpz[4],fz->nb[0], g_nb->tb[0], g_nb->tb[1], fz->cmd,fz->paste, fz->mode[3]);
+        // printf("%c [%i][%i][%i][%i][%i]\n i = %i ->%i | %i\n fz->cmd = {%s} && fz->paste = {%s} && mode[3] == %i\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], ed->rpz[3], ed->rpz[4],fz->nb[0], g_nb->tb[0], g_nb->tb[1], fz->cmd,fz->paste, fz->mode[3]);
     }
     else if (c == 14) // ctrl n
     {

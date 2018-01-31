@@ -1,33 +1,33 @@
 #include "../twenty.h"
 
-t_edit  *touch(t_edit *ed, t_froz **fz, t_his **hs)
+t_edit  *touch(t_edit **ed, t_froz **fz, t_his **hs)
 {
     if ((*fz)->buf[1] == 0 && (*fz)->buf[2] == 0)
     {
         if ((*fz)->buf[0] > 0 && (*fz)->buf[0] < 27)
-            ed = ctrl_touch(ed, &(*fz), (*fz)->buf[0], *hs);
+            ctrl_touch(&(*ed), &(*fz), (*fz)->buf[0], *hs);
         else if ((*fz)->buf[0] == 127)
         {
-            while (ed->rpz[2] == 0)
-                ed = ed->next;
-            if (ed->rpz[0] != 0)
-                return(ed);
-            ed = erase_ed(ed);
+            while ((*ed)->rpz[2] == 0)
+                *ed = (*ed)->next;
+            if ((*ed)->rpz[0] != 0)
+                return(*ed);
+            *ed = erase_ed(*ed);
             (*fz)->nb[0] = (*fz)->nb[0] - 1;
-            if (ed->rpz[0] == 1 && ed->rpz[1] == 1 && ed->rpz[2] == 3) // tout erase donc hsto on
+            if ((*ed)->rpz[0] == 1 && (*ed)->rpz[1] == 1 && (*ed)->rpz[2] == 3) // tout erase donc hsto on
                 (*fz)->mode[2] = 1;
         }
         else
         {
-            ed = add_ed(ed, (*fz)->buf[0], NULL);
+            *ed = add_ed(*ed, (*fz)->buf[0], NULL);
             (*fz)->nb[0] = (*fz)->nb[0] + 1;
             (*fz)->mode[2] = 0;
         }
     }
     else
-        ed = extern_touch(ed, &(*fz), &(*hs));
-    print_shell(ed, *fz);
-    return (ed);
+        *ed = extern_touch(*ed, &(*fz), &(*hs));
+    print_shell(*ed, *fz);
+    return (*ed);
 }
 
 
