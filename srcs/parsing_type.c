@@ -1,5 +1,22 @@
 #include "../twenty.h"
 
+int     parse_synthaxe(t_cmd *ex)
+{
+    while (ex->prev != NULL)
+        ex = ex->prev;
+    while (ex->next != NULL)
+    {
+        if (ex->next->type != 14 && ex->type > 0 && ex->next->type > 0)
+            return (-1);
+        ex = ex->next;
+    }
+    if (ex->type == 14)
+        return (ex->prev->type);
+    else if (ex->type != 0 && ex->type != 13)
+        return (ex->type);
+    return (0);
+}
+
 t_cmd   *giv_type(t_cmd *ex, char *s)
 {
     if (ex->cmd[0] == '|')
@@ -12,10 +29,8 @@ t_cmd   *giv_type(t_cmd *ex, char *s)
         ex = parse_great_than(ex, s);
     else if (ex->cmd[0] == ';')
         ex->type = 13;
-    // else if (ex->cmd[0] == '')
-    // else if (ex->cmd[0] == '')
-    // else if (ex->cmd[0] == '')
-    // else if (ex->cmd[0] == '')
+    else if (if_only(ex->cmd, '\n') == 1)
+        ex->type = 14;
     return (ex);
 }
 
@@ -45,14 +60,14 @@ int     parse_type(t_cmd **ex) // give at first a type
     while ((*ex)->next != NULL)
     {
         c = (*ex)->cmd[0];
-        if ( c == '&' || c == '|' || c == ';' || c == '>' || c == '<')
+        if ( c == '&' || c == '|' || c == ';' || c == '>' || c == '<' || if_only((*ex)->cmd, '\n') == 1)
             (*ex)->type = 1;
         else
             (*ex)->type = 0;
         *ex = (*ex)->next;
     }
     c = (*ex)->cmd[0];
-    if ( c == '&' || c == '|' || c == ';' || c == '>' || c == '<')
+    if ( c == '&' || c == '|' || c == ';' || c == '>' || c == '<'|| if_only((*ex)->cmd, '\n') == 1)
         (*ex)->type = 1;
     else
         (*ex)->type = 0;

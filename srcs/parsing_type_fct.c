@@ -70,9 +70,9 @@ t_cmd   *parse_less_than(t_cmd *ex, char *s)
 
 t_cmd   *parse_pipe_or(t_cmd *ex)
 {
-    if (ft_strcmp(ex->cmd, "|") == 0)
+    if (ft_strcmp(ex->cmd, "|") == 0) // prompt
         ex->type = 3;
-    else if (ft_strcmp(ex->cmd, "||") == 0)
+    else if (ft_strcmp(ex->cmd, "||") == 0) // prompt
         ex->type = 5;
     else
         ex->type = -1;

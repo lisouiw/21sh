@@ -58,26 +58,18 @@ void	b_other(char **cut, t_env *env)
 	pid_t	fils;
 	char	**tab_env;
 
-	if (((tab_env = list_to_tab(env, NULL)) && access(cut[0], F_OK) == 0))
+	if ((tab_env = list_to_tab(env, NULL)))
 	{
 		if ((fils = fork()) == -1)
 			exit(1);
 		if (fils == 0)
 			if (execve(cut[0], cut, tab_env) == -1)
-			{
-				ft_putstr("sh: command not found: ");
-				ft_putendl(cut[0]);
-				free_tab(tab_env);
-				exit(-1);
-			}
-	}
-	else
-	{
-		if (give_path(env, cut, -1, tab_env) == -1)
-		{
-			ft_putstr("sh: command not found: ");
-			ft_putendl(cut[0]);
-		}
+				if (give_path(env, cut, -1, tab_env) == -1)
+				{
+					ft_putstr("sh: command not found: ");
+					ft_putendl(cut[0]);
+					exit(-1);
+				}
 	}
 	free_tab(tab_env);
 }

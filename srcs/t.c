@@ -32,7 +32,7 @@ void	free_tab(char **array)
 	if (array)
 	{
 		i = -1;
-		while (array[++i])
+		while (array[++i] != NULL)
 		{
 			ft_strdel(&array[i]);
 			free(array[i]);

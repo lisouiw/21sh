@@ -83,13 +83,12 @@ t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex) // sep word && metachar
                 q = (q == 0) ? 2 : 0;
             ++i;
         }
-   
         ex = sub_into_ex(s, i, in, ex);
         in = i;
         while (s[i] == ' ')
             ++i;
         in = i;
-        while (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>' && s[i] != '<') && s[i])
+        while (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>' && s[i] != '<' ) && s[i])
             ++i;
         ex = sub_into_ex(s, i, in, ex);
         in = i;
@@ -107,8 +106,8 @@ int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
     *ex = separate_cmd(s, i, i, *ex); //separate by simple word and metacharactere
     i = parse_type(&(*ex)); // give at first a type as cmd(0) or a op ctrl(1)
     *ex = parse_op_int(*ex, s); // give all op ctrl specifique type and parse redirection proprely
-    print_ex(*ex);
-    return (0);
+    // print_ex(*ex);
+    return (parse_synthaxe(*ex));
 }
 
 int     parsing_quote(char *s) //if all quotes are closed
@@ -133,27 +132,22 @@ int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex)
     char    *nw;
 
     nw = NULL;
+    *ex = init_ex(NULL);
     (*fz)->cmd = join_cmd((*fz)->cmd, ed, *fz);
     while (ed->rpz[0] == 0)
         ed = ed->next;
-    
-        
     if (((*fz)->mode[3] = parsing_quote((*fz)->cmd))) //parsing_quote
         ;
     else if (((*fz)->mode[3] = parsing_op((*fz)->cmd, &(*ex)))) // parsing_op
-        ;
-    // else if (ed->c[0] == '|')
-    //     (*fz)->mode[3] = 3;
-    // else if (ed->c[0] == '&')
-    //     (*fz)->mode[3] = 4;
-    // else if (ed->c[0] == 'o')
-    //     (*fz)->mode[3] = 5;
-    // else if (ed->c[0] == '>') 
-    //     (*fz)->mode[3] = 6;
-    else if ((*fz)->mode[3] == 0)
     {
-        // (*fz)->mode[3] = 0;
-        return(1);
+        // printf("+->%i\n",(*fz)->mode[3]);//tranform quote;
+        if (!((*fz)->mode[3] >= 0 && (*fz)->mode[3] < 6))
+        {
+            printf("ERROR\n");
+            (*fz)->mode[3] = 0;
+        }
     }
+    else if ((*fz)->mode[3] == 0)
+        return(1);
     return(0);
 }

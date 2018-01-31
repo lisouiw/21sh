@@ -56,28 +56,4 @@ int     giv_last(t_froz *fz)
     return (3);
 }
 
-// t_edit  *giv_position(t_edit *ed, int i)
-// {
-//     while (ed->rpz[0] == 0)
-//         ed = ed->next;
-//     while (ed->rpz[1] == 0)
-//     {
-//         if (ed->c[0] == '\n' && i % g_nb->tb[0] != 0)
-//         {
-//             ed->rpz[3] = i;
-//             ed = ed->next;
-//             i = (((i / g_nb->tb[0]) +1 ) * g_nb->tb[0]) + 1;
-//             ed->rpz[3] = i;
-//         }
-//         else
-//             ed->rpz[3] = i;
-//         ++i;
-//         ed = ed->next;
-//     }
-//     ed->rpz[3] = i;
-//     return (ed);
-// }
-
-
-
 //quand prompt meme taille que fenetre init mauvais

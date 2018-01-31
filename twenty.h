@@ -41,8 +41,8 @@ typedef struct      s_froz
                     // Redirecting Standard Output and Standard Error   10
                     // Duplicating File Descriptors 11 ([n]<&word   [n]>&word)
                     // Moving File Descriptors  12 (n]<&digit-   [n]>&digit-)
-                    // ;         13
-
+                    // ;            s13
+                    // only \n      14
     char            buf[3]; // buffer pour lire le char tape
     char            *paste; // la chaine a coller
     char            *cmd; // keep cmd car imcomplete
@@ -114,6 +114,10 @@ char	**list_to_tab(t_env *env, char **tab_env);
 void	b_other(char **cut, t_env *env);
 void	print_tab(char **ta, int i);
 
+//
+void    free_ex(t_cmd **ex);
+
+
 //giv_str
 char    *ed_str(t_edit *cmd, char *s, int nb);
 char    *join_cmd(char *cmd, t_edit *ed, t_froz *fz);
@@ -149,6 +153,7 @@ t_cmd   *parse_pipe_or(t_cmd *ex);
 t_cmd   *giv_type(t_cmd *ex, char *s);
 t_cmd   *parse_op_int(t_cmd *ex, char *s);
 int     parse_type(t_cmd **ex);
+int     parse_synthaxe(t_cmd *ex);
 
 // parsing
 t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex);

@@ -79,6 +79,7 @@ t_cmd   *init_ex(t_cmd *ex)
 {
     if (!(ex = (t_cmd*)malloc(sizeof(t_cmd))))
         return (0);
+    ex->cmd = NULL;    
     ex->type = 0;
     ex->next = NULL;
     ex->prev = NULL;
