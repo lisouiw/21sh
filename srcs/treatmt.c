@@ -23,7 +23,7 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
     {
         add_his(&(*hs), NULL, *fz);
         // free((*fz)->cmd);
-        // (*fz)->cmd = NULL;
+        (*fz)->cmd = NULL;
     }
     return (env);
 }
@@ -93,8 +93,8 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
 
 t_env	*exec_giv(char **ar, t_env *env)
 {
-	// else if (ft_strcmp("echo", cut[0]) == 0)
-	// 	print_tab(cut, 0);
+	if (ft_strcmp("echo", ar[0]) == 0)
+		print_tab(ar, 0);
 	// else if (ft_strcmp("env", cut[0]) == 0)
 	// 	ecriture_info(env);
 	// else if (ft_strcmp("setenv", cut[0]) == 0)
@@ -106,7 +106,7 @@ t_env	*exec_giv(char **ar, t_env *env)
 	// 	b_unset(cut, &env, 0);
 	// else if (ft_strcmp("cd", cut[0]) == 0)
 	// 	b_cd(cut[1], &env);
-	if (ft_strcmp(ar[0], "exit") == 0) // && free_for_exit(line, cut, env))
+	else if (ft_strcmp(ar[0], "exit") == 0) // && free_for_exit(line, cut, env))
 		exit(0);
 	else
 		b_other(ar, env);

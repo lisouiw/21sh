@@ -51,6 +51,7 @@ t_edit  *cut(t_edit *ed, t_froz **fz)
     return (ed);
 }
 
+
 char    *keep_paste(t_edit **ed, char *s)
 {
     int     i;
@@ -58,18 +59,18 @@ char    *keep_paste(t_edit **ed, char *s)
 
     a = -1;
     i = 0;
-    while ((*ed)->rpz[0] == 0)
+    while ((*ed)->rpz[0] == 0) // revenir debut de la liste
         *ed = (*ed)->next;
-    while ((*ed)->rpz[4] == 0)
+    while ((*ed)->rpz[4] == 0) // init cut/copy
         *ed = (*ed)->next;
-    while ((*ed)->rpz[4] == 1 && (*ed)->rpz[1] == 0)
+    while ((*ed)->rpz[4] == 1 && (*ed)->rpz[1] == 0) // count cut/copy
     {
         ++i;
         *ed = (*ed)->next;
     }
-    while ((*ed)->rpz[0] == 0)
+    while ((*ed)->rpz[0] == 0) // revenir debut de la liste
         *ed = (*ed)->next;
-    while ((*ed)->rpz[4] == 0)
+    while ((*ed)->rpz[4] == 0) // init cut/copy
         *ed = (*ed)->next;
     if (!(s = (char*)malloc((i + 1)* sizeof(char))))
         return (NULL);

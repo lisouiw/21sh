@@ -63,8 +63,8 @@ t_edit  *up_down(t_edit *ed, char c)
     }
     else if (c == 17) //ctrl q
     {
-        exit(0);
-        while (ed->rpz[0] == 0 && ed->rpz[3] < cur + g_nb->tb[0])
+        // while (ed->rpz[0] == 0 && ed->rpz[3] < cur + g_nb->tb[0] && ed->prev->rpz[3] > cur - g_nb->tb[0] - 1)
+        while (ed->rpz[0] == 0 && ed->prev->rpz[3] > cur - g_nb->tb[0] - 1)
             ed = ed->prev;
         ed->rpz[2] = ed->rpz[3];
     }
