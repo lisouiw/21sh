@@ -44,6 +44,7 @@ typedef struct      s_froz
                     // Moving File Descriptors  12 (n]<&digit-   [n]>&digit-)
                     // ;            s13
                     // only \n      14
+                    // annule       15
     char            buf[3]; // buffer pour lire le char tape
     char            *paste; // la chaine a coller
     char            *cmd; // keep cmd car imcomplete

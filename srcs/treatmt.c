@@ -57,24 +57,23 @@ char    **give_tab(char **ar, t_cmd **ex)
 {
     int     i;
     int     e;
-
+    t_cmd   *tmp;
+    
     i = 0;
     e = -1;
-    if ((*ex)->type > 0)
-        *ex = (*ex)->next;
-    while ((*ex)->next != NULL && (*ex)->type == 0)
+    tmp = *ex;
+    while (tmp->next != NULL && tmp->type == 0)
     {
         ++i;
-        *ex = (*ex)->next;
+        tmp = tmp->next;
     }
-    if ((*ex)->type == 0)
+    if (tmp->type == 0)
         ++i;
     if (!(ar = (char**)malloc((i + 1) * sizeof(char*))))
         return (NULL);
     while (--i > -1)
     {
         ar[++e] = ft_strdup((*ex)->cmd);
-        printf("->%s\n", (*ex)->cmd);
         *ex = (*ex)->next;
     }
     ar[++e] = NULL;
@@ -88,10 +87,17 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
     ar = NULL;
     while (ex->prev != NULL)
         ex = ex->prev;
-    // if debut type = 1;
-    ar = give_tab(ar, &ex);
-    env = exec_giv(ar, env);
-    free_tab(&(*ar));
+    print_ex(ex);
+    while (ex->next == NULL)
+    {
+        while (ex->type == 0)
+            ex = ex->next;
+            fonction pour lancer
+        
+    }
+    // ar = give_tab(ar, &ex);
+    // env = exec_giv(ar, env);
+    // free_tab(&(*ar));
     return (env);
 }
 
