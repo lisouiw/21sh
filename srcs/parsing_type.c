@@ -24,8 +24,8 @@ t_cmd   *giv_type(t_cmd *ex, char *s)
     else if (ex->cmd[0] == '&')
         ex = parse_ampersand(ex, s);
     else if (ex->cmd[0] == '<')
-        ex = parse_less_than(ex, s);
-     else if (ex->cmd[0] == '>')
+        ex = parse_less_than(ex, s); // probleme
+    else if (ex->cmd[0] == '>')
         ex = parse_great_than(ex, s);
     else if (ex->cmd[0] == ';')
         ex->type = 13;
@@ -57,6 +57,7 @@ int     parse_type(t_cmd **ex) // give at first a type
 
     while ((*ex)->prev != NULL)
         *ex = (*ex)->prev;
+    
     while ((*ex)->next != NULL)
     {
         c = (*ex)->cmd[0];
@@ -66,10 +67,12 @@ int     parse_type(t_cmd **ex) // give at first a type
             (*ex)->type = 0;
         *ex = (*ex)->next;
     }
+    
     c = (*ex)->cmd[0];
     if ( c == '&' || c == '|' || c == ';' || c == '>' || c == '<'|| if_only((*ex)->cmd, '\n') == 1)
         (*ex)->type = 1;
     else
         (*ex)->type = 0;
+    
     return (0);
 }

@@ -9,6 +9,7 @@
 # include <term.h>
 # include <curses.h>
 # include <sys/ioctl.h>
+# include <dirent.h>
 
 ///GLOBALE
 
@@ -95,10 +96,11 @@ t_edit  *home_end(t_edit *ed, char c, t_froz *fz);
 
 //ed
 void    modif_edit(t_edit **ed, t_edit **nw);
-t_edit  *add_ed(t_edit *ed, char c, t_edit *nw);
+// t_edit  *add_ed(t_edit *ed, char c, t_edit *nw);
 t_edit  *init_edit(t_edit *init);
 t_edit  *erase_ed(t_edit *ed);
 // void    free_ed(t_edit **ed);
+t_edit  *add_ed(t_edit *ed, char c, t_edit *nw, t_froz **t_froz);
 void    free_ed(t_edit **ed, t_froz *fz);
 
 //env
@@ -163,11 +165,13 @@ int     parsing_quote(char *s);
 int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex);
 
 // pascutcopy
-t_edit  *paste(t_edit *ed);
+// t_edit  *paste(t_edit *ed, t_froz *fz);
 t_edit  *copy(t_edit *ed, t_froz **fz);
 // t_edit  *cut(t_edit *ed, t_froz **fz);
 char    *keep_paste(t_edit **ed, char *s);
 void    cut(t_edit **ed, t_froz **fz);
+t_edit  *paste(t_edit *ed, t_froz **fz);
+
 
 
 // print_shell

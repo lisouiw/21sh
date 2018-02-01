@@ -20,7 +20,7 @@ void    ctrl_touch(t_edit **ed, t_froz **fz, char c, t_his *hs)
         // ctrl_de_test(*ed, NULL, 20, NULL);
     }    
     else if (c == 22) //coller V
-        *ed = paste(*ed);
+        *ed = paste(*ed, &(*fz));
 }
 
 t_edit  *home_end(t_edit *ed, char c, t_froz *fz)

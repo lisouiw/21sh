@@ -5,7 +5,7 @@ t_cmd   *parse_redirec(t_cmd *ex, char *s)
     t_cmd   *tmp;
 
     tmp = ex->prev;
-    if (isnumber(ex->prev->cmd) && s[ex->start -1] != ' ')
+    if (ex->prev != NULL && isnumber(ex->prev->cmd) && s[ex->start -1] != ' ')
     {
         ex->cmd = ft_strjoin(ex->prev->cmd, ex->cmd);
         ex->prev->prev->next = ex;

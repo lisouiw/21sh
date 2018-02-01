@@ -51,7 +51,7 @@ void    modif_edit(t_edit **ed, t_edit **nw)
     }
 }
 
-t_edit  *add_ed(t_edit *ed, char c, t_edit *nw)
+t_edit  *add_ed(t_edit *ed, char c, t_edit *nw, t_froz **fz)
 {
     if (!(nw = (t_edit*)malloc(sizeof(t_edit))))
         return(ed);
@@ -73,7 +73,7 @@ t_edit  *add_ed(t_edit *ed, char c, t_edit *nw)
         ed->prev->next = nw;
         ed->prev = nw;
     }
-    
+    (*fz)->nb[0] = (*fz)->nb[0] + 1;
     return(nw);
 }
 

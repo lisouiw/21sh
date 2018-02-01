@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <fcntl.h>
+#include <dirent.h>
 
 // void	pii(char **argv)
 // {
@@ -221,54 +222,144 @@
 // }
 
 
-void    loop_pipe(char ***cmd) //ls | cat | wc -c > fifi"
+// void    loop_pipe(char ***cmd) //ls | cat | wc -c > fifi"
+// {
+// 	int		p[2];
+// 	pid_t	pid;
+// 	int		fd_in = 0;
+// 	int		new;
+
+// 	new = open("fifi", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+// 	while (*cmd != NULL)
+// 	{
+// 		pipe(p);
+// 		if ((pid = fork()) == -1)
+// 			exit(EXIT_FAILURE);
+// 		else if (pid == 0)
+// 		{
+// 			dup2(fd_in, 0); //change the input according to the old one 
+// 			if (*(cmd + 1) != NULL)
+// 			{
+// 				// printf("coco %i && p[0] = %i & p[1] = %i\n", fd_in, p[0], p[1]);			
+// 				dup2(p[1], 1);
+// 			}  
+// 			else 
+// 				dup2(new, 1);
+			
+// 		   close(p[0]);
+//           	execvp((*cmd)[0], *cmd);
+//           	exit(EXIT_FAILURE);
+//         }
+//      	else
+//         {
+// 			wait(NULL);
+// 			close(p[1]);
+// 			// printf("coucou %i %i\n", p[0], p[1]);
+			
+// 			fd_in = p[0]; //save the input for the next command
+// 			cmd++;
+//         }
+//     }
+// }
+
+// int main()
+// {
+//   char *ls[] = {"ls", NULL};
+//   char *grep[] = {"grep", "pipe", NULL};
+//   char *wc[] = {"wc", "-c", NULL};
+//   char *cat[] = {"cat", NULL};  
+//   char **cmd[] = {ls, cat, wc, NULL};
+
+//   loop_pipe(cmd);
+//   return (0);
+// }
+
+
+/////////////////////// Redirection d'Entree //////////////////////
+
+void    loop_pipe(char ***cmd) //ls 3< "."
 {
 	int		p[2];
-	pid_t	pid;
+	DIR		*op;
 	int		fd_in = 0;
 	int		new;
-
-	new = open("fifi", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	while (*cmd != NULL)
+	int		o;
+	
+	pipe(p);
+	op = opendir(*cmd[1]);
+	if (op == NULL  && (o = open(*cmd[1], O_RDONLY)) == -1 )
 	{
-		pipe(p);
-		if ((pid = fork()) == -1)
-			exit(EXIT_FAILURE);
-		else if (pid == 0)
-		{
-			dup2(fd_in, 0); //change the input according to the old one 
-			if (*(cmd + 1) != NULL)
-			{
-				// printf("coco %i && p[0] = %i & p[1] = %i\n", fd_in, p[0], p[1]);			
-				dup2(p[1], 1);
-			}  
-			else 
-				dup2(new, 1);
-			
-		   close(p[0]);
-          	execvp((*cmd)[0], *cmd);
-          	exit(EXIT_FAILURE);
-        }
-     	else
-        {
-			wait(NULL);
-			close(p[1]);
-			// printf("coucou %i %i\n", p[0], p[1]);
-			
-			fd_in = p[0]; //save the input for the next command
-			cmd++;
-        }
-    }
+		printf("sh: %s: No such file or directory\n", *cmd[1]);
+		return;
+	}
+	dup2(o, 0);
+	dup2(p[0], o);
+	close(p[1]);
+	// printf("%s\n", (*cmd)[1]);
+	execvp((*cmd)[0], *cmd);
+	close(o);
+	closedir(op);
 }
 
 int main()
 {
-  char *ls[] = {"ls", NULL};
-  char *grep[] = {"grep", "pipe", NULL};
-  char *wc[] = {"wc", "-c", NULL};
-  char *cat[] = {"cat", NULL};  
-  char **cmd[] = {ls, cat, wc, NULL};
+	char *ls[] = {"ls", "l","-a", NULL};	
+	char *wc[] = {"wc", "-c", NULL};
+	char *cat[] = {"cat", NULL};  
+	char *redic[] = {"../../../../tmp/test.txt", NULL};  
+	char *redic2[] = {".", NULL};  
+	// char **cmd[] = {wc, redic, NULL};
+	char **cmd[] = {ls, redic2, NULL};
+	
 
-  loop_pipe(cmd);
-  return (0);
+	loop_pipe(cmd);
+	return (0);
 }
+
+//////////////////////// Redirection de Sortie//////////////////////////////////////
+
+// void    loop_pipe(char ***cmd) 
+// {
+// 	int   p[2];
+// 	pid_t pid;
+// 	int   fd_in = 0;
+
+// 	while (*cmd != NULL)
+// 	{
+// 		pipe(p);
+// 		if ((pid = fork()) == -1)
+// 			exit(EXIT_FAILURE);
+// 		else if (pid == 0)
+// 		{
+// 			dup2(fd_in, 0); //change the input according to the old one 
+// 			if (*(cmd + 1) != NULL)
+// 			{
+// 				printf("coco %i && p[0] = %i & p[1] = %i\n", fd_in, p[0], p[1]);			
+// 				dup2(p[1], 1);
+// 			}  
+// 		   close(p[0]);
+//           	execvp((*cmd)[0], *cmd);
+//           	exit(EXIT_FAILURE);
+//         }
+//      	else
+//         {
+// 			wait(NULL);
+// 			close(p[1]);
+// 			printf("coucou %i %i\n", p[0], p[1]);
+			
+// 			fd_in = p[0]; //save the input for the next command
+// 			cmd++;
+//         }
+//     }
+// }
+
+// int main()
+// {
+//   char *ls[] = {"ls", NULL};
+//   char *grep[] = {"grep", "pipe", NULL};
+//   char *wc[] = {"wc", NULL};
+//   char **cmd[] = {ls, grep, wc, NULL};
+
+//   loop_pipe(cmd);
+//   return (0);
+// }

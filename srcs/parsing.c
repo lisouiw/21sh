@@ -103,10 +103,10 @@ int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
     i = 0;
     while (s[i] && s[i] == ' ')
         ++i;
+        
     *ex = separate_cmd(s, i, i, *ex); //separate by simple word and metacharactere
     i = parse_type(&(*ex)); // give at first a type as cmd(0) or a op ctrl(1)
     *ex = parse_op_int(*ex, s); // give all op ctrl specifique type and parse redirection proprely
-    // print_ex(*ex);
     return (parse_synthaxe(*ex));
 }
 
@@ -140,7 +140,7 @@ int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex)
         ;
     else if (((*fz)->mode[3] = parsing_op((*fz)->cmd, &(*ex)))) // parsing_op
     {
-        // printf("+->%i\n",(*fz)->mode[3]);//tranform quote;
+        printf("+->%i\n",(*fz)->mode[3]);//tranform quote;
         if (!((*fz)->mode[3] >= 0 && (*fz)->mode[3] < 6))
         {
             printf("ERROR\n");

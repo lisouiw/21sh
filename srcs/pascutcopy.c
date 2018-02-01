@@ -1,7 +1,14 @@
 #include "../twenty.h"
 
-t_edit  *paste(t_edit *ed)
+t_edit  *paste(t_edit *ed, t_froz **fz)
 {
+    int     i;
+
+    i = -1;
+    while (ed->rpz[2] == 0)
+        ed = ed->next;
+    while ((*fz)->paste[++i])
+        ed = add_ed(ed, (*fz)->paste[i], NULL, &(*fz));
     return (ed);
 }
 
@@ -28,7 +35,7 @@ t_edit  *copy(t_edit *ed, t_froz **fz)
     return (ed);
 }
 
-void    free_cut(t_edit **ed)
+void    free_cut(t_edit **ed, t_froz *fz)
 {
     t_edit  *tmp;
 
@@ -36,19 +43,20 @@ void    free_cut(t_edit **ed)
         *ed = (*ed)->next;
     while ((*ed)->rpz[4] == 0)
         *ed = (*ed)->next;
-    while ((*ed)->rpz[4] == 1)
+    while ((*ed)->rpz[4] == 1 && (*ed)->rpz[1] == 0)
     {
         tmp = *ed;
         (*ed)->prev->next = (*ed)->next;
         (*ed)->next->prev = (*ed)->prev;
+        (*ed)->next->rpz[0] = (*ed)->rpz[0];        
         free(tmp);
         *ed = (*ed)->next;
     }
     (*ed)->rpz[2] = (*ed)->rpz[3];
-    
     while ((*ed)->rpz[0] == 0)
         *ed = (*ed)->next;
-    while (((*ed)->rpz[1] == 0 && (*ed)->rpz[3] < (*ed)->next->rpz[3]))
+    (*ed)->rpz[3] = giv_last(fz);
+    while ((*ed)->rpz[1] == 0)
     {
         while ((*ed)->rpz[1] == 0)
         {
@@ -57,21 +65,21 @@ void    free_cut(t_edit **ed)
                 (*ed)->rpz[3] = ((((*ed)->prev->rpz[3] / g_nb->tb[0]) + 1 ) * g_nb->tb[0]) + 1;
             else
                 (*ed)->rpz[3] = (*ed)->prev->rpz[3] + 1;
-        }
+        }    
         if ((*ed)->prev->c[0] == '\n' && (*ed)->prev->rpz[3] % g_nb->tb[0] != 0)
             (*ed)->rpz[3] = ((((*ed)->prev->rpz[3] / g_nb->tb[0]) + 1 ) * g_nb->tb[0]) + 1;
     }
-
-    
-    ctrl_de_test(*ed, NULL, 20, NULL);
+    // ctrl_de_test(*ed, NULL, 20, NULL);
 }
 
 void  cut(t_edit **ed, t_froz **fz)
 {
     if ((*fz)->mode[1] == 1) // give the cmd
     {
+        if ((*fz)->paste != NULL)
+            free((*fz)->paste);
         (*fz)->paste = keep_paste(&(*ed), NULL);
-        free_cut(&(*ed));
+        free_cut(&(*ed), *fz);
     }
     (*fz)->mode[1] = ((*fz)->mode[1] == 0) ? 1 : 0;
     if ((*fz)->mode[0] == 1 || (*fz)->mode[1] == 0)
