@@ -86,7 +86,13 @@ typedef struct      s_cmd
     int             start; //index where the string were sub
     struct  s_cmd   *next;
     struct  s_cmd   *prev;
-}                   t_cmd;        
+}                   t_cmd;
+
+typedef struct      s_exec
+{
+    int             fd[2];
+    int             ok;
+}                   t_exec;
 
 //ctrl 
 void    ctrl_touch(t_edit **ed, t_froz **fz, char c, t_his *hs);
@@ -117,7 +123,15 @@ char	**list_to_tab(t_env *env, char **tab_env);
 void	b_other(char **cut, t_env *env);
 void	print_tab(char **ta, int i);
 
-//
+// execution
+// void    execution(t_env **env, t_cmd *ex, t_exec **exec);
+t_exec  *init_exec(t_cmd *ex, t_exec *exec);
+void    pipe_fct(t_env **env, t_exec **exec, char ***cmd);
+void    execution(t_env **env, t_cmd *ex, t_exec **exec, int a);
+char    ***giv_pipe_ar(t_cmd *ex, char ***ar);
+
+
+//free
 void    free_ex(t_cmd **ex);
 
 
@@ -194,7 +208,7 @@ void	free_tab(char **array);
 int		free_for_exit(char *line, char **cut, t_env *env);
 
 // term
-int 		init(void);
+int 	init(void);
 int		set_up_term(void);
 
 // tools
@@ -210,10 +224,9 @@ t_edit  *giv_position(t_edit *ed, int i);
 
 // treatmt
 t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz);
-// t_env	*exec_giv(char *line, t_env *env, char **cut, int *i);
 int     add_his(t_his **hs, t_his *nw, t_froz *fz);
 t_env   *launchcmd(t_cmd *ex, t_env *env);
-t_env	*exec_giv(char **ar, t_env *env);
-
+t_env	*exec_fct(char **ar, t_env *env);
+char    **give_tab(char **ar, t_cmd **ex);
 
 #endif

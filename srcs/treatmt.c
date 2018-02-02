@@ -13,10 +13,8 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
     else if (parsing(*cmd, &(*fz), &ex) == 1) // parsing good
     {
         add_his(&(*hs), NULL, *fz);
-        
         env = launchcmd(ex, env);
         exit(0);
-        
         wait(0);
         free((*fz)->cmd);
         (*fz)->cmd = NULL;
@@ -25,7 +23,6 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
     else if ((*fz)->mode[3] == 0) // parsing error qund lauch
     {
         add_his(&(*hs), NULL, *fz);
-        // free((*fz)->cmd);
         (*fz)->cmd = NULL;
     }
     return (env);
@@ -76,24 +73,23 @@ char    **give_tab(char **ar, t_cmd **ex)
         ar[++e] = ft_strdup((*ex)->cmd);
         *ex = (*ex)->next;
     }
-    ar[++e] = NULL;
+    ar[i] = NULL;
     return (ar);
 }
 
 t_env   *launchcmd(t_cmd *ex, t_env *env)
 {
-    char    **ar;
+    t_exec  *exec;
 
-    ar = NULL;
+    exec = NULL;
+    exec = init_exec(ex, exec);
     while (ex->prev != NULL)
         ex = ex->prev;
     print_ex(ex);
-    while (ex->next == NULL)
+    while (ex->next != NULL)
     {
-        while (ex->type == 0)
-            ex = ex->next;
-            fonction pour lancer
-        
+        ex = ex->next;
+        exit(0);
     }
     // ar = give_tab(ar, &ex);
     // env = exec_giv(ar, env);
@@ -101,7 +97,7 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
     return (env);
 }
 
-t_env	*exec_giv(char **ar, t_env *env)
+t_env	*exec_fct(char **ar, t_env *env)
 {
 	if (ft_strcmp("echo", ar[0]) == 0)
 		print_tab(ar, 0);
