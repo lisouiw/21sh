@@ -14,7 +14,6 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
     {
         add_his(&(*hs), NULL, *fz);
         env = launchcmd(ex, env);
-        exit(0);
         wait(0);
         free((*fz)->cmd);
         (*fz)->cmd = NULL;
@@ -79,21 +78,19 @@ char    **give_tab(char **ar, t_cmd **ex)
 
 t_env   *launchcmd(t_cmd *ex, t_env *env)
 {
-    t_exec  *exec;
+    char       **arr;
 
-    exec = NULL;
-    exec = init_exec(ex, exec);
     while (ex->prev != NULL)
         ex = ex->prev;
+    ex = ex->next;
     print_ex(ex);
     while (ex->next != NULL)
     {
-        ex = ex->next;
+        if (ex->next->type > 0)
+            printf("ya  %i\n", ex->next->type);
         exit(0);
+        env = exec_fct((arr = ft_strsplit(ex->cmd, ' ')), env);
     }
-    // ar = give_tab(ar, &ex);
-    // env = exec_giv(ar, env);
-    // free_tab(&(*ar));
     return (env);
 }
 
@@ -116,5 +113,48 @@ t_env	*exec_fct(char **ar, t_env *env)
 		exit(0);
 	else
 		b_other(ar, env);
+        
     return (env);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// fonction
+// {
+//     char    ***arr;
+
+//     if (!(arr = (char ***)malloc(len *sizeof(char**))))
+//         return (NULL);
+//     i = -1;
+//     while (++i < len)
+//     {
+//         arr[i] = give_tab();
+//     }
+//     arr[i] = NULL
+// }
+
+// give_tab
+// {
+//     char **arr;
+
+//     if (!(arr = (char **)malloc(len * sizeof(char*)))
+//         return (NULL);
+//     i = -1;
+//     while (++i < len)
+//     {
+//         arr[i] = strdup(str);
+//     }
+//     arr[i] = NULL
+//     return (arr);
+// }

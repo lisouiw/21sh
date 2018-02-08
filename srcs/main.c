@@ -25,7 +25,7 @@ int         main(void)
     }
 }
 
-void    cursor_end(t_edit *ed)
+void    cursor_end(t_edit *ed) 
 {
     int     i;
     

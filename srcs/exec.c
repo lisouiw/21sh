@@ -63,7 +63,7 @@ void	b_other(char **cut, t_env *env)
 		if ((fils = fork()) == -1)
 			exit(1);
 		if (fils == 0)
-			if (execve(cut[0], cut, tab_env) == -1)
+			if (wait(NULL) && execve(cut[0], cut, tab_env) == -1)
 				if (give_path(env, cut, -1, tab_env) == -1)
 				{
 					ft_putstr("sh: command not found: ");

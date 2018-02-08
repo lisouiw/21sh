@@ -148,6 +148,11 @@ t_his   *init_hs(t_his *hs, t_his *next);
 void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed);
 t_cmd   *init_ex(t_cmd *ex);
 
+//list_to_array
+char    ***list_to_arr(t_cmd *ex, char ***arr, t_cmd *count) ;// prendre en compte les redirection
+char    ***list_to_arr_zero(t_cmd **ex, char ****arr, t_cmd *count, int a); // prendre en compte les redirection
+
+
 // main
 void    cursor_end(t_edit *ed);
 void    put_my_cur(int nb, char c);

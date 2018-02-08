@@ -58,9 +58,9 @@ t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex) //sub and put into ex
         if (!(nw = (t_cmd*)malloc(sizeof(t_cmd))))
             return (NULL);
         nw->cmd = ft_strsub(s, in , i - in);
-        ex->next = nw;
         nw->prev = ex;
-        nw->next = NULL;
+        nw->next = ex->next;
+        ex->next = nw;
         ex = ex->next;
     }
     ex->start = in;
@@ -73,6 +73,10 @@ t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex) // sep word && metachar
     int     q;
 
     q = 0;
+    while (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>' && s[i] != '<' ) && s[i])
+        ++i;
+    ex = sub_into_ex(s, i, in, ex);
+    in = i;
     while (s[i])
     {
         while ((s[i] && (s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != ' ' && s[i] != '>' && s[i] != '<')) || (s[i] && q != 0))
@@ -92,9 +96,31 @@ t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex) // sep word && metachar
             ++i;
         ex = sub_into_ex(s, i, in, ex);
         in = i;
+    }   
+    return (ex);
+}
+
+t_cmd   *join_ex(t_cmd *ex)
+{
+    char    *tmp;
+
+    while (ex->prev != NULL)
+        ex = ex->prev;
+    while (ex->next != NULL)
+    {
+        if (ex->type == 0 && ex->next->type == 0)
+        {
+            tmp = ft_strjoin(ex->cmd, ft_strjoin(" ", ex->next->cmd));
+            free(ex->cmd);
+            ex->cmd = tmp;
+            ex->next = ex->next->next;
+        }
+        else
+            ex = ex->next;
     }
     return (ex);
 }
+
 
 int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
 {
@@ -103,10 +129,10 @@ int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
     i = 0;
     while (s[i] && s[i] == ' ')
         ++i;
-        
     *ex = separate_cmd(s, i, i, *ex); //separate by simple word and metacharactere
     i = parse_type(&(*ex)); // give at first a type as cmd(0) or a op ctrl(1)
     *ex = parse_op_int(*ex, s); // give all op ctrl specifique type and parse redirection proprely
+    *ex = join_ex(*ex);
     return (parse_synthaxe(*ex));
 }
 

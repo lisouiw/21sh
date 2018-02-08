@@ -81,7 +81,17 @@ t_cmd   *init_ex(t_cmd *ex)
         return (0);
     ex->cmd = NULL;    
     ex->type = 0;
-    ex->next = NULL;
-    ex->prev = NULL;
+    ex->next = (t_cmd*)malloc(sizeof(t_cmd));
+    ex->next->cmd = NULL;    
+    ex->next->next = NULL;
+    ex->next->prev = ex;
+    ex->next->type = 42;
+    ex->next->start = 0;
+    ex->prev = (t_cmd*)malloc(sizeof(t_cmd));
+    ex->prev->cmd = NULL;
+    ex->prev->prev = NULL;
+    ex->prev->type = 42;
+    ex->prev->start = 0;
+    ex->prev->next = ex;    
     return (ex);
 }
