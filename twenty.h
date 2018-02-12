@@ -92,6 +92,7 @@ typedef struct      s_exec
 {
     int             p[2];
     int             fd_in;
+    int             fd_out;
     int             ok;
 }                   t_exec;
 

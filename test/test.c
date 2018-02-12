@@ -415,45 +415,45 @@
 
 /////////////////////// Redirection Pipe //////////////////////
 
-void    loop_pipe(char ***cmd) //ls 3< "."
-{
-    int		p[2];
-	pid_t   pid;
-	int		fd_in = 0;
+// void    loop_pipe(char ***cmd) //ls 3< "."
+// {
+//     int		p[2];
+// 	pid_t   pid;
+// 	int		fd_in = 0;
     
-    while (*cmd != NULL)
-    {
-        pipe(p);
-        if ((pid = fork()) == -1)
-            exit(EXIT_FAILURE);
-        else if (pid == 0)
-        {
-            dup2(fd_in, 0);
-            if (*(cmd + 1) != NULL)
-                dup2(p[1], 1);
-            close(p[0]);
-            execvp((*cmd)[0], *cmd);
-        }
-        else
-        {
-            wait(NULL);
-            close(p[1]);
-            fd_in = p[0];
-            ++cmd;
-        }
-    }
-}
+//     while (*cmd != NULL)
+//     {
+//         pipe(p);
+//         if ((pid = fork()) == -1)
+//             exit(EXIT_FAILURE);
+//         else if (pid == 0)
+//         {
+//             dup2(fd_in, 0);
+//             if (*(cmd + 1) != NULL)
+//                 dup2(p[1], 1);
+//             close(p[0]);
+//             execvp((*cmd)[0], *cmd);
+//         }
+//         else
+//         {
+//             wait(NULL);
+//             close(p[1]);
+//             fd_in = p[0];
+//             ++cmd;
+//         }
+//     }
+// }
 
-int main()
-{
-	char *ls[] = {"ls", "-l", NULL};	
-	char *wc[] = {"wc", "-c", NULL};
-	char *cat[] = {"cat", NULL};  
-	char *redic[] = {"../../../../tmp/test.txt", NULL};  
-	char *redic2[] = {"grep", "Jan", NULL};  
-	// char **cmd[] = {wc, redic, NULL};
-	char **cmd[] = {ls, redic2,wc, NULL};
+// int main()
+// {
+// 	char *ls[] = {"ls", "-l", NULL};	
+// 	char *wc[] = {"wc", "-c", NULL};
+// 	char *cat[] = {"cat", NULL};  
+// 	char *redic[] = {"../../../../tmp/test.txt", NULL};  
+// 	char *redic2[] = {"grep", "Jan", NULL};  
+// 	// char **cmd[] = {wc, redic, NULL};
+// 	char **cmd[] = {ls, redic2,wc, NULL};
 
-	loop_pipe(cmd);
-	return (0);
-}
+// 	loop_pipe(cmd);
+// 	return (0);
+// }

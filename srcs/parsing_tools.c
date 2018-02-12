@@ -17,12 +17,20 @@ void    print_ex(t_cmd *ex)
 {
     while (ex->prev != NULL)
         ex = ex->prev;
-    printf("----------------------------------\n");    
+    printf("-------------DEBUT---------------------\n");    
     while (ex->next != NULL)
     {
         printf("[%s]->[%i][%i]\n", ex->cmd, ex->type, ex->start);
         ex = ex->next;
     }
     printf("[%s]->[%i][%i]\n", ex->cmd, ex->type, ex->start);
+    printf("----------------------------------\n");    
     printf("----------------------------------\n");  
+    while (ex->prev != NULL)
+    {
+        printf("[%s]->[%i][%i]\n", ex->cmd, ex->type, ex->start);
+        ex = ex->prev;
+    }
+    printf("[%s]->[%i][%i]\n", ex->cmd, ex->type, ex->start);
+    printf("------------FIN----------------------\n");  
 }

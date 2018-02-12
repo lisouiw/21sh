@@ -93,6 +93,7 @@ t_env   *pipe_fct(t_exec *s, t_cmd *ex, t_env *env, pid_t pid)
         ex = ex->next;
         close(s->p[1]);
         s->fd_in = s->p[0]; //save the input for the next command
+        s->fd_out = s->p[1];
         printf("========GO===OUT===%s==%i=%i\n", ex->cmd, s->p[0], s->p[1]);
     }
     return (env);
@@ -104,11 +105,10 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
     int        i = 0;
     t_exec     s;
 
-    print_ex(ex);
-    exit(0);
     s.fd_in = 0;
     while (ex->prev != NULL)
         ex = ex->prev;
+    // print_ex(ex);
     while (ex->next != NULL && ++i < 10)
     {
         if (ex->type == 0)
@@ -117,8 +117,6 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
             printf("========GO====%s=====\n", ex->cmd);
             if ((pid = fork()) == -1)
                 exit(EXIT_FAILURE);
-            if (ex->prev->type == 8)
-                
             env = pipe_fct(&s, ex, env, pid);
         }
         if (ex->next != NULL)
