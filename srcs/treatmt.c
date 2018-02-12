@@ -76,23 +76,94 @@ char    **give_tab(char **ar, t_cmd **ex)
     return (ar);
 }
 
-t_env   *launchcmd(t_cmd *ex, t_env *env)
+t_env   *pipe_fct(t_exec *s, t_cmd *ex, t_env *env, pid_t pid)
 {
     char       **arr;
-
-    while (ex->prev != NULL)
-        ex = ex->prev;
-    ex = ex->next;
-    print_ex(ex);
-    while (ex->next != NULL)
+    
+    if (wait(0) && pid == 0)
     {
-        if (ex->next->type > 0)
-            printf("ya  %i\n", ex->next->type);
-        exit(0);
+        dup2(s->fd_in, 0); //change the input according to the old one
+        if (ex->next->type != 42 && ex->next->type == 3)
+            dup2(s->p[1], 1);
+        close(s->p[0]);
         env = exec_fct((arr = ft_strsplit(ex->cmd, ' ')), env);
+    }
+    else
+    {
+        ex = ex->next;
+        close(s->p[1]);
+        s->fd_in = s->p[0]; //save the input for the next command
+        printf("========GO===OUT===%s==%i=%i\n", ex->cmd, s->p[0], s->p[1]);
     }
     return (env);
 }
+
+t_env   *launchcmd(t_cmd *ex, t_env *env)
+{
+    pid_t      pid;
+    int        i = 0;
+    t_exec     s;
+
+    print_ex(ex);
+    exit(0);
+    s.fd_in = 0;
+    while (ex->prev != NULL)
+        ex = ex->prev;
+    while (ex->next != NULL && ++i < 10)
+    {
+        if (ex->type == 0)
+        {
+            pipe(s.p);
+            printf("========GO====%s=====\n", ex->cmd);
+            if ((pid = fork()) == -1)
+                exit(EXIT_FAILURE);
+            if (ex->prev->type == 8)
+                
+            env = pipe_fct(&s, ex, env, pid);
+        }
+        if (ex->next != NULL)
+            ex = ex->next;
+    }
+    exit(0);
+    return (env);
+}
+
+
+
+
+// void  pipe(char **cmd)           
+// {
+//   int   p[2];
+//   int   fd_in = 0;
+
+//   while (*cmd != NULL)
+//     {
+//       pipe(p);
+//       else if (pid == 0)
+//         {
+//           printf("fd = %i && p[0] = %i && p[1] = %i\n", fd_in, p[0], p[1]);
+//         	dup2(fd_in, 0); //change the input according to the old one 
+//           if (*(cmd + 1) != NULL)
+//             dup2(p[1], 1);
+//           close(p[0]);
+//           execvp((*cmd)[0], *cmd);
+//           exit(EXIT_FAILURE);
+//         }
+//       else
+//         {
+//           wait(NULL);
+//           close(p[1]);
+//           fd_in = p[0]; //save the input for the next command
+//           printf("fd = %i && p[0] = %i && p[1] = %i\n=========================\n", fd_in, p[0], p[1]);
+//           cmd++;
+//         }
+//     }
+// }
+
+
+
+
+
 
 t_env	*exec_fct(char **ar, t_env *env)
 {
@@ -111,8 +182,9 @@ t_env	*exec_fct(char **ar, t_env *env)
 	// 	b_cd(cut[1], &env);
 	else if (ft_strcmp(ar[0], "exit") == 0) // && free_for_exit(line, cut, env))
 		exit(0);
-	else
-		b_other(ar, env);
+    else
+		b_other_nf(ar, env);
+		// b_other(ar, env);
         
     return (env);
 }

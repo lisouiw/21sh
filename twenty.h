@@ -90,7 +90,8 @@ typedef struct      s_cmd
 
 typedef struct      s_exec
 {
-    int             fd[2];
+    int             p[2];
+    int             fd_in;
     int             ok;
 }                   t_exec;
 
@@ -103,10 +104,8 @@ t_edit  *home_end(t_edit *ed, char c, t_froz *fz);
 
 //ed
 void    modif_edit(t_edit **ed, t_edit **nw);
-// t_edit  *add_ed(t_edit *ed, char c, t_edit *nw);
 t_edit  *init_edit(t_edit *init);
 t_edit  *erase_ed(t_edit *ed);
-// void    free_ed(t_edit **ed);
 t_edit  *add_ed(t_edit *ed, char c, t_edit *nw, t_froz **t_froz);
 void    free_ed(t_edit **ed, t_froz *fz);
 
@@ -123,12 +122,11 @@ char	**list_to_tab(t_env *env, char **tab_env);
 void	b_other(char **cut, t_env *env);
 void	print_tab(char **ta, int i);
 
+void	b_other_nf(char **cut, t_env *env);
+int		give_path_nf(t_env *env, char **cut, int i, char **tab_env);
+
 // execution
-// void    execution(t_env **env, t_cmd *ex, t_exec **exec);
-t_exec  *init_exec(t_cmd *ex, t_exec *exec);
-void    pipe_fct(t_env **env, t_exec **exec, char ***cmd);
-void    execution(t_env **env, t_cmd *ex, t_exec **exec, int a);
-char    ***giv_pipe_ar(t_cmd *ex, char ***ar);
+
 
 
 //free
@@ -233,5 +231,6 @@ int     add_his(t_his **hs, t_his *nw, t_froz *fz);
 t_env   *launchcmd(t_cmd *ex, t_env *env);
 t_env	*exec_fct(char **ar, t_env *env);
 char    **give_tab(char **ar, t_cmd **ex);
+t_env   *pipe_fct(t_exec *s, t_cmd *ex, t_env *env, pid_t pid);
 
 #endif
