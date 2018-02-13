@@ -374,44 +374,46 @@
 
 /////////////////////// Redirection d'Entree //////////////////////
 
-// void    loop_pipe(char ***cmd) //ls 3< "."
-// {
-// 	int		p[2];
-// 	DIR		*op;
-// 	int		fd_in = 0;
-// 	int		new;
-// 	int		o;
+void    loop_pipe(char ***cmd) //ls 3< "."
+{
+	int		p[2];
+	DIR		*op;
+	int		fd_in = 0;
+	int		new;
+	int		o;
 	
-// 	pipe(p);
-// 	op = opendir(*cmd[1]);
-// 	if (op == NULL  && (o = open(*cmd[1], O_RDONLY)) == -1 )
-// 	{
-// 		printf("sh: %s: No such file or directory\n", *cmd[1]);
-// 		return;
-// 	}
-// 	dup2(o, 0);
-// 	dup2(p[0], o);
-// 	close(p[1]);
-// 	// printf("%s\n", (*cmd)[1]);
-// 	execvp((*cmd)[0], *cmd);
-// 	close(o);
-// 	closedir(op);
-// }
+	// pipe(p);
+    op = opendir(*cmd[1]);
+	if (op == NULL  && (o = open(*cmd[1], O_RDONLY)) == -1 )
+	{
+		printf("sh: %s: No such file or directory\n", *cmd[1]);
+		return;
+    }
+    dup2(0, o);
+    // exit(0);
 
-// int main()
-// {
-// 	char *ls[] = {"ls", "l","-a", NULL};	
-// 	char *wc[] = {"wc", "-c", NULL};
-// 	char *cat[] = {"cat", NULL};  
-// 	char *redic[] = {"../../../../tmp/test.txt", NULL};  
-// 	char *redic2[] = {".", NULL};  
-// 	// char **cmd[] = {wc, redic, NULL};
-// 	char **cmd[] = {ls, redic2, NULL};
+	// dup2(p[0], o);
+	// close(p[1]);
+	// printf("%s\n", (*cmd)[1]);
+	// execvp((*cmd)[0], *cmd);
+	close(o);
+	// closedir(op);
+}
+
+int main(void)
+{
+	char *ls[] = {"ls", "l","-a", NULL};	
+	char *wc[] = {"wc", "-c", NULL};
+	char *cat[] = {"cat", NULL};  
+	char *redic[] = {"../../../../tmp/test.txt", NULL};  
+	char *redic2[] = {"1", NULL};  
+	// char **cmd[] = {wc, redic, NULL};
+	char **cmd[] = {ls, redic2, NULL};
 	
 
-// 	loop_pipe(cmd);
-// 	return (0);
-// }
+	loop_pipe(cmd);
+	return (0);
+}
 
 /////////////////////// Redirection Pipe //////////////////////
 

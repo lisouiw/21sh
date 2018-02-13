@@ -5,15 +5,21 @@ int     parse_synthaxe(t_cmd *ex)
     int     i;
     while (ex->prev != NULL)
         ex = ex->prev;
+        
     i = (ex->next->cmd != NULL) ? ex->next->type : ex->next->next->type;
     if (i == 3 | i == 4 || i == 5 || i == 11 || i == 13 )
             return (-1);
     while (ex->next != NULL)
     {
-        if (ex->type < 0 || (ex->next->type != 14 && ex->next->type != 42 && ex->type > 0 && ex->next->type > 0))
+        if (ex->type == 0 || ex->type == 8  || ex->type == 7|| ex->type == 42)
+            ; 
+        else if (ex->type < 0 || (ex->next->type != 14 && ex->next->type != 42 && ex->type > 0 && ex->next->type > 0) )
             return (-1);
+    
         ex = ex->next;
     }
+    print_ex(ex);
+    exit(0);
     return (0);
 }
 

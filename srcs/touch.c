@@ -8,14 +8,13 @@ t_edit  *touch(t_edit **ed, t_froz **fz, t_his **hs)
             ctrl_touch(&(*ed), &(*fz), (*fz)->buf[0], *hs);
         else if ((*fz)->buf[0] == 127)
         {
-            // while ((*ed)->rpz[2] == 0)
-            //     *ed = (*ed)->next;
-            // if ((*ed)->rpz[0] != 0)
-            //     return(*ed);
-            *ed = erase_ed(*ed);
-            (*fz)->nb[0] = (*fz)->nb[0] - 1;
-            if ((*ed)->rpz[0] == 1 && (*ed)->rpz[1] == 1 && (*ed)->rpz[2] == 3) // tout erase donc hsto on
-                (*fz)->mode[2] = 1;
+            if (!((*ed)->rpz[0] == 1 && (*ed)->rpz[1] == 1))
+            {
+                *ed = erase_ed(*ed);
+                (*fz)->nb[0] = (*fz)->nb[0] - 1;
+                if ((*ed)->rpz[0] == 1 && (*ed)->rpz[1] == 1 && (*ed)->rpz[2] == 3) // tout erase donc hsto on
+                    (*fz)->mode[2] = 1;
+            }
         }
         else
             *ed = add_ed(*ed, (*fz)->buf[0], NULL, &(*fz));

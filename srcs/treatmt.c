@@ -79,14 +79,25 @@ char    **give_tab(char **ar, t_cmd **ex)
 t_env   *pipe_fct(t_exec *s, t_cmd *ex, t_env *env, pid_t pid)
 {
     char       **arr;
+    int		new;
     
     if (wait(0) && pid == 0)
     {
         dup2(s->fd_in, 0); //change the input according to the old one
-        if (ex->next->type != 42 && ex->next->type == 3)
+        if (ex->next->type != 42 && ex->next->type == 3&&  ex->next->type != 8)
             dup2(s->p[1], 1);
         close(s->p[0]);
-        env = exec_fct((arr = ft_strsplit(ex->cmd, ' ')), env);
+        if (ex->next->type == 8)
+        {
+                arr = ft_strsplit(ex->cmd, ' ');
+            	new = open(ex->next->cmd, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+                dup2(new, 1);
+                close(s->p[1]);
+            	execvp(arr[0], arr);
+            	close(new);
+        }
+        else
+            env = exec_fct((arr = ft_strsplit(ex->cmd, ' ')), env);
     }
     else
     {

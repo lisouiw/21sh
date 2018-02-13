@@ -52,7 +52,10 @@ t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex) //sub and put into ex
     if (i == in)
         return (ex);
     if (ex->cmd == NULL && ex->prev->type == 42 && ex->next->type == 42)
+    {
         ex->cmd = ft_strsub(s, in , i - in);
+        ex->start = in;
+    }
     else
     {
         while (ex->next != NULL)
@@ -62,10 +65,11 @@ t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex) //sub and put into ex
         nw->cmd = ft_strsub(s, in , i - in);
         ex->prev->next = nw;
         nw->next = ex;
+        nw->start = in;
         nw->prev = ex->prev;
         ex->prev = nw;
     }
-    ex->start = in;
+    // printf("");
     return (ex);
 }
 
@@ -75,10 +79,13 @@ t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex) // sep word && metachar
     int     q;
 
     q = 0;
-    while (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>' && s[i] != '<' ) && s[i])
-        ++i;
-    ex = sub_into_ex(s, i, in, ex);
-    in = i;
+    if (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>' && s[i] != '<' ) && s[i])
+    {
+        while (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>' && s[i] != '<' ) && s[i])
+            ++i;
+        ex = sub_into_ex(s, i, in, ex);
+        in = i;
+    }
     while (s[i])
     {
         while ((s[i] && (s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != ' ' && s[i] != '>' && s[i] != '<')) || (s[i] && q != 0))
@@ -107,7 +114,7 @@ void   join_ex(t_cmd **ex)
     char    *tmp;
     char    *tmp2;
     
-    t_cmd **ext;
+    t_cmd   *ext;
 
     while ((*ex)->prev != NULL)
         *ex = (*ex)->prev;
@@ -120,17 +127,17 @@ void   join_ex(t_cmd **ex)
             free((*ex)->cmd);
             (*ex)->cmd = tmp2;
             (*ex)->next = (*ex)->next->next;
+            (*ex)->next->prev = *ex;
         }
         else if ((*ex)->type == 8)
         {
-            ext = ex;
             *ex = (*ex)->next;
-            (*ex)->prev = (*ex)->prev->prev;
-            (*ex)->prev->prev->next = *ex;
+            ext = (*ex)->prev;
             (*ex)->type = 8;
+            (*ex)->prev->prev->next = *ex;
+            (*ex)->prev = (*ex)->prev->prev;
             *ex = (*ex)->next;
-            free(*ext);
-            print_ex(*ex);
+            free(ext);
         }
         else
             *ex = (*ex)->next;
@@ -164,8 +171,6 @@ void    join_re(t_cmd **ex)
             *ex = (*ex)->next;
         }            
     }
-    
-    
 }
 
 
@@ -179,14 +184,11 @@ int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
     *ex = separate_cmd(s, i, i, *ex); //separate by simple word and metacharactere
     i = parse_type(&(*ex)); // give at first a type as cmd(0) or a op ctrl(1)
     *ex = parse_op_int(*ex, s); // give all op ctrl specifique type and parse redirection proprely
+    
     join_ex(&(*ex));
-
-    printf("======JOIN RE==========\n");
     join_re(&(*ex));
     print_ex(*ex);
     
-    
-    exit(0);
     return (parse_synthaxe(*ex));
 }
 
