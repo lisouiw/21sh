@@ -64,7 +64,6 @@ t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex) //sub and put into ex
         nw->next = ex;
         nw->prev = ex->prev;
         ex->prev = nw;
-        print_ex(ex);
     }
     ex->start = in;
     return (ex);
@@ -178,11 +177,8 @@ int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
     while (s[i] && s[i] == ' ')
         ++i;
     *ex = separate_cmd(s, i, i, *ex); //separate by simple word and metacharactere
-    print_ex(*ex);
-    exit(0);
     i = parse_type(&(*ex)); // give at first a type as cmd(0) or a op ctrl(1)
     *ex = parse_op_int(*ex, s); // give all op ctrl specifique type and parse redirection proprely
-    print_ex(*ex);
     join_ex(&(*ex));
 
     printf("======JOIN RE==========\n");
