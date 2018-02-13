@@ -48,22 +48,22 @@
 t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex) //sub and put into ex
 {
     t_cmd   *nw;
-    t_cmd   *tmp;
 
     if (i == in)
         return (ex);
-    if (ex->cmd == NULL)
+    if (ex->cmd == NULL && ex->prev->type == 42 && ex->next->type == 42)
         ex->cmd = ft_strsub(s, in , i - in);
     else
     {
+        while (ex->next != NULL)
+            ex = ex->next;
         if (!(nw = (t_cmd*)malloc(sizeof(t_cmd))))
             return (NULL);
         nw->cmd = ft_strsub(s, in , i - in);
-        tmp = ex;
-        nw->next = ex->next;
-        nw->prev = ex;
-        tmp->next = nw;
-        ex->next = nw;
+        ex->prev->next = nw;
+        nw->next = ex;
+        nw->prev = ex->prev;
+        ex->prev = nw;
         print_ex(ex);
     }
     ex->start = in;
@@ -179,8 +179,8 @@ int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
         ++i;
     *ex = separate_cmd(s, i, i, *ex); //separate by simple word and metacharactere
     print_ex(*ex);
-    i = parse_type(&(*ex)); // give at first a type as cmd(0) or a op ctrl(1)
     exit(0);
+    i = parse_type(&(*ex)); // give at first a type as cmd(0) or a op ctrl(1)
     *ex = parse_op_int(*ex, s); // give all op ctrl specifique type and parse redirection proprely
     print_ex(*ex);
     join_ex(&(*ex));
