@@ -18,20 +18,10 @@ t_cmd   *parse_redirec(t_cmd *ex, char *s)
     return (ex);
 }
 
-t_cmd   *parse_ampersand(t_cmd *ex, char *s)
+t_cmd   *parse_ampersand(t_cmd *ex)
 {
     if (ft_strcmp(ex->cmd, "&&") == 0)
         ex->type = 4;
-    else if (ft_strcmp(ex->cmd, "&>") == 0) 
-    {
-        ex = parse_redirec(ex, s);
-        ex->type = 10;        
-    }
-    else if (ft_strcmp(ex->cmd, "&<") == 0)
-    {
-        ex = parse_redirec(ex, s);
-        ex->type = 11;        
-    }
     else
         ex->type = -1;    
     return (ex);

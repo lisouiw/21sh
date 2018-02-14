@@ -81,6 +81,7 @@ t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex) // sep word && metachar
     q = 0;
     if (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>' && s[i] != '<' ) && s[i])
     {
+        printf("%c\n", s[i]);
         while (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>' && s[i] != '<' ) && s[i])
             ++i;
         ex = sub_into_ex(s, i, in, ex);
@@ -113,7 +114,6 @@ void   join_ex(t_cmd **ex)
 {
     char    *tmp;
     char    *tmp2;
-    
     t_cmd   *ext;
 
     while ((*ex)->prev != NULL)
@@ -129,7 +129,7 @@ void   join_ex(t_cmd **ex)
             (*ex)->next = (*ex)->next->next;
             (*ex)->next->prev = *ex;
         }
-        else if ((*ex)->type == 8)
+        else if ((*ex)->type == 8 || (*ex)->type == 7)
         {
             *ex = (*ex)->next;
             ext = (*ex)->prev;
@@ -156,7 +156,7 @@ void    join_re(t_cmd **ex)
     {
         while ((*ex)->next != NULL)
         { 
-            if ((*ex)->type == 8 && (*ex)->prev->type == 0 && (*ex)->next->type == 0)
+            if (((*ex)->type == 8 || (*ex)->type == 7) && (*ex)->prev->type == 0 && (*ex)->next->type == 0)
             {
                 printf("%s && %s\n",(*ex)->prev->cmd, (*ex)->next->cmd);
                 tmp = ft_strjoin(" ", (*ex)->next->cmd);
@@ -183,13 +183,15 @@ int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
         ++i;
     *ex = separate_cmd(s, i, i, *ex); //separate by simple word and metacharactere
     i = parse_type(&(*ex)); // give at first a type as cmd(0) or a op ctrl(1)
+    //parse variable environnement
     *ex = parse_op_int(*ex, s); // give all op ctrl specifique type and parse redirection proprely
-    
-    join_ex(&(*ex));
-    join_re(&(*ex));
-    print_ex(*ex);
-    
-    return (parse_synthaxe(*ex));
+    if (parse_synthaxe(*ex) == -1)
+        return(-1);
+    join_ex(&(*ex)); //join les 0 ensemble
+    join_re(&(*ex)); // join les cas ls -a > co -q ----> ls -a q > co
+    // print_ex(*ex);
+    // exit(0);
+    return (0);
 }
 
 int     parsing_quote(char *s) //if all quotes are closed

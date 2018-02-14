@@ -5,21 +5,22 @@ int     parse_synthaxe(t_cmd *ex)
     int     i;
     while (ex->prev != NULL)
         ex = ex->prev;
-        
-    i = (ex->next->cmd != NULL) ? ex->next->type : ex->next->next->type;
-    if (i == 3 | i == 4 || i == 5 || i == 11 || i == 13 )
+    ex = ex->next;
+    i = ex->type;
+    if (i == 3 | i == 4 || i == 5 || i == 13 )
             return (-1);
     while (ex->next != NULL)
     {
-        if (ex->type == 0 || ex->type == 8  || ex->type == 7|| ex->type == 42)
-            ; 
-        else if (ex->type < 0 || (ex->next->type != 14 && ex->next->type != 42 && ex->type > 0 && ex->next->type > 0) )
-            return (-1);
-    
+        if ((ex->type == 3 || ex->type == 4 || ex->type == 5 ) && ex->prev->type != 0 && ex->next->type != 0)
+            return (-1); // pipe, and , or    cmd1 [op] cmd2
+        else if ((ex->type == 6 || ex->type == 7 || ex->type == 8 || ex->type == 9 || ex->type == 10 || ex->type == 11) && ex->next->type != 0)
+            return (-1); // <<,  <, >, >>, >&, <& word
+        else if (ex->type == 13 && ex->prev->type != 0)
+            return (-1); // cmd [;]
+        else if (ex->type == -1)
+            return (-1); // cmd [;]
         ex = ex->next;
     }
-    print_ex(ex);
-    exit(0);
     return (0);
 }
 
@@ -28,7 +29,7 @@ t_cmd   *giv_type(t_cmd *ex, char *s)
     if (ex->cmd[0] == '|')
         ex = parse_pipe_or(ex);
     else if (ex->cmd[0] == '&')
-        ex = parse_ampersand(ex, s);
+        ex = parse_ampersand(ex);
     else if (ex->cmd[0] == '<')
         ex = parse_less_than(ex, s); // probleme
     else if (ex->cmd[0] == '>')
@@ -42,20 +43,6 @@ t_cmd   *giv_type(t_cmd *ex, char *s)
 
 t_cmd   *parse_op_int(t_cmd *ex, char *s) // give op ctrl specifique type and 
 {
-    t_cmd   *nw;
-
-    if (ex->next->type == 1) // if start list without zero
-    {
-        if (!(nw = (t_cmd*)malloc(sizeof(t_cmd))))
-            return (NULL);    
-        nw->cmd = (char*)malloc(sizeof(char));
-        nw->cmd = NULL;
-        nw->next = ex->next;
-        nw->prev  = ex;
-        ex->next = nw;
-        nw->type = 0;
-        nw->start = 0;
-    }
     while (ex->next != NULL)
     {
         if (ex->type == 1)

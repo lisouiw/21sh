@@ -30,21 +30,7 @@ typedef struct      s_froz
     //mode 1        couper
     //mode 2        histo
     //mode 3        // regular  0
-                    // quote    1
-                    // dquote   2
-                    // pipe     3
-                    // cmdand   4
-                    // cmdor    5
-                    // heredoc  6
-                    // Redirecting Input    7 ([n]<word)
-                    // Redirecting Output   8 ([n]>word)
-                    // Appending Redirected Output  9 ([n]>>word)
-                    // Redirecting Standard Output and Standard Error   10
-                    // Duplicating File Descriptors 11 ([n]<&word   [n]>&word)
-                    // Moving File Descriptors  12 (n]<&digit-   [n]>&digit-)
-                    // ;            s13
-                    // only \n      14
-                    // annule       15
+        
     char            buf[3]; // buffer pour lire le char tape
     char            *paste; // la chaine a coller
     char            *cmd; // keep cmd car imcomplete
@@ -83,6 +69,22 @@ typedef struct      s_cmd
     char            *cmd;
     int             type;   //cmd : 0
                             //ctrl op : 1
+                            //=======
+                            // quote    1
+                            // dquote   2
+                            // pipe     3
+                            // cmdand   4
+                            // cmdor    5
+                            // heredoc  6
+                            // Redirecting Input    7 ([n]<word)
+                            // Redirecting Output   8 ([n]>word)
+                            // Appending Redirected Output  9 ([n]>>word)
+                            // Redirecting Standard Output and Standard Error [n]>&word)  10
+                            // Duplicating File Descriptors 11 ([n]<&word   
+                            // Moving File Descriptors  12 (n]<&digit-   [n]>&digit-)
+                            // ;            s13
+                            // only \n      14
+                            // annule       15
     int             start; //index where the string were sub
     struct  s_cmd   *next;
     struct  s_cmd   *prev;
@@ -164,7 +166,7 @@ void    print_ex(t_cmd *ex);
 // parsing_type_fct
 
 t_cmd   *parse_redirec(t_cmd *ex, char *s);
-t_cmd   *parse_ampersand(t_cmd *ex, char *s);
+t_cmd   *parse_ampersand(t_cmd *ex);
 t_cmd   *parse_great_than(t_cmd *ex, char *s);
 t_cmd   *parse_less_than(t_cmd *ex, char *s);
 t_cmd   *parse_pipe_or(t_cmd *ex);
