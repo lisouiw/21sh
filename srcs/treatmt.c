@@ -24,6 +24,8 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
         add_his(&(*hs), NULL, *fz);
         (*fz)->cmd = NULL;
     }
+    printf("MODE = %i\n", (*fz)->mode[3]);
+    sleep(0);
     return (env);
 }
 
@@ -35,7 +37,7 @@ int     add_his(t_his **hs, t_his *nw, t_froz *fz)
     nw->cmd = ft_strdup(fz->cmd);
     while ((*hs)->prev != NULL && (*hs)->cmd != NULL)
         *hs = (*hs)->prev;
-    if (if_only(nw->cmd, ' ')|| ((*hs)->next->cmd && ft_strcmp(nw->cmd, (*hs)->next->cmd) == 0 ))
+    if (if_only(nw->cmd, ' ') || ((*hs)->next->cmd && ft_strcmp(nw->cmd, (*hs)->next->cmd) == 0 ))
     {
         free(nw->cmd);
         free(nw);
@@ -84,7 +86,7 @@ t_env   *pipe_fct(t_exec *s, t_cmd *ex, t_env *env, pid_t pid)
     if (wait(0) && pid == 0)
     {
         dup2(s->fd_in, 0); //change the input according to the old one
-        if (ex->next->type != 42 && ex->next->type == 3&&  ex->next->type != 8)
+        if (ex->next->type != 42 && ex->next->type == 3 &&  ex->next->type != 8)
             dup2(s->p[1], 1);
         close(s->p[0]);
         if (ex->next->type == 8)
@@ -112,14 +114,14 @@ t_env   *pipe_fct(t_exec *s, t_cmd *ex, t_env *env, pid_t pid)
 
 t_env   *launchcmd(t_cmd *ex, t_env *env)
 {
-    pid_t      pid;
-    int        i = 0;
     t_exec     s;
+    pid_t      pid;
+    int        i;
 
+    i = 0;
     s.fd_in = 0;
     while (ex->prev != NULL)
         ex = ex->prev;
-    // print_ex(ex);
     while (ex->next != NULL && ++i < 10)
     {
         if (ex->type == 0)
@@ -133,6 +135,7 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
         if (ex->next != NULL)
             ex = ex->next;
     }
+    print_ex(ex);
     exit(0);
     return (env);
 }

@@ -156,7 +156,8 @@ void    join_re(t_cmd **ex)
     {
         while ((*ex)->next != NULL)
         { 
-            if (((*ex)->type == 8 || (*ex)->type == 7) && (*ex)->prev->type == 0 && (*ex)->next->type == 0)
+            if (((*ex)->type == 8 || (*ex)->type == 7) && (*ex)->prev->type == 0 
+                && (*ex)->next->type == 0) // ls > co > co
             {
                 printf("%s && %s\n",(*ex)->prev->cmd, (*ex)->next->cmd);
                 tmp = ft_strjoin(" ", (*ex)->next->cmd);
@@ -185,8 +186,8 @@ int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
     i = parse_type(&(*ex)); // give at first a type as cmd(0) or a op ctrl(1)
     //parse variable environnement
     *ex = parse_op_int(*ex, s); // give all op ctrl specifique type and parse redirection proprely
-    if (parse_synthaxe(*ex) == -1)
-        return(-1);
+    if ((i = parse_synthaxe(*ex)) != 0)
+        return(i);
     join_ex(&(*ex)); //join les 0 ensemble
     join_re(&(*ex)); // join les cas ls -a > co -q ----> ls -a q > co
     // print_ex(*ex);
@@ -221,13 +222,12 @@ int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex)
     while (ed->rpz[0] == 0)
         ed = ed->next;
     if (((*fz)->mode[3] = parsing_quote((*fz)->cmd))) //parsing_quote
-        ;
+        return(0);
     else if (((*fz)->mode[3] = parsing_op((*fz)->cmd, &(*ex)))) // parsing_op
     {
-        printf("+->%i\n",(*fz)->mode[3]);//tranform quote;
         if (!((*fz)->mode[3] >= 0 && (*fz)->mode[3] < 6))
         {
-            printf("ERROR\n");
+            printf("ERROR %i\n", (*fz)->mode[3]);
             (*fz)->mode[3] = 0;
         }
     }

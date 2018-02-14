@@ -1,1 +1,2 @@
-// < 7
+< [7]
+    remplacer la case par le chiffre exemple 

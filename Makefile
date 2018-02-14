@@ -9,7 +9,7 @@ FLAGS = -Wall -Werror -Wextra -g
 
 SRCS =  main.c term.c ed.c env.c touch.c print_shell.c treatmt.c t.c exec.c \
 ctrl.c tools.c init.c parsing.c prompt.c giv_str.c pascutcopy.c \
-parsing_type.c parsing_type_fct.c parsing_tools.c free.c \
+parsing_type.c parsing_type_fct.c parsing_tools.c free.c redirecting.c \
 
 SRC_N = $(addprefix $(SRCDIR)/, $(SRCS))
 
