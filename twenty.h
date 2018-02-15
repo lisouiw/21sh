@@ -184,11 +184,10 @@ t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex);
 int     parsing_op(char *s, t_cmd **ex);
 int     parsing_quote(char *s);
 int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex);
+void    join_redirecting(t_cmd **ex);
 
 // pascutcopy
-// t_edit  *paste(t_edit *ed, t_froz *fz);
 t_edit  *copy(t_edit *ed, t_froz **fz);
-// t_edit  *cut(t_edit *ed, t_froz **fz);
 char    *keep_paste(t_edit **ed, char *s);
 void    cut(t_edit **ed, t_froz **fz);
 t_edit  *paste(t_edit *ed, t_froz **fz);

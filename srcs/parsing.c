@@ -114,7 +114,7 @@ void   join_ex(t_cmd **ex)
 {
     char    *tmp;
     char    *tmp2;
-    t_cmd   *ext;
+    // t_cmd   *ext;
 
     while ((*ex)->prev != NULL)
         *ex = (*ex)->prev;
@@ -129,47 +129,58 @@ void   join_ex(t_cmd **ex)
             (*ex)->next = (*ex)->next->next;
             (*ex)->next->prev = *ex;
         }
-        else if ((*ex)->type == 8 || (*ex)->type == 7)
-        {
-            *ex = (*ex)->next;
-            ext = (*ex)->prev;
-            (*ex)->type = 8;
-            (*ex)->prev->prev->next = *ex;
-            (*ex)->prev = (*ex)->prev->prev;
-            *ex = (*ex)->next;
-            free(ext);
-        }
+        // else if ((*ex)->type == 8 || (*ex)->type == 7)
+        // {
+        //     *ex = (*ex)->next;
+        //     ext = (*ex)->prev;
+        //     (*ex)->type = (*ex)->prev->type;
+        //     (*ex)->prev->prev->next = *ex;
+        //     (*ex)->prev = (*ex)->prev->prev;
+        //     *ex = (*ex)->next;
+        //     free(ext);
+        // }
         else
             *ex = (*ex)->next;
     }
 }
 
-void    join_re(t_cmd **ex)
+void    join_redirecting2(t_cmd **join, t_cmd **ex)
 {
     char    *tmp;
     char    *tmp2;
-    
+    t_cmd   *cmd;
 
+    while ((*ex)->type == 8 || (*ex)->type == 7)
+    {
+        *ex = (*ex)->next;
+        if ((*ex)->type == 0)
+        {
+            tmp = ft_strjoin((*join)->cmd, " ");
+            tmp2 = ft_strjoin(tmp, (*ex)->cmd);
+            free((*join)->cmd);
+            (*join)->cmd = tmp2;
+            cmd = *ex;
+            *ex = (*ex)->next;
+            (*ex)->prev = (*ex)->prev->prev;
+            (*ex)->prev->next = (*ex);
+            free(tmp);
+            free(cmd);
+        }
+    }
+}
+
+void    join_redirecting(t_cmd **ex)
+{
     while ((*ex)->prev != NULL)
         *ex = (*ex)->prev;
     while ((*ex)->next != NULL)
     {
         while ((*ex)->next != NULL)
         { 
-            if (((*ex)->type == 8 || (*ex)->type == 7) && (*ex)->prev->type == 0 
-                && (*ex)->next->type == 0) // ls > co > co
-            {
-                printf("%s && %s\n",(*ex)->prev->cmd, (*ex)->next->cmd);
-                tmp = ft_strjoin(" ", (*ex)->next->cmd);
-                tmp2 = ft_strjoin((*ex)->prev->cmd, tmp);
-                printf("tmp->%s\n", tmp2);
-                free((*ex)->prev->cmd);
-                (*ex)->prev->cmd = tmp2;
-                (*ex)->next->next->prev = *ex;                
-                (*ex)->next = (*ex)->next->next;
-
-            }
-            *ex = (*ex)->next;
+            if (((*ex)->type == 8 || (*ex)->type == 7) && (*ex)->prev->type == 0)// ls > co > co
+                join_redirecting2(&(*ex)->prev, &(*ex));
+            if ((*ex)->next != NULL)
+                *ex = (*ex)->next;
         }            
     }
 }
@@ -182,16 +193,23 @@ int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
     i = 0;
     while (s[i] && s[i] == ' ')
         ++i;
-    *ex = separate_cmd(s, i, i, *ex); //separate by simple word and metacharactere
-    i = parse_type(&(*ex)); // give at first a type as cmd(0) or a op ctrl(1)
-    //parse variable environnement
-    *ex = parse_op_int(*ex, s); // give all op ctrl specifique type and parse redirection proprely
+    *ex = separate_cmd(s, i, i, *ex);   //separate by simple word and metacharactere
+    i = parse_type(&(*ex));             // give at first a type as cmd(0) or a op ctrl(1)
+                                        //parse variable environnement
+            
+          
+    *ex = parse_op_int(*ex, s);         // give all op ctrl specifique type 
+                                        //and parse redirection proprely
+    
+    print_ex(*ex);
     if ((i = parse_synthaxe(*ex)) != 0)
         return(i);
-    join_ex(&(*ex)); //join les 0 ensemble
-    join_re(&(*ex)); // join les cas ls -a > co -q ----> ls -a q > co
-    // print_ex(*ex);
-    // exit(0);
+
+    join_ex(&(*ex));                    //join les 0 ensemble
+    print_ex(*ex);
+    exit(0); 
+    join_redirecting(&(*ex));           // join les cas ls -a > co -q ----> ls -a q > co
+    
     return (0);
 }
 

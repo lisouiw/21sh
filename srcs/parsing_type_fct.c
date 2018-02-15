@@ -4,16 +4,21 @@ t_cmd   *parse_redirec(t_cmd *ex, char *s)
 {
     t_cmd   *tmp;
 
-    tmp = ex->prev;
     if (ex->prev->cmd == NULL)
         return(ex);
     if (ex->prev != NULL && isnumber(ex->prev->cmd) && s[ex->start -1] != ' ')
     {
-        ex->cmd = ft_strjoin(ex->prev->cmd, ex->cmd);
+        tmp = ex->prev;
+        ex->cmd = ft_strjoin(ex->prev->cmd, ft_strjoin(" ", ex->cmd));
         ex->prev->prev->next = ex;
         ex->prev = ex->prev->prev;
         free(tmp->cmd);
         free(tmp);
+    }
+    if (ex->next != NULL && ex->next->type != 42 &&  ex->next->type == 0)
+    {
+        tmp = ex->next;
+        ex->cmd = ft_strjoin(ex->cmd, ft_strjoin(" " , ex->next->cmd));
     }
     return (ex);
 }
