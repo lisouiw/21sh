@@ -162,6 +162,7 @@ void    put_my_cur(int nb, char c);
 
 int     isnumber(char *s);
 void    print_ex(t_cmd *ex);
+void    print_ex_up(t_cmd *ex);
 
 // parsing_type_fct
 
@@ -234,5 +235,6 @@ t_env   *launchcmd(t_cmd *ex, t_env *env);
 t_env	*exec_fct(char **ar, t_env *env);
 char    **give_tab(char **ar, t_cmd **ex);
 t_env   *pipe_fct(t_exec *s, t_cmd *ex, t_env *env, pid_t pid);
+t_env	*exec_fct_nf(char **cut, t_env *env);
 
 #endif

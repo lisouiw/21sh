@@ -56,16 +56,23 @@ char	**list_to_tab(t_env *env, char **tab_env)
 void	b_other(char **cut, t_env *env)
 {
 	char	**tab_env;
-
+    pid_t      pid;
+	
 	if ((tab_env = list_to_tab(env, NULL)))
 	{
-		if (wait(NULL) && execve(cut[0], cut, tab_env) == -1)
-			if (give_path(env, cut, -1, tab_env) == -1)
+		if ((pid = fork()) == -1)
+			exit(EXIT_FAILURE);
+		else if (pid == 0  && wait(0) && execve(cut[0], cut, tab_env) == -1)
+		{
+			if (wait(0) && give_path_nf(env, cut, -1, tab_env) == -1)
 			{
 				ft_putstr("sh: command not found: ");
 				ft_putendl(cut[0]);
 				exit(-1);
 			}
+		}
+		else 
+			wait(0);
 	}
 	free_tab(tab_env);
 }
@@ -89,13 +96,14 @@ void	b_other_nf(char **cut, t_env *env)
 	
 	if ((tab_env = list_to_tab(env, NULL)))
 	{
-		if (wait(NULL) && execve(cut[0], cut, tab_env) == -1)
+		if (wait(0) && execve(cut[0], cut, tab_env) == -1)
 			if (give_path_nf(env, cut, -1, tab_env) == -1)
 			{
 				ft_putstr("sh: command not found: ");
 				ft_putendl(cut[0]);
 				exit(-1);
 			}
+
 	}
 	
 	free_tab(tab_env);
@@ -116,8 +124,9 @@ int		give_path_nf(t_env *env, char **cut, int i, char **tab_env)
 		while (path[++i] && a == -1 && (cmd = t_strjoin(path[i], "/", cut[0])))
 		{
 			if ((a = access(cmd, F_OK)) == 0)
-				if (wait(NULL))
+				if (wait(0))
 					execve(cmd, cut, tab_env);
+			wait(0);
 			free(cmd);
 		}
 		free_tab(path);

@@ -1,0 +1,10 @@
+21sh
+Makefile
+c
+co
+libft
+note.txt
+objs
+srcs
+test
+twenty.h

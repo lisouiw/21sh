@@ -81,7 +81,6 @@ t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex) // sep word && metachar
     q = 0;
     if (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>' && s[i] != '<' ) && s[i])
     {
-        printf("%c\n", s[i]);
         while (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>' && s[i] != '<' ) && s[i])
             ++i;
         ex = sub_into_ex(s, i, in, ex);
@@ -114,7 +113,6 @@ void   join_ex(t_cmd **ex)
 {
     char    *tmp;
     char    *tmp2;
-    // t_cmd   *ext;
 
     while ((*ex)->prev != NULL)
         *ex = (*ex)->prev;
@@ -128,17 +126,8 @@ void   join_ex(t_cmd **ex)
             (*ex)->cmd = tmp2;
             (*ex)->next = (*ex)->next->next;
             (*ex)->next->prev = *ex;
+            free(tmp);
         }
-        // else if ((*ex)->type == 8 || (*ex)->type == 7)
-        // {
-        //     *ex = (*ex)->next;
-        //     ext = (*ex)->prev;
-        //     (*ex)->type = (*ex)->prev->type;
-        //     (*ex)->prev->prev->next = *ex;
-        //     (*ex)->prev = (*ex)->prev->prev;
-        //     *ex = (*ex)->next;
-        //     free(ext);
-        // }
         else
             *ex = (*ex)->next;
     }
@@ -196,20 +185,13 @@ int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
     *ex = separate_cmd(s, i, i, *ex);   //separate by simple word and metacharactere
     i = parse_type(&(*ex));             // give at first a type as cmd(0) or a op ctrl(1)
                                         //parse variable environnement
-            
-          
     *ex = parse_op_int(*ex, s);         // give all op ctrl specifique type 
                                         //and parse redirection proprely
-    
-    print_ex(*ex);
     if ((i = parse_synthaxe(*ex)) != 0)
         return(i);
-
-    join_ex(&(*ex));                    //join les 0 ensemble
-    print_ex(*ex);
-    exit(0); 
     join_redirecting(&(*ex));           // join les cas ls -a > co -q ----> ls -a q > co
-    
+    join_ex(&(*ex));                    //join les 0 ensemble
+    print_ex_up(*ex);
     return (0);
 }
 

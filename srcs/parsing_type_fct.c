@@ -4,9 +4,7 @@ t_cmd   *parse_redirec(t_cmd *ex, char *s)
 {
     t_cmd   *tmp;
 
-    if (ex->prev->cmd == NULL)
-        return(ex);
-    if (ex->prev != NULL && isnumber(ex->prev->cmd) && s[ex->start -1] != ' ')
+    if (ex->prev->cmd != NULL && ex->prev != NULL && isnumber(ex->prev->cmd) && s[ex->start -1] != ' ')
     {
         tmp = ex->prev;
         ex->cmd = ft_strjoin(ex->prev->cmd, ft_strjoin(" ", ex->cmd));
@@ -20,6 +18,8 @@ t_cmd   *parse_redirec(t_cmd *ex, char *s)
         tmp = ex->next;
         ex->cmd = ft_strjoin(ex->cmd, ft_strjoin(" " , ex->next->cmd));
     }
+    // printf("===========REDIRECTION==========\n");
+    // print_ex(ex);
     return (ex);
 }
 
