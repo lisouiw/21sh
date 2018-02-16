@@ -113,6 +113,7 @@ void   join_ex(t_cmd **ex)
 {
     char    *tmp;
     char    *tmp2;
+    t_cmd   *cmd;
 
     while ((*ex)->prev != NULL)
         *ex = (*ex)->prev;
@@ -120,6 +121,7 @@ void   join_ex(t_cmd **ex)
     {
         if ((*ex)->type == 0 && (*ex)->next->type == 0)
         {
+            cmd = (*ex)->next;
             tmp = ft_strjoin(" ", (*ex)->next->cmd);
             tmp2 = ft_strjoin((*ex)->cmd, tmp);
             free((*ex)->cmd);
@@ -127,6 +129,8 @@ void   join_ex(t_cmd **ex)
             (*ex)->next = (*ex)->next->next;
             (*ex)->next->prev = *ex;
             free(tmp);
+            free(cmd);
+            free(cmd->cmd);
         }
         else
             *ex = (*ex)->next;
@@ -153,6 +157,7 @@ void    join_redirecting2(t_cmd **join, t_cmd **ex)
             (*ex)->prev = (*ex)->prev->prev;
             (*ex)->prev->next = (*ex);
             free(tmp);
+            free(cmd->cmd);
             free(cmd);
         }
     }
@@ -191,7 +196,7 @@ int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
         return(i);
     join_redirecting(&(*ex));           // join les cas ls -a > co -q ----> ls -a q > co
     join_ex(&(*ex));                    //join les 0 ensemble
-    print_ex_up(*ex);
+    // print_ex_up(*ex);
     return (0);
 }
 
@@ -225,10 +230,16 @@ int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex)
         return(0);
     else if (((*fz)->mode[3] = parsing_op((*fz)->cmd, &(*ex)))) // parsing_op
     {
-        if (!((*fz)->mode[3] >= 0 && (*fz)->mode[3] < 6))
+        free_all_ex(&(*ex));
+        if (!((*fz)->mode[3] >= 0 && (*fz)->mode[3] < 6)) // autre && || |
         {
             printf("ERROR %i\n", (*fz)->mode[3]);
             (*fz)->mode[3] = 0;
+        }
+        else 
+        {
+            free((*fz)->cmd);
+            (*fz)->cmd = NULL;
         }
     }
     else if ((*fz)->mode[3] == 0)

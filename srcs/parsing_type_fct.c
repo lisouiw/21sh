@@ -2,21 +2,30 @@
 
 t_cmd   *parse_redirec(t_cmd *ex, char *s)
 {
+    char    *tmp1;
+    char    *tmp2;
     t_cmd   *tmp;
 
     if (ex->prev->cmd != NULL && ex->prev != NULL && isnumber(ex->prev->cmd) && s[ex->start -1] != ' ')
     {
         tmp = ex->prev;
-        ex->cmd = ft_strjoin(ex->prev->cmd, ft_strjoin(" ", ex->cmd));
+        tmp1 = ft_strjoin(" ", ex->cmd);
+        tmp2 = ft_strjoin(ex->prev->cmd, tmp1);
+        free(ex->cmd);
+        ex->cmd = tmp2;
         ex->prev->prev->next = ex;
         ex->prev = ex->prev->prev;
+        free(tmp1);
         free(tmp->cmd);
         free(tmp);
     }
     if (ex->next != NULL && ex->next->type != 42 &&  ex->next->type == 0)
     {
-        tmp = ex->next;
-        ex->cmd = ft_strjoin(ex->cmd, ft_strjoin(" " , ex->next->cmd));
+        tmp1 = ft_strjoin(" " , ex->next->cmd);
+        tmp2 = ft_strjoin(ex->cmd, tmp1);
+        free(tmp1);
+        free(ex->cmd);
+        ex->cmd = tmp2;
     }
     // printf("===========REDIRECTION==========\n");
     // print_ex(ex);
@@ -40,7 +49,10 @@ t_cmd   *parse_great_than(t_cmd *ex, char *s)
         ex = parse_redirec(ex, s);
     }
     else if (ft_strcmp(ex->cmd, ">>") == 0)
-        ex->type = 9;        
+    {
+        ex->type = 9; 
+        ex = parse_redirec(ex, s);
+    }
     else if (ft_strcmp(ex->cmd, ">&") == 0 )
     {
         ex->type = 10;        

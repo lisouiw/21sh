@@ -12,22 +12,21 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
         return(env);
     else if (parsing(*cmd, &(*fz), &ex) == 1) // parsing good
     {
-        printf("CMD_>%s\n", (*fz)->cmd);
-        // print_ex(ex);
-        // exit(0);
-        add_his(&(*hs), NULL, *fz);
         env = launchcmd(ex, env);
         // printf("===TREAT APRES LAunch========\n");
+        add_his(&(*hs), NULL, *fz);
+        
+        free_all_ex(&ex);
         free((*fz)->cmd);
         (*fz)->cmd = NULL;
-        free_ex(&ex);
+        // free_ex(&ex);
     }
     else if ((*fz)->mode[3] == 0) // parsing error qund lauch
     {
         add_his(&(*hs), NULL, *fz);
+        free((*fz)->cmd);
         (*fz)->cmd = NULL;
     }
-    // printf("MODE = %i\n", (*fz)->mode[3]);
     return (env);
 }
 
@@ -81,29 +80,17 @@ t_env   *pipe_fct(t_exec *s, t_cmd *ex, t_env *env, pid_t pid)
 t_env   *launchcmd(t_cmd *ex, t_env *env)
 {
     t_exec     s;
-    pid_t      pid = 0;
     int        i;
     char       **arr;
-    int		    new;
-    t_cmd         *tmp;
-
-
-    // puts("COUCOU\n");
-    // return (env);
-    
     
     i = 0;
     s.fd_in = 0;
     while (ex->prev != NULL)
         ex = ex->prev;
     if (ex->type == 42 && ex->next->type == 0 && ex->next->next->type == 42)   // condition si il ny qu'une commande
-    {         
-        // if ((pid = fork()) == -1)
-        //     exit(EXIT_FAILURE);
-        // else if (wait(0) && pid == 0)
-            env = exec_fct((arr = ft_strsplit(ex->next->cmd, ' ')), env);
-    //     else
-    //         wait(0);
+    {       
+        env = exec_fct((arr = ft_strsplit(ex->next->cmd, ' ')), env);
+        free_tab(arr);
     }
     else
     {
@@ -112,88 +99,15 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
             if (ex->type != 0 && ex->type != 42)
             {
                 if (ex->type == 8)
-                {
-                    pid = 0;
-                    if ((pid = fork()) == -1)
-                        exit(EXIT_FAILURE);
-                    else if (pid == 0)
-                    {
-                        arr = ft_strsplit(ex->cmd, ' ');
-                        if (arr[2] == NULL)
-                            new = open(arr[1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-                        else 
-                            new = open(arr[2], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-                        i = dup(1);
-                        dup2(new, 1);
-                        tmp = ex;
-                        free_tab(arr);
-                        while (tmp->prev->type !=0  && tmp->prev->type != 42)
-                            tmp = tmp->prev;
-                        if (wait(0) && tmp->prev->cmd != NULL && (arr = ft_strsplit(tmp->prev->cmd, ' ')))
-                            env = exec_fct_nf(arr, env);
-                    }
-                    else
-                    {
-                        wait(0);
-                        close(new);
-                        dup2(1, i);
-                        
-                    }
-                }
+                    redirecting_out(&ex, &env, 0);
+                else if (ex->type == 7)
+                    redirecting_in(&ex, &env, 0);
+                else if (ex->type == 9)
+                    app_redirecting_out(&ex, &env, 0);
             }
             if (ex->next != NULL)
                 ex = ex->next;
         }
-        
     }
-    return (env);
-}
-
-t_env	*exec_fct_nf(char **cut, t_env *env)
-{
-    if (ft_strcmp("echo", cut[0]) == 0)
-        print_tab(cut, 0);
-	// else if (ft_strcmp("env", cut[0]) == 0)
-	// 	ecriture_info(env);
-	// else if (ft_strcmp("setenv", cut[0]) == 0)
-	// {
-	// 	while (cut[1] && cut[++(*i)])
-	// 		b_export(cut[*i], &env);
-	// }
-	// else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
-	// 	b_unset(cut, &env, 0);
-	// else if (ft_strcmp("cd", cut[0]) == 0)
-	// 	b_cd(cut[1], &env);
-	else if (ft_strcmp(cut[0], "exit") == 0) // && free_for_exit(line, cut, env))
-    {
-        printf("exit\n");
-        exit(0);
-    }
-    else
-		b_other_nf(cut, env);
-		// b_other(ar, env);
-    return (env);
-}
-
-t_env	*exec_fct(char **cut, t_env *env)
-{
-    if (ft_strcmp("echo", cut[0]) == 0)
-        print_tab(cut, 0);
-	// else if (ft_strcmp("env", cut[0]) == 0)
-	// 	ecriture_info(env);
-	// else if (ft_strcmp("setenv", cut[0]) == 0)
-	// {
-	// 	while (cut[1] && cut[++(*i)])
-	// 		b_export(cut[*i], &env);
-	// }
-	// else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
-	// 	b_unset(cut, &env, 0);
-	// else if (ft_strcmp("cd", cut[0]) == 0)
-	// 	b_cd(cut[1], &env);
-	else if (ft_strcmp(cut[0], "exit") == 0) // && free_for_exit(line, cut, env))
-		exit(0);
-    else
-		b_other(cut, env);
-		// b_other(ar, env);
     return (env);
 }

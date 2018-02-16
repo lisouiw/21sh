@@ -119,12 +119,13 @@ void	b_unset(char **cut, t_env **env, int i);
 t_env	*add_env(char *environ, t_env *env, size_t one, size_t all);
 t_env	*give_env(t_env *env);
 
-// exec
+//exec_tools
 int		give_path(t_env *env, char **cut, int i, char **tab_env);
 char	**list_to_tab(t_env *env, char **tab_env);
-void	b_other(char **cut, t_env *env);
 void	print_tab(char **ta, int i);
 
+// exec
+void	b_other(char **cut, t_env *env);
 void	b_other_nf(char **cut, t_env *env);
 int		give_path_nf(t_env *env, char **cut, int i, char **tab_env);
 
@@ -134,6 +135,7 @@ int		give_path_nf(t_env *env, char **cut, int i, char **tab_env);
 
 //free
 void    free_ex(t_cmd **ex);
+void    free_all_ex(t_cmd **ex);
 
 
 //giv_str
@@ -206,6 +208,11 @@ void    print_shell(t_edit *ed, t_froz *fz);
 void    put_prompt(t_froz *fz);
 void    put_prompt_init(t_froz **fz);
 int     giv_last(t_froz *fz);
+
+//redirecting
+void    redirecting_out(t_cmd **ex, t_env **env, int nw);
+void    redirecting_in(t_cmd **ex, t_env **env, int nw);
+void    app_redirecting_out(t_cmd **ex, t_env **env, int nw);
 
 // t 
 void	free_list(t_env **env);

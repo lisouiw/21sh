@@ -383,21 +383,18 @@ void    loop_pipe(char ***cmd) //ls 3< "."
 	int		o;
 		pid_t	pid;
 	char 	buf[1000];
+	int		i;
 
-	pid = fork();
-	if ((o = open(*cmd[1], O_RDONLY)) == -1 )
-	{
-		printf("sh: %s: No such file or directory\n", *cmd[1]);
-		return;
-	}
-	if (o != -1)
-	{
+		if ((o = open(*cmd[1], O_RDONLY)) == -1 )
+		{
+			printf("sh: %s: No such file or directory\n", *cmd[1]);
+			return;
+		}
 		dup2(o, 0);
-		wait(NULL);
-		if ((execvp("ls", cmd[0])) == -1)
+		if ( pid == 0 && wait(0) && (execvp("cat", cmd[0])) == -1)
 			printf("no o\n");
-	}
-	close(o);
+
+		close(o);
 }
 
 int main(void)
@@ -406,9 +403,9 @@ int main(void)
 	char *wc[] = {"wc", "-c", NULL};
 	char *cat[] = {"cat", NULL};  
 	char *redic[] = {"../../../../tmp/test.txt", NULL};  
-	char *redic2[] = {"test.c", NULL};  
+	char *redic2[] = {"1", NULL};  
 	// char **cmd[] = {wc, redic, NULL};
-	char **cmd[] = {ls, redic2, NULL};
+	char **cmd[] = {cat, redic2, NULL};
 	
 
 	loop_pipe(cmd);
