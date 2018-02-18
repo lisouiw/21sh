@@ -14,8 +14,6 @@ t_edit  *touch(t_edit **ed, t_froz **fz, t_his **hs)
             {
                 *ed = erase_ed(*ed);
                 (*fz)->nb[0] = (*fz)->nb[0] - 1;
-                printf("nb = %i\n", (*fz)->nb[0]);
-                sleep(2);
                 if ((*ed)->rpz[0] == 1 && (*ed)->rpz[1] == 1 && (*ed)->rpz[2] == 3) // tout erase donc hsto on
                     (*fz)->mode[2] = 1;
             }
@@ -24,7 +22,7 @@ t_edit  *touch(t_edit **ed, t_froz **fz, t_his **hs)
             *ed = add_ed(*ed, (*fz)->buf[0], NULL, &(*fz));
     }
     else
-        *ed = extern_touch(*ed, &(*fz), &(*hs));
+        *ed = extern_touch(*ed, &(*fz), &(*hs));    
     print_shell(*ed, *fz);
     return (*ed);
 }

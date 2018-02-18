@@ -241,7 +241,13 @@ int     add_his(t_his **hs, t_his *nw, t_froz *fz);
 t_env   *launchcmd(t_cmd *ex, t_env *env);
 t_env	*exec_fct(char **ar, t_env *env);
 char    **give_tab(char **ar, t_cmd **ex);
-t_env   *pipe_fct(t_exec *s, t_cmd *ex, t_env *env, pid_t pid);
+t_env   *pipe_fct(t_exec *s, t_cmd *ex, t_env *env);
+// t_env   *pipe_fct(t_exec *s, t_cmd *ex, t_env *env, pid_t *pid);
 t_env	*exec_fct_nf(char **cut, t_env *env);
+
+
+void    redirecting_out_child(t_cmd **ex, t_env **env, int nw, pid_t *pid);
+void    redirecting_out_parent(t_cmd **ex, t_env **env, int nw, pid_t *pid);
+
 
 #endif

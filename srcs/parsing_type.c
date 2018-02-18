@@ -13,6 +13,26 @@ int     parse_synthaxe(t_cmd *ex)
             return (-1);
     while (ex->next != NULL)
     {
+        if ((ex->type == 3 || ex->type == 4 || ex->type == 5 ) && ex->prev->type == 0 && ex->next->type == 42)
+            return (ex->type); // pipe, and , or    cmd1 [op] cmd2
+        else if ((ex->type == 3 || ex->type == 4 || ex->type == 5 ) && ex->prev->type != 0 && ex->next->type != 0)
+            return (-1); // pipe, and , or    cmd1 [op] cmd2
+        else if ((ex->type == 6 || ex->type == 7 || ex->type == 8 || ex->type == 9 || ex->type == 10 || ex->type == 11) && ex->next->type != 0)
+            return (-2); // <<,  <, >, >>, >&, <& word
+        else if (ex->type == 13 && (ex->prev->type == 3 || ex->prev->type == 4 || ex->prev->type == 5))
+            return (-3); // cmd [;]
+        else if (ex->type == -1)
+            return (-4); // cmd [;]
+        ex = ex->next;
+    }
+
+
+    
+    while (ex->prev != NULL)
+        ex = ex->prev;
+    ex = ex->next;
+    while (ex->next != NULL)
+    {
         if ((ex->type == 6 || ex->type == 7 || ex->type == 8 || ex->type == 9 || ex->type == 10 || ex->type == 11) && ex->next->type == 0)
         {
             tmp = ex->next;
@@ -21,16 +41,6 @@ int     parse_synthaxe(t_cmd *ex)
             free(tmp->cmd);
             free(tmp);
         }
-        else if ((ex->type == 3 || ex->type == 4 || ex->type == 5 ) && ex->prev->type == 0 && ex->next->type == 42)
-            return (ex->type); // pipe, and , or    cmd1 [op] cmd2
-        else if ((ex->type == 3 || ex->type == 4 || ex->type == 5 ) && ex->prev->type != 0 && ex->next->type != 0)
-            return (-1); // pipe, and , or    cmd1 [op] cmd2
-        else if ((ex->type == 6 || ex->type == 7 || ex->type == 8 || ex->type == 9 || ex->type == 10 || ex->type == 11) && ex->next->type != 0)
-            return (-1); // <<,  <, >, >>, >&, <& word
-        else if (ex->type == 13 && ex->prev->type != 0)
-            return (-1); // cmd [;]
-        else if (ex->type == -1)
-            return (-1); // cmd [;]
         ex = ex->next;
     }
     return (0);
