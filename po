@@ -1,0 +1,14 @@
+total 160
+drwxr-xr-x  13 ltran  2016_paris    442 Feb 18 10:02 .
+drwxr-xr-x  66 ltran  2016_paris   2312 Feb 18 10:00 ..
+drwxr-xr-x  16 ltran  2016_paris    544 Feb 18 10:00 .git
+-rwxr-xr-x   1 ltran  2016_paris  57560 Feb 18 10:00 21sh
+-rw-r--r--   1 ltran  2016_paris    774 Feb 16 11:00 Makefile
+-rw-r--r--   1 ltran  2016_paris     66 Feb 18 10:00 co
+drwxr-xr-x   8 ltran  2016_paris    272 Feb 18 09:50 libft
+-rw-r--r--   1 ltran  2016_paris     88 Feb 16 17:45 note.txt
+drwxr-xr-x  24 ltran  2016_paris    816 Feb 18 10:00 objs
+-rw-r--r--   1 ltran  2016_paris      0 Feb 18 10:02 po
+drwxr-xr-x  25 ltran  2016_paris    850 Feb 16 10:56 srcs
+drwxr-xr-x  14 ltran  2016_paris    476 Feb 16 16:04 test
+-rw-r--r--   1 ltran  2016_paris   6757 Feb 16 18:12 twenty.h

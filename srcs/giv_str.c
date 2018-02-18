@@ -15,7 +15,6 @@ char    *ed_str(t_edit *cmd, char *s, int nb)
         cmd = cmd->next;
     }
     s[i] = '\0';
-    // printf("%s, %i, %i\n", s, i, nb);
     return (s);
 }
 

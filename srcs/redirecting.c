@@ -35,9 +35,10 @@ void    redirecting_out(t_cmd **ex, t_env **env, int nw)
 
 void    redirecting_in(t_cmd **ex, t_env **env, int nw)
 {
-    pid_t      pid;
-    char       **arr = NULL;
+    pid_t       pid;
+    char        **arr = NULL;
     t_cmd       *tmp;
+    int         i = 0;
 
     if ((*ex)->type == 7)
     {    
@@ -52,6 +53,7 @@ void    redirecting_in(t_cmd **ex, t_env **env, int nw)
                 printf("error\n");
                 exit(0);
             }
+            i = dup(1);
             dup2(nw, (arr[2] == NULL ? 0 : ft_atoi(arr[0])));
             close(nw);
             tmp = *ex;
@@ -66,14 +68,15 @@ void    redirecting_in(t_cmd **ex, t_env **env, int nw)
             // printf("[%i] %s\n", (*ex)->next->type, (*ex)->next->cmd);
             wait(0);
             free_tab(arr);
+            dup2(0, i);
             
-            if ((*ex)->next->type == 8)
-            {
-            printf("[%i] %s\n", (*ex)->next->type, (*ex)->next->cmd);
-                *ex = (*ex)->next;
+            // if ((*ex)->next->type == 8)
+            // {
+            // printf("[%i] %s\n", (*ex)->next->type, (*ex)->next->cmd);
+            //     *ex = (*ex)->next;
                 
-                redirecting_out(&(*ex), &(*env), 0);
-            }
+            //     redirecting_out(&(*ex), &(*env), 0);
+            // }
 
         }
     }

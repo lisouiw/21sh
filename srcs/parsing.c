@@ -69,7 +69,6 @@ t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex) //sub and put into ex
         nw->prev = ex->prev;
         ex->prev = nw;
     }
-    // printf("");
     return (ex);
 }
 
@@ -196,7 +195,7 @@ int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
         return(i);
     join_redirecting(&(*ex));           // join les cas ls -a > co -q ----> ls -a q > co
     join_ex(&(*ex));                    //join les 0 ensemble
-    // print_ex_up(*ex);
+    print_ex_up(*ex);
     return (0);
 }
 

@@ -129,9 +129,8 @@ void    ctrl_de_test(t_edit *ed, t_froz *fz, char c, t_his *hs)
             printf("%c [%i][%i][%i][%i][%i]\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], ed->rpz[3], ed->rpz[4]);
             ed = ed->next;
         }
-        printf("%c [%i][%i][%i][%i][%i]\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], ed->rpz[3], ed->rpz[4]);
-        // printf("%c [%i][%i][%i][%i]\n i = %i ->%i | %i\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], ed->rpz[3], fz->nb[0], g_nb->tb[0], g_nb->tb[1]);
-        
+        // printf("%c [%i][%i][%i][%i][%i]\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], ed->rpz[3], ed->rpz[4]);
+        printf("%c [%i][%i][%i][%i]\nnb = %i co[%i] | li[%i]\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], ed->rpz[3], fz->nb[0], g_nb->tb[0], g_nb->tb[1]);
         // printf("%c [%i][%i][%i][%i][%i]\n i = %i ->%i | %i\n fz->cmd = {%s} && fz->paste = {%s} && mode[3] == %i\n", ed->c[0], ed->rpz[0], ed->rpz[1], ed->rpz[2], ed->rpz[3], ed->rpz[4],fz->nb[0], g_nb->tb[0], g_nb->tb[1], fz->cmd,fz->paste, fz->mode[3]);
     }
     else if (c == 14) // ctrl n

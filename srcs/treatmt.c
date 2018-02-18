@@ -4,6 +4,7 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
 {
     t_cmd   *ex;
     
+    ctrl_de_test(*cmd, *fz, 20, *hs);
     while ((*cmd)->rpz[0] == 0)
         *cmd = (*cmd)->next;
     if ((*fz)->nb[0] % g_nb->tb[0] != 1)
@@ -13,12 +14,13 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
     else if (parsing(*cmd, &(*fz), &ex) == 1) // parsing good
     {
         env = launchcmd(ex, env);
-        // printf("===TREAT APRES LAunch========\n");
         add_his(&(*hs), NULL, *fz);
-        
         free_all_ex(&ex);
-        free((*fz)->cmd);
-        (*fz)->cmd = NULL;
+        if ((*fz)->cmd)
+        {
+            free((*fz)->cmd);
+            (*fz)->cmd = NULL;
+        }
         // free_ex(&ex);
     }
     else if ((*fz)->mode[3] == 0) // parsing error qund lauch
@@ -36,7 +38,7 @@ int     add_his(t_his **hs, t_his *nw, t_froz *fz)
     if (!(nw = (t_his*)malloc(sizeof(t_his))))
         return(0);
     nw->cmd = ft_strdup(fz->cmd);
-    while ((*hs)->prev != NULL && (*hs)->cmd != NULL)
+    while ((*hs)->prev != NULL)
         *hs = (*hs)->prev;
     if (if_only(nw->cmd, ' ') || ((*hs)->next->cmd && ft_strcmp(nw->cmd, (*hs)->next->cmd) == 0 ))
     {
