@@ -8,11 +8,14 @@ t_edit  *touch(t_edit **ed, t_froz **fz, t_his **hs)
             ctrl_touch(&(*ed), &(*fz), (*fz)->buf[0], *hs);
         else if ((*fz)->buf[0] == 127)
         {
-            // if (!((*ed)->rpz[0] == 1 && (*ed)->rpz[1] == 1))
-            if (!((*ed)->rpz[0] == 1))
+            while ((*ed)->rpz[2] == 0) //se mettre au nv cursor
+                *ed = (*ed)->next;
+            if ((*ed)->rpz[0] != 1)
             {
                 *ed = erase_ed(*ed);
                 (*fz)->nb[0] = (*fz)->nb[0] - 1;
+                printf("nb = %i\n", (*fz)->nb[0]);
+                sleep(2);
                 if ((*ed)->rpz[0] == 1 && (*ed)->rpz[1] == 1 && (*ed)->rpz[2] == 3) // tout erase donc hsto on
                     (*fz)->mode[2] = 1;
             }

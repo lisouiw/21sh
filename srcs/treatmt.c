@@ -4,7 +4,6 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
 {
     t_cmd   *ex;
     
-    ctrl_de_test(*cmd, *fz, 20, *hs);
     while ((*cmd)->rpz[0] == 0)
         *cmd = (*cmd)->next;
     if ((*fz)->nb[0] % g_nb->tb[0] != 1)
@@ -66,7 +65,7 @@ t_env   *pipe_fct(t_exec *s, t_cmd *ex, t_env *env, pid_t pid)
         if (ex->next->type != 42 && ex->next->type == 3 )
             dup2(s->p[1], 1);
         close(s->p[0]);
-            env = exec_fct((arr = ft_strsplit(ex->cmd, ' ')), env);
+        env = exec_fct((arr = ft_strsplit(ex->cmd, ' ')), env);
     }
     else
     {

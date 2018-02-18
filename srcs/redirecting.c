@@ -65,19 +65,9 @@ void    redirecting_in(t_cmd **ex, t_env **env, int nw)
         }
         else
         {
-            // printf("[%i] %s\n", (*ex)->next->type, (*ex)->next->cmd);
             wait(0);
             free_tab(arr);
-            dup2(0, i);
-            
-            // if ((*ex)->next->type == 8)
-            // {
-            // printf("[%i] %s\n", (*ex)->next->type, (*ex)->next->cmd);
-            //     *ex = (*ex)->next;
-                
-            //     redirecting_out(&(*ex), &(*env), 0);
-            // }
-
+            dup2(i, 0);
         }
     }
 }
@@ -111,6 +101,6 @@ void    app_redirecting_out(t_cmd **ex, t_env **env, int nw)
     {
         wait(0);
         close(nw);
-        dup2(1, i);
+        dup2(1 ,i);
     }
 }
