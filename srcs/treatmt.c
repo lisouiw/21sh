@@ -54,37 +54,6 @@ int     add_his(t_his **hs, t_his *nw, t_froz *fz)
 }
 
 
-// t_env   *pipe_fct(t_exec *s, t_cmd *ex, t_env *env)
-// {
-//     char       **arr;
-//     // int		new;
-    
-//     if (wait(0))
-//     {
-//         dup2(s->fd_in, 0); //change the input according to the old one
-//         if (ex->next->type != 42 && ex->next->type == 3 && ex->next->type == 8)
-//             dup2(s->p[1], 1);
-//         close(s->p[0]);
-//         if (ex->type == 8)
-//             redirecting_out_child(&ex, &env, 0);
-//         else
-//             env = exec_fct((arr = ft_strsplit(ex->cmd, ' ')), env);
-//     }
-//     else
-//     {
-//         if (ex->type == 8)
-//             ;
-//         else
-//         {
-//             ex = ex->next;
-//             close(s->p[1]);
-//             s->fd_in = s->p[0]; //save the input for the next command
-//             s->fd_out = s->p[1];
-//         }
-//         // printf("========GO===OUT===%s==%i=%i\n", ex->cmd, s->p[0], s->p[1]);
-//     }
-//     return (env);
-// }
 
 t_env   *launchcmd(t_cmd *ex, t_env *env)
 {
@@ -93,12 +62,15 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
     char       **arr;
     
     i = 0;
-    s.fd_in = 0;
+    s.in = 0;
+    s.out = 1;
     s.ok = 1;
     while (ex->prev != NULL)
         ex = ex->prev;
-    if (ex->type == 42 && ex->next->type == 0 && ex->next->next->type == 42)   // condition si il ny qu'une commande
+        wait(0);
+    if (ex->type == 42 && ex->next->type == 0 && ex->next->next->type == 42 && wait(0))   // condition si il ny qu'une commande
     {       
+        wait(0);
         env = exec_fct((arr = ft_strsplit(ex->next->cmd, ' ')), env);
         free_tab(arr);
     }
@@ -108,14 +80,13 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
         {
             if (ex->type != 0 && ex->type != 42)
             {
-                if (ex->type == 8)
-                    redirecting_out(&ex, &env, 0);
-                else if (ex->type == 7)
-                    redirecting_in(&ex, &env, 0);
+                if (ex->type == 8 || ex->type == 7)
+                    env = pipe_fct(&s, ex, env);
                 else if (ex->type == 9)
                     app_redirecting_out(&ex, &env, 0);
                 else
                 {
+                    wait(0);
                     env = exec_fct((arr = ft_strsplit(ex->prev->cmd, ' ')), env);
                     free_tab(arr);
                 }

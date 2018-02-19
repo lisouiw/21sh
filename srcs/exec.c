@@ -52,6 +52,7 @@ t_env	*exec_fct(char **cut, t_env *env)
     else
 		b_other(cut, env);
 		// b_other(ar, env);
+
     return (env);
 }
 
@@ -115,7 +116,6 @@ int		give_path_nf(t_env *env, char **cut, int i, char **tab_env)
 			if ((a = access(cmd, F_OK)) == 0)
 				if (wait(0))
 					execve(cmd, cut, tab_env);
-			wait(0);
 			free(cmd);
 		}
 		free_tab(path);

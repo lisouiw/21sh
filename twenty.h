@@ -93,8 +93,8 @@ typedef struct      s_cmd
 typedef struct      s_exec
 {
     int             p[2];
-    int             fd_in;
-    int             fd_out;
+    int             in;
+    int             out;
     int             ok;
 }                   t_exec;
 
@@ -246,8 +246,9 @@ t_env   *pipe_fct(t_exec *s, t_cmd *ex, t_env *env);
 t_env	*exec_fct_nf(char **cut, t_env *env);
 
 
-void    redirecting_out_child(t_cmd **ex, t_env **env, int nw, pid_t *pid);
-void    redirecting_out_parent(t_cmd **ex, t_env **env, int nw, pid_t *pid);
+void    redirecting_out_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s);
+void    redirecting_in_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s);
+
 
 
 #endif
