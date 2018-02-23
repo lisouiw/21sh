@@ -57,43 +57,31 @@ int     add_his(t_his **hs, t_his *nw, t_froz *fz)
 
 t_env   *launchcmd(t_cmd *ex, t_env *env)
 {
-    t_exec     s;
-    int        i;
-    char       **arr;
-    
-    i = 0;
-    s.in = 0;
-    s.out = 1;
-    s.ok = 1;
-    while (ex->prev != NULL)
-        ex = ex->prev;
-        wait(0);
-    if (ex->type == 42 && ex->next->type == 0 && ex->next->next->type == 42 && wait(0))   // condition si il ny qu'une commande
-    {       
-        wait(0);
-        env = exec_fct((arr = ft_strsplit(ex->next->cmd, ' ')), env);
-        free_tab(arr);
-    }
-    else
+    t_exec  dot;
+
+    init_launch(&dot, &ex);
+    while (ex->next != NULL)
     {
-        while (ex->next != NULL && ++i < 10)
+        if (pipe_on(ex)) //je vais avoir des pipes a exec
+            env = pipe_fct(&dot, &ex, env);
+        else if (ex->type == 0 && (ex->next->type != 7 && ex->next->type != 8 && ex->next->type != 9))
         {
-            if (ex->type != 0 && ex->type != 42)
-            {
-                if (ex->type == 8 || ex->type == 7)
-                    env = pipe_fct(&s, ex, env);
-                else if (ex->type == 9)
-                    app_redirecting_out(&ex, &env, 0);
-                else
-                {
-                    wait(0);
-                    env = exec_fct((arr = ft_strsplit(ex->prev->cmd, ' ')), env);
-                    free_tab(arr);
-                }
-            }
-            if (ex->next != NULL)
-                ex = ex->next;
+            env = exec_fct(ft_strsplit(ex->cmd, ' '), env);
+            ex = ex->next;
         }
+        else if (ex->type == 0 && (ex->next->type == 7 || ex->next->type == 8  || ex->next->type == 9))
+        {
+            printf("REDIRECTION\n");
+            redirection(&ex, &env, &dot);
+        }
+        else
+            ex = ex->next;
+        // if (ex->type != 0)
+        //     dot.cmd = ex->type;
+        // if (ex->type == 0 && ex->next->type != 3 && ex->next->type != 7 && ex->next->type != 8 && ex->next->type != 9 && dot.cmd != 3)
+        //     env = exec_fct(ft_strsplit(ex->cmd, ' '), env);
+        // else if (ex->type == 0 && ex->next->type == 3)
+        // printf("Cmd = %s\n", ex->cmd);
     }
     return (env);
 }

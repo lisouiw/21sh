@@ -98,3 +98,14 @@ t_cmd   *init_ex(t_cmd *ex)
 
     return (ex);
 }
+
+void    init_launch(t_exec *dot, t_cmd **ex)
+{
+    while ((*ex)->prev != NULL)
+        *ex = (*ex)->prev;
+    *ex = (*ex)->next;
+    dot->cmd = 0;
+    dot->out = 1;
+    dot->in = 0;
+    dot->ok = 1;
+}

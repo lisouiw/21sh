@@ -465,8 +465,9 @@ void    loop_pipe(char ***cmd) //ls 3< "."
 {
     int		p[2];
 	pid_t   pid;
-	int		fd_in = 0;
-    
+    int		fd_in = 0;
+    char    BUF[100];
+    int     i;
     while (*cmd != NULL)
     {
         pipe(p);
@@ -476,9 +477,9 @@ void    loop_pipe(char ***cmd) //ls 3< "."
         {
 			printf("===ENTREE==%i==fd_in = %i & p[0] = %i && p[1] = %i\n", pid, fd_in, p[0], p[1]);
             dup2(fd_in, 0);
-			if (*(cmd + 1) != NULL)
-				dup2(p[1], 1);
-			printf("===NO=DUP==%i==fd_in = %i & p[0] = %i && p[1] = %i\n", pid, fd_in, p[0], p[1]);
+            if (*(cmd + 1) != NULL)
+                dup2(p[1], 1);
+            printf("===NO=DUP==%i==fd_in = %i & p[0] = %i && p[1] = %i\n", pid, fd_in, p[0], p[1]);
             close(p[0]);
             execvp((*cmd)[0], *cmd);
         }
@@ -486,7 +487,7 @@ void    loop_pipe(char ***cmd) //ls 3< "."
         {
             wait(NULL);
             close(p[1]);
-			fd_in = p[0];
+            fd_in = p[0];
 			printf("===SORTIE=%i==fd_in = %i & p[0] = %i && p[1] = %i\n\n", pid, fd_in, p[0], p[1]);
             ++cmd;
         }

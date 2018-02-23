@@ -25,9 +25,6 @@ int     parse_synthaxe(t_cmd *ex)
             return (-4); // cmd [;]
         ex = ex->next;
     }
-
-
-    
     while (ex->prev != NULL)
         ex = ex->prev;
     ex = ex->next;
@@ -71,6 +68,9 @@ t_cmd   *parse_op_int(t_cmd *ex, char *s) // give op ctrl specifique type and
             ex = giv_type(ex, s);
         ex = ex->next;
     }
+    while (ex->prev != NULL) // debut de la chaine 
+        ex = ex->prev;
+    
     while (ex->prev != NULL) // debut de la chaine 
         ex = ex->prev;
     return (ex);

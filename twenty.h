@@ -95,7 +95,8 @@ typedef struct      s_exec
     int             p[2];
     int             in;
     int             out;
-    int             ok;
+    int             ok; // por les || , &&
+    int             cmd;
 }                   t_exec;
 
 //ctrl 
@@ -150,6 +151,7 @@ void    init_data(t_froz **fz);
 t_his   *init_hs(t_his *hs, t_his *next);
 void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed);
 t_cmd   *init_ex(t_cmd *ex);
+void    init_launch(t_exec *dot, t_cmd **ex);
 
 //list_to_array
 char    ***list_to_arr(t_cmd *ex, char ***arr, t_cmd *count) ;// prendre en compte les redirection
@@ -195,7 +197,10 @@ char    *keep_paste(t_edit **ed, char *s);
 void    cut(t_edit **ed, t_froz **fz);
 t_edit  *paste(t_edit *ed, t_froz **fz);
 
-
+//pipe
+void    end_pipe(t_cmd **ex, t_exec **s);
+int     pipe_on(t_cmd *ex);
+t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env);
 
 // print_shell
 int		ft_put(int c);
@@ -210,9 +215,19 @@ void    put_prompt_init(t_froz **fz);
 int     giv_last(t_froz *fz);
 
 //redirecting
+void    redirection(t_cmd **ex, t_env **env, t_exec *s);
+// void    redirection(t_cmd **ex, t_env **env);
+
+// void    redirecting_in_child(t_cmd **ex, t_env **env);
+void    redirecting_in_child(t_cmd **ex, t_env **env, t_exec *s);
+
+
 void    redirecting_out(t_cmd **ex, t_env **env, int nw);
 void    redirecting_in(t_cmd **ex, t_env **env, int nw);
 void    app_redirecting_out(t_cmd **ex, t_env **env, int nw);
+void    redirecting_out_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s);
+
+
 
 // t 
 void	free_list(t_env **env);
@@ -241,13 +256,11 @@ int     add_his(t_his **hs, t_his *nw, t_froz *fz);
 t_env   *launchcmd(t_cmd *ex, t_env *env);
 t_env	*exec_fct(char **ar, t_env *env);
 char    **give_tab(char **ar, t_cmd **ex);
-t_env   *pipe_fct(t_exec *s, t_cmd *ex, t_env *env);
-// t_env   *pipe_fct(t_exec *s, t_cmd *ex, t_env *env, pid_t *pid);
 t_env	*exec_fct_nf(char **cut, t_env *env);
 
 
-void    redirecting_out_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s);
-void    redirecting_in_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s);
+// void    redirecting_out_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s);
+// void    redirecting_in_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s);
 
 
 
