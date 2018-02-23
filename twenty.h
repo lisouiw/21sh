@@ -11,6 +11,11 @@
 # include <sys/ioctl.h>
 # include <dirent.h>
 
+
+
+#include <sys/types.h>
+#include <sys/wait.h>
+
 ///GLOBALE
 
 struct termios		term;

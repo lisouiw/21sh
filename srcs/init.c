@@ -23,8 +23,8 @@ t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs)
     tputs(tgetstr("cl", NULL), 0, ft_put);
     *env = give_env(NULL);
     *ed = init_edit(NULL);
-    *fz = init_fz(NULL);
     *hs = init_hs(NULL, NULL);
+    *fz = init_fz(NULL);
     tputs(tgetstr("sc", NULL), 0, ft_put);
     ft_putstr("\033[0;33;40m>>\033[0m");
     if (!(g_nb = (t_num*)malloc(sizeof(t_num))))

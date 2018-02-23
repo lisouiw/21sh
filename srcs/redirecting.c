@@ -33,7 +33,7 @@ void    redirecting_in_child(t_cmd **ex, t_env **env, t_exec *s)
             break;
         else
         {
-            printf("mmmmmmmmm11mmmmm\n");
+            // printf("mmmmmmmmm11mmmmm\n");
             close(nw);
             free_tab(arr);
             *ex = (*ex)->next;
@@ -41,7 +41,7 @@ void    redirecting_in_child(t_cmd **ex, t_env **env, t_exec *s)
     }
     // print_tab(arr, -1);
     i = dup(s->in);
-    printf("mmmmmmmm222mmmmmm\n");
+    // printf("mmmmmmmm222mmmmmm\n");
     dup2(nw, (arr[2] == NULL ? s->in : ft_atoi(arr[0])));
     close(nw);
     tmp = *ex;

@@ -2,7 +2,8 @@
 
 void       end_pipe(t_cmd **ex, t_exec **s)
 {
-    wait(0);
+    if ((*ex)->next->type == 42)
+        wait(0);
     if ((*ex)->next->type == 7)
         while ((*ex)->type == 7 || (*ex)->next->type == 7 || (*ex)->type == 3)
             *ex = (*ex)->next;
@@ -10,9 +11,10 @@ void       end_pipe(t_cmd **ex, t_exec **s)
         *ex = (*ex)->next->next;
     else if ((*ex)->next != NULL)
         *ex = (*ex)->next;
+
     close((*s)->p[1]);
     (*s)->in = (*s)->p[0];
-    printf("===SORTIE=%i==fd_in = %i & p[0] = %i && p[1] = %i %s\n\n",0, (*s)->in, (*s)->p[0], (*s)->p[1], (*ex)->cmd);
+    // printf("===SORTIE=%i==fd_in = %i & p[0] = %i && p[1] = %i %s\n\n",0, (*s)->in, (*s)->p[0], (*s)->p[1], (*ex)->cmd);
 }
 
 int     pipe_on(t_cmd *ex)
@@ -27,7 +29,6 @@ int     pipe_on(t_cmd *ex)
 
 t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
 {
-    // char       **arr;
     pid_t   pid;
 
     while ((*ex)->next != NULL)
@@ -37,23 +38,27 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
             exit(EXIT_FAILURE);
         else if (pid == 0)
         {
-			printf("===ENTREE==%i==fd_in = %i & p[0] = %i && p[1] = %i %s\n", pid, s->in, s->p[0], s->p[1], (*ex)->cmd);
+			// printf("===ENTREE==%i==fd_in = %i & p[0] = %i && p[1] = %i %s\n", pid, s->in, s->p[0], s->p[1], (*ex)->cmd);
             dup2(s->in, 0);
             s->out = dup(1);
             if (pipe_on(*ex))
                 dup2(s->p[1], 1);
             close(s->p[0]);
-            printf("===NO=DUP==%i==fd_in = %i & p[0] = %i && p[1] = %i\n", pid, s->in, s->p[0], s->p[1]);
             if ((*ex)->next->type == 7 || (*ex)->next->type == 8 ||(*ex)->next->type == 9 )
-            {   
                 redirection(&(*ex), &env, &(*s));
-                exit(1);
-            }
             else
+            {
+                // if ((*ex)->next->type == 42)
+                //     wait(0);
                 env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env);
+            }
         }
         else
+        {
+            if ((*ex)->next->type == 42)
+                wait(0);
             end_pipe(&(*ex), &s);
+        }
     }
     return (env);
 }
