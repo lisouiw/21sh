@@ -2,8 +2,6 @@
 
 void       end_pipe(t_cmd **ex, t_exec **s)
 {
-    if ((*ex)->next->type == 42)
-        wait(0);
     if ((*ex)->next->type == 7)
         while ((*ex)->type == 7 || (*ex)->next->type == 7 || (*ex)->type == 3)
             *ex = (*ex)->next;
@@ -11,9 +9,8 @@ void       end_pipe(t_cmd **ex, t_exec **s)
         *ex = (*ex)->next->next;
     else if ((*ex)->next != NULL)
         *ex = (*ex)->next;
-
-    close((*s)->p[1]);
     (*s)->in = (*s)->p[0];
+    close((*s)->p[1]);
     // printf("===SORTIE=%i==fd_in = %i & p[0] = %i && p[1] = %i %s\n\n",0, (*s)->in, (*s)->p[0], (*s)->p[1], (*ex)->cmd);
 }
 
@@ -48,15 +45,22 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
                 redirection(&(*ex), &env, &(*s));
             else
             {
-                // if ((*ex)->next->type == 42)
-                //     wait(0);
+                if ((*ex)->next->type == 42)
+                    wait(0);
                 env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env);
             }
         }
         else
         {
+            int status;
+            
+      
             if ((*ex)->next->type == 42)
                 wait(0);
+            while ( (pid = waitpid(pid, &status, WNOHANG)) == -1) 
+                {
+                    printf("child %d terminated\n", pid);
+                }
             end_pipe(&(*ex), &s);
         }
     }
