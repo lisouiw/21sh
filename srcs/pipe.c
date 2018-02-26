@@ -2,6 +2,9 @@
 
 void       end_pipe(t_cmd **ex, t_exec **s)
 {
+    if ((*ex)->next->type == 42)
+        wait(0);
+    close((*s)->p[1]);
     if ((*ex)->next->type == 7)
         while ((*ex)->type == 7 || (*ex)->next->type == 7 || (*ex)->type == 3)
             *ex = (*ex)->next;
@@ -10,7 +13,6 @@ void       end_pipe(t_cmd **ex, t_exec **s)
     else if ((*ex)->next != NULL)
         *ex = (*ex)->next;
     (*s)->in = (*s)->p[0];
-    close((*s)->p[1]);
     // printf("===SORTIE=%i==fd_in = %i & p[0] = %i && p[1] = %i %s\n\n",0, (*s)->in, (*s)->p[0], (*s)->p[1], (*ex)->cmd);
 }
 
@@ -27,6 +29,7 @@ int     pipe_on(t_cmd *ex)
 t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
 {
     pid_t   pid;
+    int     dip;
 
     while ((*ex)->next != NULL)
     {
@@ -45,22 +48,35 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
                 redirection(&(*ex), &env, &(*s));
             else
             {
-                if ((*ex)->next->type == 42)
-                    wait(0);
+                // int status;
+            
+                // if ((*ex)->next->type == 42)
+                //     wait(0);
+                // while ( (dip = pid) && (pid = waitpid(pid, &status, WNOHANG)) == -1) 
+                // {
+                //     // wait(&dip);
+                //     // kill (dip - 1, SIGKILL);
+                    
+                //     printf("1child %d in the dip\n", dip);
+                //     printf("1child %d in the boucle\n", pid);
+                // }
                 env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env);
             }
         }
         else
         {
             int status;
-            
-      
+   
             if ((*ex)->next->type == 42)
                 wait(0);
-            while ( (pid = waitpid(pid, &status, WNOHANG)) == -1) 
-                {
-                    printf("child %d terminated\n", pid);
-                }
+            while ( (dip = pid) && (pid = waitpid(pid, &status, WNOHANG)) == -1) 
+            {
+                // wait(&dip);
+                kill (dip - 1, SIGKILL);
+                printf("2child %d in the dip\n", dip);
+                printf("2child %d in the boucle\n", pid);
+            }
+       
             end_pipe(&(*ex), &s);
         }
     }
