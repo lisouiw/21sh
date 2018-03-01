@@ -104,6 +104,12 @@ typedef struct      s_exec
     int             cmd;
 }                   t_exec;
 
+typedef struct      s_proc
+{
+    pid_t           pid;
+    struct  s_proc  *next;
+}                   t_proc;
+
 //ctrl 
 void    ctrl_touch(t_edit **ed, t_froz **fz, char c, t_his *hs);
 void    ctrl_de_test(t_edit *ed, t_froz *fz, char c, t_his *hs);
@@ -203,7 +209,7 @@ void    cut(t_edit **ed, t_froz **fz);
 t_edit  *paste(t_edit *ed, t_froz **fz);
 
 //pipe
-void    end_pipe(t_cmd **ex, t_exec **s);
+void    end_pipe(t_cmd **ex, t_exec **s, t_proc *p);
 int     pipe_on(t_cmd *ex);
 t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env);
 

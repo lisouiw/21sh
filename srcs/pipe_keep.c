@@ -1,19 +1,10 @@
 #include "../twenty.h"
 
-void       end_pipe(t_cmd **ex, t_exec **s, t_proc *p)
+void       end_pipe(t_cmd **ex, t_exec **s)
 {
+    if ((*ex)->next->type == 42)
+        wait(0);
     close((*s)->p[1]);
-    if ((*ex)->next->type == 42)
-        while (p->next != NULL)
-        {
-            printf("%d\n", p->pid);
-            kill(p->pid, SIGKILL);
-            p = p->next;
-        }
-    // if ((*ex)->next->type == 42)
-    //     sleep(1);    
-    if ((*ex)->next->type == 42)
-        wait(NULL);
     if ((*ex)->next->type == 7)
         while ((*ex)->type == 7 || (*ex)->next->type == 7 || (*ex)->type == 3)
             *ex = (*ex)->next;
@@ -34,47 +25,12 @@ int     pipe_on(t_cmd *ex)
     return (0);
 }
 
-void    init_proc(t_proc *p)
-{
-    p = (t_proc*)malloc(sizeof(t_proc));
-    p->pid = 0;
-    p->next = NULL;
-}
-
-t_proc  *add_pid(t_proc *p, pid_t pid)
-{
-    t_proc  *nw;
-    t_proc  *tmp;
-    
-    printf("->%d\n", pid);
-    if (p == NULL)
-    {
-        p = (t_proc*)malloc(sizeof(t_proc));
-        p->pid = pid;
-        p->next = NULL;
-    }
-    else
-    {
-        tmp = p;
-        while (tmp->next != NULL)
-            tmp = tmp->next;
-        nw = (t_proc*)malloc(sizeof(t_proc));
-        nw->pid = pid;
-        nw->next = NULL;
-        tmp->next = nw;
-    }
-    return (p);
-}
-
 
 t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
 {
     pid_t   pid;
-    t_proc  *p;
+    int     dip;
 
-    s->in = 0;
-    p = NULL;
-    // init_proc(&(*p));
     while ((*ex)->next != NULL)
     {
         pipe(s->p);
@@ -82,6 +38,7 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
             exit(EXIT_FAILURE);
         else if (pid == 0)
         {
+			// printf("===ENTREE==%i==fd_in = %i & p[0] = %i && p[1] = %i %s\n", pid, s->in, s->p[0], s->p[1], (*ex)->cmd);
             dup2(s->in, 0);
             s->out = dup(1);
             if (pipe_on(*ex))
@@ -91,20 +48,38 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
                 redirection(&(*ex), &env, &(*s));
             else
             {
-                if ((*ex)->next->type == 42)
-                    wait(0);
+                // int status;
+            
+                // if ((*ex)->next->type == 42)
+                //     wait(0);
+                // while ( (dip = pid) && (pid = waitpid(pid, &status, WNOHANG)) == -1) 
+                // {
+                //     // wait(&dip);
+                //     // kill (dip - 1, SIGKILL);
+                    
+                //     printf("1child %d in the dip\n", dip);
+                //     printf("1child %d in the boucle\n", pid);
+                // }
                 env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env);
             }
         }
         else
         {
-            p = add_pid(&(*p), pid);
+            int status;
+   
             if ((*ex)->next->type == 42)
-                wait(NULL);
-            end_pipe(&(*ex), &s, &(*p));
+                wait(0);
+            while ( (dip = pid) && (pid = waitpid(pid, &status, WNOHANG)) == -1) 
+            {
+                // wait(&dip);
+                kill (dip - 1, SIGKILL);
+                printf("2child %d in the dip\n", dip);
+                printf("2child %d in the boucle\n", pid);
+            }
+       
+            end_pipe(&(*ex), &s);
         }
     }
-
     return (env);
 }
 

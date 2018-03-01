@@ -496,13 +496,13 @@ void    loop_pipe(char ***cmd) //ls 3< "."
 
 int main()
 {
-	char *ls[] = {"ls", "-l", NULL};	
+	char *ls[] = {"ls", NULL};	
 	char *wc[] = {"wc", "-c", NULL};
 	char *cat[] = {"cat", NULL};  
 	char *redic[] = {"../../../../tmp/test.txt", NULL};  
-	char *redic2[] = {"grep", "Jan", NULL};  
+	char *redic2[] = {"cat", NULL};  
 	// char **cmd[] = {wc, redic, NULL};
-	char **cmd[] = {ls, redic2,wc, NULL};
+	char **cmd[] = {cat ,ls, NULL};
 
 	loop_pipe(cmd);
 	return (0);
