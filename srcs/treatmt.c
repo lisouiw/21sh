@@ -58,6 +58,7 @@ int     add_his(t_his **hs, t_his *nw, t_froz *fz)
 t_env   *launchcmd(t_cmd *ex, t_env *env)
 {
     t_exec  dot;
+    char    **arr;
 
     init_launch(&dot, &ex);
     while (ex->next != NULL)
@@ -66,7 +67,8 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
             env = pipe_fct(&dot, &ex, env);
         else if (ex->type == 0 && (ex->next->type != 7 && ex->next->type != 8 && ex->next->type != 9))
         {
-            env = exec_fct(ft_strsplit(ex->cmd, ' '), env);
+            env = exec_fct((arr = ft_strsplit(ex->cmd, ' ')), env);
+            free_tab(arr);
             ex = ex->next;
         }
         else if (ex->type == 0 && (ex->next->type == 7 || ex->next->type == 8  || ex->next->type == 9))

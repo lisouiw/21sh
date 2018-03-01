@@ -2,18 +2,22 @@
 
 void       end_pipe(t_cmd **ex, t_exec **s, t_proc *p)
 {
+    t_proc *tmp;
+
     close((*s)->p[1]);
     if ((*ex)->next->type == 42)
+        wait(0);
+    if ((*ex)->next->type == 42)
+    {
         while (p->next != NULL)
         {
-            printf("%d\n", p->pid);
             kill(p->pid, SIGKILL);
+            tmp = p;
             p = p->next;
+            free(tmp);
         }
-    // if ((*ex)->next->type == 42)
-    //     sleep(1);    
-    if ((*ex)->next->type == 42)
-        wait(NULL);
+        free(p);
+    }
     if ((*ex)->next->type == 7)
         while ((*ex)->type == 7 || (*ex)->next->type == 7 || (*ex)->type == 3)
             *ex = (*ex)->next;
@@ -22,6 +26,7 @@ void       end_pipe(t_cmd **ex, t_exec **s, t_proc *p)
     else if ((*ex)->next != NULL)
         *ex = (*ex)->next;
     (*s)->in = (*s)->p[0];
+ 
     // printf("===SORTIE=%i==fd_in = %i & p[0] = %i && p[1] = %i %s\n\n",0, (*s)->in, (*s)->p[0], (*s)->p[1], (*ex)->cmd);
 }
 
@@ -46,7 +51,7 @@ t_proc  *add_pid(t_proc *p, pid_t pid)
     t_proc  *nw;
     t_proc  *tmp;
     
-    printf("->%d\n", pid);
+    // printf("->%d\n", pid);
     if (p == NULL)
     {
         p = (t_proc*)malloc(sizeof(t_proc));
@@ -90,21 +95,16 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
             if ((*ex)->next->type == 7 || (*ex)->next->type == 8 ||(*ex)->next->type == 9 )
                 redirection(&(*ex), &env, &(*s));
             else
-            {
-                if ((*ex)->next->type == 42)
-                    wait(0);
                 env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env);
-            }
         }
         else
         {
             p = add_pid(&(*p), pid);
             if ((*ex)->next->type == 42)
-                wait(NULL);
+                wait(0);
             end_pipe(&(*ex), &s, &(*p));
         }
     }
-
     return (env);
 }
 
