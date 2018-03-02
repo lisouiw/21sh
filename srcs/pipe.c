@@ -12,6 +12,7 @@ void       end_pipe(t_cmd **ex, t_exec **s, t_proc *p)
     {
         while (p->next != NULL)
         {
+            kill(p->pid, SIGKILL);
             if ((i = kill(p->pid, SIGKILL)) == -1)
                 break;
             tmp = p;
@@ -19,7 +20,10 @@ void       end_pipe(t_cmd **ex, t_exec **s, t_proc *p)
             free(tmp);
         }
         if (i != -1)
+        {
+            kill(p->pid, SIGKILL);
             free(p);
+        }
         else if (p)
         {
             while (p->next != NULL)
@@ -67,7 +71,6 @@ t_proc  *add_pid(t_proc *p, pid_t pid)
     t_proc  *nw;
     t_proc  *tmp;
     
-    // printf("->%d\n", pid);
     if (p == NULL)
     {
         p = (t_proc*)malloc(sizeof(t_proc));
@@ -95,7 +98,6 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
 
     s->in = 0;
     p = NULL;
-    // init_proc(&(*p));
     while ((*ex)->next != NULL)
     {
         pipe(s->p);
@@ -116,8 +118,6 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
         else
         {
             p = add_pid(&(*p), pid);
-            if ((*ex)->next->type == 42)
-                wait(0);
             end_pipe(&(*ex), &s, &(*p));
         }
     }
