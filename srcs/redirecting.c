@@ -3,7 +3,7 @@
 
 void    redirection(t_cmd **ex, t_env **env, t_exec *s)
 {
-    printf("REDIRECTION\n");
+    // printf("REDIRECTION\n");
     *ex = (*ex)->next;
     if ((*ex)->type == 7)
         redirecting_in_child(&(*ex), &(*env), &(*s));
@@ -26,7 +26,7 @@ void    redirecting_in_child(t_cmd **ex, t_env **env, t_exec *s)
         {
             close(s->p[1]);
             dup2(s->out, 1);
-            printf("ERROR %i\n", s->out);
+            // printf("ERROR %i\n", s->out);
             exit(0);
         }
         if ((*ex)->next->type != 7)

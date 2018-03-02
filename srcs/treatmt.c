@@ -73,7 +73,7 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
         }
         else if (ex->type == 0 && (ex->next->type == 7 || ex->next->type == 8  || ex->next->type == 9))
         {
-            printf("REDIRECTION\n");
+            // printf("REDIRECTION\n");
             redirection(&ex, &env, &dot);
         }
         else

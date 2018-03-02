@@ -3,6 +3,7 @@
 void       end_pipe(t_cmd **ex, t_exec **s, t_proc *p)
 {
     t_proc *tmp;
+    int     i;
 
     close((*s)->p[1]);
     if ((*ex)->next->type == 42)
@@ -11,13 +12,28 @@ void       end_pipe(t_cmd **ex, t_exec **s, t_proc *p)
     {
         while (p->next != NULL)
         {
-            kill(p->pid, SIGKILL);
+            if ((i = kill(p->pid, SIGKILL)) == -1)
+                break;
             tmp = p;
             p = p->next;
             free(tmp);
         }
-        free(p);
+        if (i != -1)
+            free(p);
+        else if (p)
+        {
+            while (p->next != NULL)
+            {
+                tmp = p;
+                p = p->next;
+                free(tmp);
+            }
+            free(p);
+        }            
     }
+  
+    if ((*ex)->next->type == 42)
+        wait(0);
     if ((*ex)->next->type == 7)
         while ((*ex)->type == 7 || (*ex)->next->type == 7 || (*ex)->type == 3)
             *ex = (*ex)->next;
