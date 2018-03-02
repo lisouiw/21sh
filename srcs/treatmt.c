@@ -54,7 +54,6 @@ int     add_his(t_his **hs, t_his *nw, t_froz *fz)
 }
 
 
-
 t_env   *launchcmd(t_cmd *ex, t_env *env)
 {
     t_exec  dot;
@@ -72,10 +71,7 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
             ex = ex->next;
         }
         else if (ex->type == 0 && (ex->next->type == 7 || ex->next->type == 8  || ex->next->type == 9))
-        {
-            // printf("REDIRECTION\n");
-            redirection(&ex, &env, &dot);
-        }
+            redirection_f(&ex, &env, &dot);
         else
             ex = ex->next;
         // if (ex->type != 0)

@@ -50,48 +50,12 @@ void    redirecting_in_child(t_cmd **ex, t_env **env, t_exec *s)
         tmp = tmp->prev;
     if (tmp->prev->type == 0 && tmp->prev->cmd != NULL && (arr = ft_strsplit(tmp->prev->cmd, ' ')) && wait(0))
         *env = exec_fct(arr, *env);
-    else 
-        exit(0);
+    // else 
+    //     exit(0);
     dup2(i, 0);
         
 }
 
-// void    redirecting_in_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s)
-// {
-//     char        **arr = NULL;
-//     t_cmd       *tmp;
-
-//         if (s->in)
-//             ;
-//         if (*pid == 0)
-//         {
-//             while ((*ex)->type == 7 && (*ex)->next->type == 7)
-//             {
-//                 arr = ft_strsplit((*ex)->cmd, ' ');
-//                 if ((nw = (arr[2] == NULL) ? open(arr[1], O_RDONLY) : open(arr[2], O_RDONLY) ) == -1)
-//                 {
-//                     wait(0);
-//                     printf("%i error_in_child\n", *pid);
-//                     exit(0);
-//                 }
-//                 if ((*ex)->next->type != 7)
-//                     break;
-//                 close(nw);
-//                 free_tab(arr);
-//                 *ex = (*ex)->next;
-//             }
-//             dup2(nw, (arr[2] == NULL ? 0 : ft_atoi(arr[0])));
-//             close(nw);
-//             tmp = *ex;
-//             free_tab(arr);
-//             while (tmp->prev->type != 0  && tmp->prev->type != 42 && tmp->prev->type != 8)
-//                 tmp = tmp->prev;
-//             if (tmp->prev->type == 0 && tmp->prev->cmd != NULL && (arr = ft_strsplit(tmp->prev->cmd, ' ')) && wait(0))
-//                 *env = exec_fct_nf(arr, *env);
-//             else 
-//                 exit(0);
-//         }
-// }
 
 void    redirecting_out_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s)
 {
@@ -129,6 +93,43 @@ void    redirecting_out_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exe
     }
 }
 
+
+// void    redirecting_in_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s)
+// {
+//     char        **arr = NULL;
+//     t_cmd       *tmp;
+
+//         if (s->in)
+//             ;
+//         if (*pid == 0)
+//         {
+//             while ((*ex)->type == 7 && (*ex)->next->type == 7)
+//             {
+//                 arr = ft_strsplit((*ex)->cmd, ' ');
+//                 if ((nw = (arr[2] == NULL) ? open(arr[1], O_RDONLY) : open(arr[2], O_RDONLY) ) == -1)
+//                 {
+//                     wait(0);
+//                     printf("%i error_in_child\n", *pid);
+//                     exit(0);
+//                 }
+//                 if ((*ex)->next->type != 7)
+//                     break;
+//                 close(nw);
+//                 free_tab(arr);
+//                 *ex = (*ex)->next;
+//             }
+//             dup2(nw, (arr[2] == NULL ? 0 : ft_atoi(arr[0])));
+//             close(nw);
+//             tmp = *ex;
+//             free_tab(arr);
+//             while (tmp->prev->type != 0  && tmp->prev->type != 42 && tmp->prev->type != 8)
+//                 tmp = tmp->prev;
+//             if (tmp->prev->type == 0 && tmp->prev->cmd != NULL && (arr = ft_strsplit(tmp->prev->cmd, ' ')) && wait(0))
+//                 *env = exec_fct_nf(arr, *env);
+//             else 
+//                 exit(0);
+//         }
+// }
 
 // void    redirecting_out(t_cmd **ex, t_env **env, int nw)
 // {

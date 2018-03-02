@@ -2,40 +2,16 @@
 
 void       end_pipe(t_cmd **ex, t_exec **s, t_proc *p)
 {
-    t_proc *tmp;
     int     i;
-
+    
     close((*s)->p[1]);
     if ((*ex)->next->type == 42)
         wait(0);
     if ((*ex)->next->type == 42)
     {
-        while (p->next != NULL)
-        {
-            kill(p->pid, SIGKILL);
-            if ((i = kill(p->pid, SIGKILL)) == -1)
-                break;
-            tmp = p;
-            p = p->next;
-            free(tmp);
-        }
-        if (i != -1)
-        {
-            kill(p->pid, SIGKILL);
-            free(p);
-        }
-        else if (p)
-        {
-            while (p->next != NULL)
-            {
-                tmp = p;
-                p = p->next;
-                free(tmp);
-            }
-            free(p);
-        }            
+        i = free_kill(&p);
+        free_pid_loop(&(*p), i);
     }
-  
     if ((*ex)->next->type == 42)
         wait(0);
     if ((*ex)->next->type == 7)
@@ -46,8 +22,6 @@ void       end_pipe(t_cmd **ex, t_exec **s, t_proc *p)
     else if ((*ex)->next != NULL)
         *ex = (*ex)->next;
     (*s)->in = (*s)->p[0];
- 
-    // printf("===SORTIE=%i==fd_in = %i & p[0] = %i && p[1] = %i %s\n\n",0, (*s)->in, (*s)->p[0], (*s)->p[1], (*ex)->cmd);
 }
 
 int     pipe_on(t_cmd *ex)

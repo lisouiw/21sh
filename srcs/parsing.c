@@ -232,7 +232,7 @@ int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex)
         free_all_ex(&(*ex));
         if (!((*fz)->mode[3] >= 0 && (*fz)->mode[3] < 6)) // autre && || |
         {
-            // printf("ERROR %i\n", (*fz)->mode[3]);
+            printf("ERROR %i\n", (*fz)->mode[3]);
             (*fz)->mode[3] = 0;
         }
         else 

@@ -148,7 +148,8 @@ int		give_path_nf(t_env *env, char **cut, int i, char **tab_env);
 //free
 void    free_ex(t_cmd **ex);
 void    free_all_ex(t_cmd **ex);
-
+void    free_pid_loop(t_proc *p, int i);
+int    free_kill(t_proc **p);
 
 //giv_str
 char    *ed_str(t_edit *cmd, char *s, int nb);
@@ -212,6 +213,8 @@ t_edit  *paste(t_edit *ed, t_froz **fz);
 void    end_pipe(t_cmd **ex, t_exec **s, t_proc *p);
 int     pipe_on(t_cmd *ex);
 t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env);
+void    init_proc(t_proc *p);
+t_proc  *add_pid(t_proc *p, pid_t pid);
 
 // print_shell
 int		ft_put(int c);
@@ -225,11 +228,14 @@ void    put_prompt(t_froz *fz);
 void    put_prompt_init(t_froz **fz);
 int     giv_last(t_froz *fz);
 
+//redirecting_fork
+
+void    redirection_f(t_cmd **ex, t_env **env, t_exec *s);
+void    redirecting_in(t_cmd **ex, t_env **env, int nw);
+int     redirection_file_check(char ***arr, t_cmd *ex, int nw);
+
 //redirecting
 void    redirection(t_cmd **ex, t_env **env, t_exec *s);
-// void    redirection(t_cmd **ex, t_env **env);
-
-// void    redirecting_in_child(t_cmd **ex, t_env **env);
 void    redirecting_in_child(t_cmd **ex, t_env **env, t_exec *s);
 
 

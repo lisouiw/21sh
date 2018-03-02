@@ -24,3 +24,41 @@ void    free_all_ex(t_cmd **ex)
     free((*ex)->cmd);
     free(*ex);
 }
+
+int    free_kill(t_proc **p)
+{
+    int i;
+    t_proc *tmp;
+
+    while ((*p)->next != NULL)
+    {
+        kill((*p)->pid, SIGKILL);
+        if ((i = kill((*p)->pid, SIGKILL)) == -1)
+            break;
+        tmp = *p;
+        *p = (*p)->next;
+        free(tmp);
+    }
+    return (i);
+}
+
+void    free_pid_loop(t_proc *p, int i)
+{
+    t_proc *tmp;
+    
+    if (i != -1)
+    {
+        kill(p->pid, SIGKILL);
+        free(p);
+    }
+    else if (p)
+    {
+        while (p->next != NULL)
+        {
+            tmp = p;
+            p = p->next;
+            free(tmp);
+        }
+        free(p);
+    }
+}
