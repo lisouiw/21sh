@@ -233,6 +233,8 @@ int     giv_last(t_froz *fz);
 void    redirection_f(t_cmd **ex, t_env **env, t_exec *s);
 void    redirecting_in(t_cmd **ex, t_env **env, int nw);
 int     redirection_file_check(char ***arr, t_cmd *ex, int nw);
+int    redirection_file_create(t_cmd **ex, char **arr);
+
 
 //redirecting
 void    redirection(t_cmd **ex, t_env **env, t_exec *s);

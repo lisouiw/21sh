@@ -2,13 +2,55 @@
 
 void    redirection_f(t_cmd **ex, t_env **env, t_exec *s)
 {
+    if (s)
+        ;
     *ex = (*ex)->next;
     if ((*ex)->type == 7)
         redirecting_in(&(*ex), &(*env), 0);
-    if ((*env)->name || s)
-        ;
+    else if ((*ex)->type == 8)
+        redirecting_out(&(*ex), &(*env), 0);;
     
 }
+int    redirection_file_create(t_cmd **ex, char **arr)
+{
+    int     nw;
+    
+    nw = 0;
+    while ((*ex)->type == 8)
+    {
+        arr = ft_strsplit((*ex)->cmd, ' ');
+        nw = (arr[2] == NULL) ? open(arr[1], O_CREAT | O_WRONLY | O_TRUNC, 0644) : open(arr[2], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+        if ((*ex)->next->type == 8)
+        {
+            free_tab(arr);
+            close(nw);
+        }
+        else
+            return (nw); 
+        *ex = (*ex)->next;
+    }
+    return (nw); 
+}
+
+void    redirecting_out(t_cmd **ex, t_env **env, int nw)
+{
+    pid_t       pid;
+    char       **arr;
+    char       **last;    
+ 
+    last = NULL;
+    if ((pid = fork()) == -1)
+        exit(EXIT_FAILURE);
+    else if (pid == 0)
+    {
+        arr = ft_strsplit((*ex)->prev->cmd, ' ');
+        nw = redirection_file_create(&(*ex), &(*last));
+        dup2(nw, 1);
+        close(nw);
+        *env = exec_fct_nf(arr, *env);
+    }
+}
+
 
 int     redirection_file_check(char ***arr, t_cmd *ex, int nw)
 {
@@ -30,7 +72,6 @@ int     redirection_file_check(char ***arr, t_cmd *ex, int nw)
         ft_putstr_fd("error\n", 2);
         exit(0);
     }   
-    // print_tab(arr, -1);
     return (nw);
 }
 
@@ -74,8 +115,8 @@ void    redirecting_in(t_cmd **ex, t_env **env, int nw)
 //     int         i = 0;
  
 
-    // while ((*ex)->type == 7)
-        // *ex = (*ex)->next;
+//     while ((*ex)->type == 7)
+//         *ex = (*ex)->next;
 //     while (nw != -1 && (ex)->type == 7)
 //     {
 //         pute = ft_strsplit((ex)->cmd, ' ');
@@ -85,29 +126,29 @@ void    redirecting_in(t_cmd **ex, t_env **env, int nw)
 //         free_tab(pute);
 //         ex = (ex)->next;
 //     }
-    // if ((pid = fork()) == -1)
-    //     exit(EXIT_FAILURE);
-    // else if (pid == 0)
-    // {
-    //     arr = ft_strsplit((*ex)->cmd, ' ');
+//     if ((pid = fork()) == -1)
+//         exit(EXIT_FAILURE);
+//     else if (pid == 0)
+//     {
+//         arr = ft_strsplit((*ex)->cmd, ' ');
 
-    //     nw = (arr[2] == NULL) ? open(arr[1], O_CREAT | O_WRONLY | O_TRUNC, 0644) : open(arr[2], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-    //     i = dup(1);
-    //     dup2(nw, (arr[2] == NULL ? 1 : ft_atoi(arr[0])));
-    //     tmp = *ex;
-    //     free_tab(arr);
-    //     while (tmp->prev->type != 0  && tmp->prev->type != 42)
-    //         tmp = tmp->prev;
-    //     if (wait(0) && tmp->prev->cmd != NULL && (arr = ft_strsplit(tmp->prev->cmd, ' ')))
-    //     {
-    //        *env = exec_fct_nf(arr, *env);
-    //         free_tab(arr);
-    //     }
-    // }
-    // else
-    // {
-    //     wait(0);
-    //     close(nw);
-    //     dup2(1, i);
-    // }
+//         nw = (arr[2] == NULL) ? open(arr[1], O_CREAT | O_WRONLY | O_TRUNC, 0644) : open(arr[2], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+//         i = dup(1);
+//         dup2(nw, (arr[2] == NULL ? 1 : ft_atoi(arr[0])));
+//         tmp = *ex;
+//         free_tab(arr);
+//         while (tmp->prev->type != 0  && tmp->prev->type != 42)
+//             tmp = tmp->prev;
+//         if (wait(0) && tmp->prev->cmd != NULL && (arr = ft_strsplit(tmp->prev->cmd, ' ')))
+//         {
+//            *env = exec_fct_nf(arr, *env);
+//             free_tab(arr);
+//         }
+//     }
+//     else
+//     {
+//         wait(0);
+//         close(nw);
+//         dup2(1, i);
+//     }
 // }
