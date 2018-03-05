@@ -231,21 +231,24 @@ int     giv_last(t_froz *fz);
 //redirecting_fork
 
 void    redirection_f(t_cmd **ex, t_env **env, t_exec *s);
-void    redirecting_in(t_cmd **ex, t_env **env, int nw);
-int     redirection_file_check(char ***arr, t_cmd *ex, int nw);
-int    redirection_file_create(t_cmd **ex, char **arr);
+// void    redirecting_in(t_cmd **ex, t_env **env, int nw);
+void    redirecting_in(t_cmd **ex, t_env **env, char **arr);
+void    redirection_fork(t_cmd **ex, t_env **env, char **arr);
 
 
 //redirecting
 void    redirection(t_cmd **ex, t_env **env, t_exec *s);
 void    redirecting_in_child(t_cmd **ex, t_env **env, t_exec *s);
 
-
 void    redirecting_out(t_cmd **ex, t_env **env, int nw);
-void    redirecting_in(t_cmd **ex, t_env **env, int nw);
+// void    redirecting_in(t_cmd **ex, t_env **env, int nw);
 void    app_redirecting_out(t_cmd **ex, t_env **env, int nw);
 void    redirecting_out_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s);
 
+//redirecting_checking
+int     redirection_check_create(t_cmd *ex);
+void    redirection_file_create(t_cmd *ex);
+int     redirection_file_check(t_cmd *ex);
 
 
 // t 

@@ -1,89 +1,48 @@
 #include "../twenty.h"
 
-void    redirection_f(t_cmd **ex, t_env **env, t_exec *s)
+int     redirection_check_create(t_cmd *ex)
 {
+    while ((ex)->type == 7 || (ex)->type == 8)
+    {
+        if ((ex)->type == 8)
+            redirection_file_create(ex);
+        else if ((ex)->type == 7 && redirection_file_check(ex) == -1)
+                return (0);
+        ex = (ex)->next;
+    }
+    return (1);
+}
+
+void    redirection_file_create(t_cmd *ex)
+{
+    int     nw;
     char    **arr;
-    pid_t       pid;
-    
-
-    if (s || env)
-        ;
-    arr = ft_strsplit((*ex)->cmd, ' ');
-    *ex = (*ex)->next;
-    
-    if ((pid = fork()) == -1)
-        exit(EXIT_FAILURE);
-    else if (pid == 0)
-    {
-        if (redirection_check_create(*ex))
-            redirecting_in(ex, env, arr);
-            // *env = exec_fct_nf(arr, *env);
-        else
-            exit(0);
-    }
+      
+    arr = ft_strsplit((ex)->cmd, ' ');
+    nw = (arr[2] == NULL) ? open(arr[1], O_CREAT | O_WRONLY | O_TRUNC, 0644) : open(arr[2], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    dup2(nw, (arr[2] == NULL ? 1 : ft_atoi(arr[0])));
     free_tab(arr);
+    close(nw);
 }
 
-// void    redirection_fork(t_cmd **ex, t_env **env, char **arr)
-// {
-//     // printf("====%i====\n",(*ex)->type );
-//     if ((*ex)->type == 7)
-//         redirecting_in(&(*ex), &(*env), arr);
-//     // else if ((*ex)->type == 8)
-//     //     redirecting_out(&(*ex), &(*env), arr);
-// }
-
-void    redirecting_in(t_cmd **ex, t_env **env, char **arr)
+int     redirection_file_check(t_cmd *ex)
 {
-    int         nw;
-    char        **tmp;
-    
-    if (*ex)
-    {
-        tmp = ft_strsplit((*ex)->cmd, ' ');
-        nw = (tmp[2] == NULL) ? open(tmp[1], O_RDONLY) : open(tmp[2], O_RDONLY);
-        dup2(nw, (arr[2] == NULL ? 0 : ft_atoi(tmp[0])));
-        // free_tab(arr);
-        *env = exec_fct_nf(arr, *env);
-    }
-    else
-    {
-        kill(wait(NULL), SIGKILL);
-        // free_tab(arr);
-    }
-}
+    int     nw;
+    char    **arr;
 
-// void    redirecting_in(t_cmd **ex, t_env **env, char **arr)
-// {
-//     pid_t       pid;
-//     // int         i;
-//     // int         a;
-    
-//     if (*ex)
-//         ;
-//         printf("========\n");
-//     if ((pid = fork()) == -1)
-//         exit(EXIT_FAILURE);
-//     else if (pid == 0)
-//     {
-//         printf("========\n");
-//         // exit(0);
-//         // i = open("i", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-//         // a = open("a", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-//         // dup2(i, 1) ;
-//         // dup2(a, 1 );
-//         // arr = ft_strsplit((ex)->cmd, ' ');
-//         // nw = (arr[2] == NULL) ? open(arr[1], O_RDONLY) : open(arr[2], O_RDONLY);
-//         // dup2(nw, (arr[2] == NULL ? 0 : ft_atoi(arr[0])));
-//         // free_tab(arr);
-//         *env = exec_fct_nf(arr, *env);
-//     }
-//     else
-//     {
-//         kill(wait(NULL), SIGKILL);
-//         // free_tab(arr);
-//     }
-// }
+    arr = ft_strsplit((ex)->cmd, ' ');
+    nw = (arr[2] == NULL) ? open(arr[1], O_RDONLY) : open(arr[2], O_RDONLY);
+    if (nw == -1)
+    {
+        ft_putstr_fd("error", 2);
+        ft_putendl_fd((ex)->cmd, 2);
+        free_tab(arr);
+        return (0);
+    }
+    close(nw);
+    free_tab(arr);
+    return (1);
+}
 
 // void    redirecting_out(t_cmd **ex, t_env **env, int nw)
 // {
@@ -106,7 +65,31 @@ void    redirecting_in(t_cmd **ex, t_env **env, char **arr)
 
 
 
+// void    redirecting_in(t_cmd **ex, t_env **env, int nw)
+// {
+//     pid_t       pid;
+//     char        **arr;
+//     int         i = 0;
 
+//     arr = NULL;  
+//     if ((pid = fork()) == -1)
+//         exit(EXIT_FAILURE);
+//     else if (pid == 0)
+//     {
+//         nw = redirection_file_check(&arr, *ex, nw);
+//         i = dup(0);
+//         dup2(nw, (arr[2] == NULL ? 0 : ft_atoi(arr[0])));
+//         close(nw);
+//         free_tab(arr);
+//         arr = ft_strsplit((*ex)->prev->cmd, ' ');
+//         *env = exec_fct_nf(arr, *env);
+//     }
+//     else
+//     {
+//         kill(wait(NULL), SIGKILL);
+//         free_tab(arr);
+//     }
+// }
 
 // int     redirection_file_check(char ***arr, t_cmd *ex, int nw)
 // {
@@ -139,8 +122,8 @@ void    redirecting_in(t_cmd **ex, t_env **env, char **arr)
 //     nw = 0;
 //     while ((*ex)->type == 8)
 //     {
-//         nw = (arr[2] == NULL) ? open(arr[1], O_CREAT | O_WRONLY | O_TRUNC, 0644) : open(arr[2], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 //         arr = ft_strsplit((*ex)->cmd, ' ');
+//         nw = (arr[2] == NULL) ? open(arr[1], O_CREAT | O_WRONLY | O_TRUNC, 0644) : open(arr[2], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 //         if ((*ex)->next->type == 8)
 //         {
 //             free_tab(arr);

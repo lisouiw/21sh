@@ -89,6 +89,7 @@ void	b_other_nf(char **cut, t_env *env)
 		if (wait(0) && execve(cut[0], cut, tab_env) == -1)
 			if (give_path_nf(env, cut, -1, tab_env) == -1)
 			{
+				exit(0);
 				ft_putstr("sh: command not found: ");
 				ft_putendl(cut[0]);
 				exit(-1);
@@ -114,8 +115,10 @@ int		give_path_nf(t_env *env, char **cut, int i, char **tab_env)
 		while (path[++i] && a == -1 && (cmd = t_strjoin(path[i], "/", cut[0])))
 		{
 			if ((a = access(cmd, F_OK)) == 0)
+			{
 				if (wait(0))
 					execve(cmd, cut, tab_env);
+			}
 			free(cmd);
 		}
 		free_tab(path);
