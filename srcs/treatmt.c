@@ -10,7 +10,7 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
         ft_putchar('\n');
     if ((*cmd)->c[0] == '\0' && (*fz)->cmd == NULL) //&& (*fz)->mode[3] != 0)  // quand il n'y a rien
         return(env);
-    else if (parsing(*cmd, &(*fz), &ex) == 1) // parsing good
+    else if (parsing(*cmd, &(*fz), &ex, env) == 1) // parsing good
     {
         env = launchcmd(ex, env);
         add_his(&(*hs), NULL, *fz);

@@ -142,7 +142,7 @@ void    join_redirecting2(t_cmd **join, t_cmd **ex)
     char    *tmp2;
     t_cmd   *cmd;
 
-    while ((*ex)->type == 8 || (*ex)->type == 7)
+    while ((*ex)->type == 8 || (*ex)->type == 7||  (*ex)->type == 9)
     {
         *ex = (*ex)->next;
         if ((*ex)->type == 0)
@@ -170,7 +170,7 @@ void    join_redirecting(t_cmd **ex)
     {
         while ((*ex)->next != NULL)
         { 
-            if (((*ex)->type == 8 || (*ex)->type == 7) && (*ex)->prev->type == 0)// ls > co > co
+            if (((*ex)->type == 8 || (*ex)->type == 7 || (*ex)->type == 9) && (*ex)->prev->type == 0)// ls > co > co
                 join_redirecting2(&(*ex)->prev, &(*ex));
             if ((*ex)->next != NULL)
                 *ex = (*ex)->next;
@@ -179,13 +179,15 @@ void    join_redirecting(t_cmd **ex)
 }
 
 
-int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
+int     parsing_op(char *s, t_cmd **ex, t_env *env) //get all op ctrl
 {
     int     i;
         
     i = 0;
     while (s[i] && s[i] == ' ')
         ++i;
+    // ecriture_info(env);
+    s = quote_variable(s, NULL, env);
     *ex = separate_cmd(s, i, i, *ex);   //separate by simple word and metacharactere
     i = parse_type(&(*ex));             // give at first a type as cmd(0) or a op ctrl(1)
                                         //parse variable environnement
@@ -193,9 +195,9 @@ int     parsing_op(char *s, t_cmd **ex) //get all op ctrl
                                         //and parse redirection proprely
     if ((i = parse_synthaxe(*ex)) != 0)
         return(i);
+    // print_ex_up(*ex);
     join_redirecting(&(*ex));           // join les cas ls -a > co -q ----> ls -a q > co
     join_ex(&(*ex));                    //join les 0 ensemble
-    print_ex_up(*ex);
     return (0);
 }
 
@@ -216,7 +218,7 @@ int     parsing_quote(char *s) //if all quotes are closed
     return (i);
 }
 
-int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex)
+int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex, t_env *env)
 {
     char    *nw;
 
@@ -227,7 +229,7 @@ int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex)
         ed = ed->next;
     if (((*fz)->mode[3] = parsing_quote((*fz)->cmd))) //parsing_quote
         return(0);
-    else if (((*fz)->mode[3] = parsing_op((*fz)->cmd, &(*ex)))) // parsing_op
+    else if (((*fz)->mode[3] = parsing_op((*fz)->cmd, &(*ex), env))) // parsing_op
     {
         free_all_ex(&(*ex));
         if (!((*fz)->mode[3] >= 0 && (*fz)->mode[3] < 6)) // autre && || |

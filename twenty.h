@@ -110,6 +110,12 @@ typedef struct      s_proc
     struct  s_proc  *next;
 }                   t_proc;
 
+typedef struct      s_varq
+{
+    char            *cmd;
+    struct  s_varq  *next;
+}                   t_varq;
+
 //ctrl 
 void    ctrl_touch(t_edit **ed, t_froz **fz, char c, t_his *hs);
 void    ctrl_de_test(t_edit *ed, t_froz *fz, char c, t_his *hs);
@@ -174,6 +180,11 @@ char    ***list_to_arr_zero(t_cmd **ex, char ****arr, t_cmd *count, int a); // p
 void    cursor_end(t_edit *ed);
 void    put_my_cur(int nb, char c);
 
+// parsing_quote_variable
+t_varq  *add_varq(char *s, t_varq *v, t_env *env);
+char    *quote_variable(char *s, t_varq *v, t_env *env);
+
+
 // parsing_tools
 
 int     isnumber(char *s);
@@ -198,9 +209,9 @@ int     parse_synthaxe(t_cmd *ex);
 // parsing
 t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex);
 t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex);
-int     parsing_op(char *s, t_cmd **ex);
+int     parsing_op(char *s, t_cmd **ex, t_env *env);
 int     parsing_quote(char *s);
-int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex);
+int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex, t_env *env);
 void    join_redirecting(t_cmd **ex);
 
 // pascutcopy
@@ -229,19 +240,17 @@ void    put_prompt_init(t_froz **fz);
 int     giv_last(t_froz *fz);
 
 //redirecting_fork
-
+char    **give_seven(t_cmd *ex);
+void    redirection(t_cmd **ex, t_env **env, t_exec *s);
 void    redirection_f(t_cmd **ex, t_env **env, t_exec *s);
-// void    redirecting_in(t_cmd **ex, t_env **env, int nw);
 void    redirecting_in(t_cmd **ex, t_env **env, char **arr);
-void    redirection_fork(t_cmd **ex, t_env **env, char **arr);
 
 
 //redirecting
-void    redirection(t_cmd **ex, t_env **env, t_exec *s);
+// void    redirection(t_cmd **ex, t_env **env, t_exec *s);
 void    redirecting_in_child(t_cmd **ex, t_env **env, t_exec *s);
 
 void    redirecting_out(t_cmd **ex, t_env **env, int nw);
-// void    redirecting_in(t_cmd **ex, t_env **env, int nw);
 void    app_redirecting_out(t_cmd **ex, t_env **env, int nw);
 void    redirecting_out_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s);
 
@@ -263,6 +272,8 @@ int		set_up_term(void);
 
 // tools
 int     if_only(char *s, char c);
+void	ecriture_info(t_env *lst);
+
 
 // touch
 t_edit  *touch(t_edit **ed, t_froz **fz, t_his **hs);

@@ -1,17 +1,6 @@
 #include "../twenty.h"
 
 
-void    redirection(t_cmd **ex, t_env **env, t_exec *s)
-{
-    // printf("REDIRECTION\n");
-    *ex = (*ex)->next;
-    if ((*ex)->type == 7)
-        redirecting_in_child(&(*ex), &(*env), &(*s));
-    if ((*env)->name)
-        ;
-    
-}
-
 void    redirecting_in_child(t_cmd **ex, t_env **env, t_exec *s)
 {
     char        **arr = NULL;

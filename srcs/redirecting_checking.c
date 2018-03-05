@@ -2,9 +2,9 @@
 
 int     redirection_check_create(t_cmd *ex)
 {
-    while ((ex)->type == 7 || (ex)->type == 8)
+    while ((ex)->type == 7 || (ex)->type == 8 || (ex)->type == 9)
     {
-        if ((ex)->type == 8)
+        if ((ex)->type == 8 || (ex)->type == 9)
             redirection_file_create(ex);
         else if ((ex)->type == 7 && redirection_file_check(ex) == -1)
                 return (0);
@@ -19,7 +19,10 @@ void    redirection_file_create(t_cmd *ex)
     char    **arr;
       
     arr = ft_strsplit((ex)->cmd, ' ');
-    nw = (arr[2] == NULL) ? open(arr[1], O_CREAT | O_WRONLY | O_TRUNC, 0644) : open(arr[2], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    if ((ex)->type == 8)
+        nw = (arr[2] == NULL) ? open(arr[1], O_CREAT | O_WRONLY | O_TRUNC, 0644) : open(arr[2], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    else
+        nw = (arr[2] == NULL) ? open(arr[1], O_CREAT | O_WRONLY | O_APPEND, 0644) : open(arr[2], O_CREAT | O_WRONLY | O_APPEND, 0644);
     dup2(nw, (arr[2] == NULL ? 1 : ft_atoi(arr[0])));
     free_tab(arr);
     close(nw);

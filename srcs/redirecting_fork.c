@@ -1,5 +1,20 @@
 #include "../twenty.h"
 
+void    redirection(t_cmd **ex, t_env **env, t_exec *s)
+{
+    char    **arr;
+    
+    if (s)
+        ;
+    arr = ft_strsplit((*ex)->cmd, ' ');
+    *ex = (*ex)->next;
+    if (redirection_check_create(*ex))
+        redirecting_in(ex, env, arr);
+    else
+        exit(0);
+    free_tab(arr);
+}
+
 void    redirection_f(t_cmd **ex, t_env **env, t_exec *s)
 {
     char    **arr;
@@ -17,40 +32,35 @@ void    redirection_f(t_cmd **ex, t_env **env, t_exec *s)
     {
         if (redirection_check_create(*ex))
             redirecting_in(ex, env, arr);
-            // *env = exec_fct_nf(arr, *env);
         else
             exit(0);
     }
     free_tab(arr);
 }
 
-// void    redirection_fork(t_cmd **ex, t_env **env, char **arr)
-// {
-//     // printf("====%i====\n",(*ex)->type );
-//     if ((*ex)->type == 7)
-//         redirecting_in(&(*ex), &(*env), arr);
-//     // else if ((*ex)->type == 8)
-//     //     redirecting_out(&(*ex), &(*env), arr);
-// }
+char    **give_seven(t_cmd *ex)
+{
+    while (ex->next->type == 8 || ex->next->type == 7 || ex->next->type == 9)
+        ex = ex->next;
+    while (ex->type == 8 || ex->type == 9)
+        ex = ex->prev;
+    if (ex->type != 7)
+        return (NULL);
+    return (ft_strsplit(ex->cmd, ' '));
+}
 
 void    redirecting_in(t_cmd **ex, t_env **env, char **arr)
 {
     int         nw;
     char        **tmp;
     
-    if (*ex)
+    if ((tmp = give_seven(*ex)) != NULL)
     {
-        tmp = ft_strsplit((*ex)->cmd, ' ');
         nw = (tmp[2] == NULL) ? open(tmp[1], O_RDONLY) : open(tmp[2], O_RDONLY);
         dup2(nw, (arr[2] == NULL ? 0 : ft_atoi(tmp[0])));
-        // free_tab(arr);
-        *env = exec_fct_nf(arr, *env);
     }
-    else
-    {
-        kill(wait(NULL), SIGKILL);
-        // free_tab(arr);
-    }
+    wait(0);
+    *env = exec_fct_nf(arr, *env);
 }
 
 // void    redirecting_in(t_cmd **ex, t_env **env, char **arr)
