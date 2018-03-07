@@ -21,19 +21,23 @@ char    *ed_str(t_edit *cmd, char *s, int nb)
 char    *join_cmd(char *cmd, t_edit *ed, t_froz *fz)
 {
     char *nw;
-
+    char *tmp;
+    
     nw = NULL;
     if (cmd == NULL)
         cmd = ed_str(ed, NULL, fz->nb[0] - giv_last(fz));
     else 
     {
         if (ed->rpz[0] == 1 && ed->rpz[1] == 1)
-            cmd = ft_strjoin(cmd, "\n\0");  
+            tmp = ft_strjoin(cmd, "\n\0");  
         else
         {
-            nw = ft_strjoin("\n", ed_str(ed, NULL, fz->nb[0] - giv_last(fz)));
-            cmd = ft_strjoin(cmd, nw);  
+            nw = strjoin_free("\n", ed_str(ed, NULL, fz->nb[0] - giv_last(fz)));
+            tmp = ft_strjoin(cmd, nw);  
+            free(nw);
         }
+        free(cmd);
+        return (tmp);
     }
     return (cmd);
 }

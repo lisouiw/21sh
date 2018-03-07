@@ -28,9 +28,9 @@ t_varq  *add_struct_varq(char *s, t_varq *v)
 
 t_varq  *add_varq_name(char *s, int *i, t_varq *v, t_env *env)
 {
-    if (s[*i] == 39)
+    if (s[*i] == 39) //quote
         v = varq_simple_quote(s, &(*i), v);
-    else if (s[*i] == 34) /// quote
+    else if (s[*i] == 34) /// dquote
         v = varq_double_quote(s, &(*i), v, env);
     else // simple variable env
         v = varq_env(s, &(*i), v, env);
@@ -48,14 +48,19 @@ t_varq  *add_varq(char *s, t_varq *v, t_env *env)
     {
         while (s[i] && s[i] != 34 && s[i] != 39 && s[i] != '$') // ["]['][$]
             ++i;
-        v = add_varq_name(s, &i, v, env); //i pour bouger
+        if (s[i])
+            v = add_varq_name(s, &i, v, env); //i pour bouger
     }
     return (v);
 }
 
 char    *quote_variable(char *s, t_varq *v, t_env *env)
 {
+    char    *nw;
+
     v = add_varq(s, NULL, env);
     print_varq(v);
-    return (s);
+    nw = change_w_varq(s, v);
+    printf("NW = %s\n", nw);
+    return (nw);
 }

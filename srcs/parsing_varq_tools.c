@@ -17,6 +17,8 @@ char    *search_var_env(char *sub, t_env *env)
 {
     char    *tmp;
 
+    if (sub[0] == '\0')
+        return(ft_strdup("$"));
     tmp = ft_strsub(env->name, 0, ft_strlen(env->name) - 1);
     while (ft_strcmp(sub, tmp) != 0)
     {
@@ -26,13 +28,10 @@ char    *search_var_env(char *sub, t_env *env)
             break;
         free(tmp);
         tmp = ft_strsub(env->name, 0, ft_strlen(env->name) - 1);
-        // printf("SEARCH %s %s -> %i\n", tmp,sub,  ft_strcmp(sub, tmp));
     }
+    free(tmp);
     if (ft_strcmp(sub, tmp) == 0)
-    {
-        printf("MATCH %s\n", env->ctn);
         return (env->ctn);
-    }
     return (NULL);
 }
 
@@ -62,4 +61,20 @@ char    *translate_dquote(char *s, t_env *env)
         }
     }
     return(sub);
+}
+
+void    free_varq(t_varq *v)
+{
+    t_varq      *tmp;
+    if (!v)
+        return;
+    while (v->next != NULL)
+    {
+        tmp = v;
+        free(tmp->cmd);
+        free(tmp);
+        v = v->next;
+    }
+    free(v->cmd);
+    free(v);
 }

@@ -15,12 +15,8 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
         add_his(&(*hs), NULL, *fz);
         env = launchcmd(ex, env);
         free_all_ex(&ex);
-        if ((*fz)->cmd)
-        {
-            free((*fz)->cmd);
-            (*fz)->cmd = NULL;
-        }
-        // free_ex(&ex);
+        free((*fz)->cmd);
+        (*fz)->cmd = NULL;
     }
     else if ((*fz)->mode[3] == 0) // parsing error qund lauch
     {

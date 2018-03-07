@@ -182,21 +182,20 @@ void    join_redirecting(t_cmd **ex)
 int     parsing_op(char *s, t_cmd **ex, t_env *env) //get all op ctrl
 {
     int     i;
+    char    *m;
         
     i = 0;
-    if (env)
-        ;
     while (s[i] && s[i] == ' ')
         ++i;
-    s = quote_variable(s, NULL, env);
-    *ex = separate_cmd(s, i, i, *ex);   //separate by simple word and metacharactere
+    m = quote_variable(s, NULL, env);
+    *ex = separate_cmd(m, i, i, *ex);   //separate by simple word and metacharactere
     i = parse_type(&(*ex));             // give at first a type as cmd(0) or a op ctrl(1)
                                         //parse variable environnement
-    *ex = parse_op_int(*ex, s);         // give all op ctrl specifique type 
+    *ex = parse_op_int(*ex, m);         // give all op ctrl specifique type 
                                         //and parse redirection proprely
+    free(m);
     if ((i = parse_synthaxe(*ex)) != 0)
         return(i);
-    // print_ex_up(*ex);
     join_redirecting(&(*ex));           // join les cas ls -a > co -q ----> ls -a q > co
     join_ex(&(*ex));                    //join les 0 ensemble
     return (0);
@@ -237,11 +236,6 @@ int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex, t_env *env)
         {
             printf("ERROR %i\n", (*fz)->mode[3]);
             (*fz)->mode[3] = 0;
-        }
-        else 
-        {
-            free((*fz)->cmd);
-            (*fz)->cmd = NULL;
         }
     }
     else if ((*fz)->mode[3] == 0)

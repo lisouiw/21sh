@@ -27,15 +27,13 @@ char	*strjoin_free(char *nw, char *sub)
 {
 	char	*tmp;
 
-	printf("JOIN = [%s] [%s]\n", nw, sub);
 	if (nw && sub == NULL)
 		sub = nw;
-	else
+	else if (nw)
 	{
 		tmp = ft_strjoin(sub, nw);
 		free(sub);
 		return (tmp);
 	}
-	printf("JOIN = [%s] [%s]\n", nw, sub);
 	return (sub);
 }

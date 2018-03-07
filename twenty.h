@@ -219,6 +219,7 @@ t_varq  *varq_env(char *s, int *i, t_varq *v, t_env *env);
 void    print_varq(t_varq *tmp);
 char    *search_var_env(char *sub, t_env *env);
 char    *translate_dquote(char *s, t_env *env);
+void    free_varq(t_varq *v);
 
 // parsing
 t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex);
@@ -310,5 +311,7 @@ t_env	*exec_fct_nf(char **cut, t_env *env);
 // void    redirecting_in_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s);
 
 
+
+char    *change_w_varq(char *s, t_varq *v);
 
 #endif
