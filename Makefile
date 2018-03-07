@@ -11,7 +11,7 @@ SRCS =  main.c term.c ed.c env.c touch.c print_shell.c treatmt.c t.c exec.c \
 ctrl.c tools.c init.c parsing.c prompt.c giv_str.c pascutcopy.c \
 parsing_type.c parsing_type_fct.c parsing_tools.c free.c redirecting.c \
 exec_tools.c pipe.c redirecting_fork.c redirecting_checking.c \
-parsing_quote_variable.c
+parsing_varq.c parsing_varq_fct.c parsing_varq_tools.c
 
 SRC_N = $(addprefix $(SRCDIR)/, $(SRCS))
 

@@ -12,8 +12,8 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
         return(env);
     else if (parsing(*cmd, &(*fz), &ex, env) == 1) // parsing good
     {
-        env = launchcmd(ex, env);
         add_his(&(*hs), NULL, *fz);
+        env = launchcmd(ex, env);
         free_all_ex(&ex);
         if ((*fz)->cmd)
         {

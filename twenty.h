@@ -180,9 +180,6 @@ char    ***list_to_arr_zero(t_cmd **ex, char ****arr, t_cmd *count, int a); // p
 void    cursor_end(t_edit *ed);
 void    put_my_cur(int nb, char c);
 
-// parsing_quote_variable
-t_varq  *add_varq(char *s, t_varq *v, t_env *env);
-char    *quote_variable(char *s, t_varq *v, t_env *env);
 
 
 // parsing_tools
@@ -205,6 +202,21 @@ t_cmd   *giv_type(t_cmd *ex, char *s);
 t_cmd   *parse_op_int(t_cmd *ex, char *s);
 int     parse_type(t_cmd **ex);
 int     parse_synthaxe(t_cmd *ex);
+
+// parsing_varq
+
+t_varq  *add_struct_varq(char *s, t_varq *v);
+t_varq  *add_varq_name(char *s, int *i, t_varq *v, t_env *env);
+t_varq  *add_varq(char *s, t_varq *v, t_env *env);
+
+// parsing_varq_fct.c
+t_varq  *varq_simple_quote(char *s, int *i, t_varq *v, t_env *env);
+t_varq  *varq_double_quote(char *s, int *i, t_varq *v, t_env *env);
+t_varq  *varq_env(char *s, int *i, t_varq *v, t_env *env);
+
+// parsing_varq_tools.c
+void    print_varq(t_varq *tmp);
+char    *search_var_env(char *sub, t_env env);
 
 // parsing
 t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex);

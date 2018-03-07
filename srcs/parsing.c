@@ -184,6 +184,8 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env) //get all op ctrl
     int     i;
         
     i = 0;
+    if (env)
+        ;
     while (s[i] && s[i] == ' ')
         ++i;
     // ecriture_info(env);
@@ -195,7 +197,7 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env) //get all op ctrl
                                         //and parse redirection proprely
     if ((i = parse_synthaxe(*ex)) != 0)
         return(i);
-    // print_ex_up(*ex);
+    print_ex_up(*ex);
     join_redirecting(&(*ex));           // join les cas ls -a > co -q ----> ls -a q > co
     join_ex(&(*ex));                    //join les 0 ensemble
     return (0);
