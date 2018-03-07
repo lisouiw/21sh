@@ -22,3 +22,20 @@ void	ecriture_info(t_env *lst)
 	ft_putstr(lst->name);
 	ft_putendl(lst->ctn);
 }
+
+char	*strjoin_free(char *nw, char *sub)
+{
+	char	*tmp;
+
+	printf("JOIN = [%s] [%s]\n", nw, sub);
+	if (nw && sub == NULL)
+		sub = nw;
+	else
+	{
+		tmp = ft_strjoin(sub, nw);
+		free(sub);
+		return (tmp);
+	}
+	printf("JOIN = [%s] [%s]\n", nw, sub);
+	return (sub);
+}

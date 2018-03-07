@@ -205,18 +205,20 @@ int     parse_synthaxe(t_cmd *ex);
 
 // parsing_varq
 
+char    *quote_variable(char *s, t_varq *v, t_env *env);
 t_varq  *add_struct_varq(char *s, t_varq *v);
 t_varq  *add_varq_name(char *s, int *i, t_varq *v, t_env *env);
 t_varq  *add_varq(char *s, t_varq *v, t_env *env);
 
 // parsing_varq_fct.c
-t_varq  *varq_simple_quote(char *s, int *i, t_varq *v, t_env *env);
+t_varq  *varq_simple_quote(char *s, int *i, t_varq *v);
 t_varq  *varq_double_quote(char *s, int *i, t_varq *v, t_env *env);
 t_varq  *varq_env(char *s, int *i, t_varq *v, t_env *env);
 
 // parsing_varq_tools.c
 void    print_varq(t_varq *tmp);
-char    *search_var_env(char *sub, t_env env);
+char    *search_var_env(char *sub, t_env *env);
+char    *translate_dquote(char *s, t_env *env);
 
 // parsing
 t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex);
@@ -285,7 +287,7 @@ int		set_up_term(void);
 // tools
 int     if_only(char *s, char c);
 void	ecriture_info(t_env *lst);
-
+char	*strjoin_free(char *nw, char *sub);
 
 // touch
 t_edit  *touch(t_edit **ed, t_froz **fz, t_his **hs);
