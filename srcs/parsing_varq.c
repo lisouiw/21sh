@@ -67,6 +67,7 @@ char    *quote_variable(char *s, t_varq *v, t_env *env)
     else
         return(s);
     // printf("nw = %s\n", nw);
+    // free(s);
     free_varq(v);
     return (nw);
 }

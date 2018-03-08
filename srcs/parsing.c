@@ -188,17 +188,19 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env) //get all op ctrl
     while (s[i] && s[i] == ' ')
         ++i;
     m = quote_variable(s, NULL, env);
-    // printf("m =%s", m);
+    // printf("m =%s s = %s", m, s);
     *ex = separate_cmd(m, i, i, *ex);   //separate by simple word and metacharactere
     i = parse_type(&(*ex));             // give at first a type as cmd(0) or a op ctrl(1)
                                         //parse variable environnement
     *ex = parse_op_int(*ex, m);         // give all op ctrl specifique type 
-                                        //and parse redirection proprely
     if ((i = parse_synthaxe(*ex)) != 0)
+    {
+        free(m);
         return(i);
+    }
     join_redirecting(&(*ex));           // join les cas ls -a > co -q ----> ls -a q > co
     join_ex(&(*ex));                    //join les 0 ensemble
-    free(m);
+    // free(m);
     // print_ex_up(*ex);
     // sleep(3);
     return (0);
