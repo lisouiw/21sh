@@ -27,12 +27,13 @@ char    *search_var_env(char *sub, t_env *env)
         free(tmp);
         tmp = ft_strsub(env->name, 0, ft_strlen(env->name) - 1);
     }
-    free(tmp);
     if (ft_strcmp(sub, tmp) == 0)
     {
+        free(tmp);
         free(sub);
         return (ft_strdup(env->ctn));
     }
+    free(tmp);
     free(sub);
     return (NULL);
 }
@@ -57,6 +58,8 @@ char    *translate_dquote(char *s, t_env *env)
         sub = change_w_varq(s, v); //coller les modif
     else
         return (s);
+    free(s);
+    free_varq(v);
     return(sub);
 }
 
@@ -73,5 +76,4 @@ void    free_varq(t_varq *v)
     }
     free(v->cmd);
     free(v);
-    // v = NULL;
 }

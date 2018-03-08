@@ -29,37 +29,36 @@ char    *change_w_varq(char *s, t_varq *v)
     int     i;
     int     in;
     char    *nw;
-    t_varq  *tmp;
 
-    tmp = v;
     i = 0;
     nw = NULL;
+                
+    // printf("=============================\n");    
     while (s[i])
     {
         in = i;
         if (s[i] && (s[i] != '$' && s[i] != 34 && s[i] != 39))
         {
-            while (s[i] != '$' && s[i] != 34 && s[i] != 39)
+            while (s[i] && s[i] != '$' && s[i] != 34 && s[i] != 39)
                     ++i;
             if (i - in == 0)
             {
-                nw = strjoin_free(ft_strsub(s, i, 1), nw, 2);
+                nw = strjoin_free(ft_strsub(s, i, 1), nw, 3);
                 ++i;
             }
             else        
-                nw = strjoin_free(ft_strsub(s, in, i - in), nw, 2);
-            // printf("1: %s|\n", nw);
+                nw = strjoin_free(ft_strsub(s, in, i - in), nw, 3);
+                // printf("%s\n", nw);
         }
         if (s[i] && (s[i] == '$' || s[i] == 34 || s[i] == 39))
         {
             in = i;
             i = move_to_put_varq(s, i, s[i]);
-            nw = strjoin_free(tmp->cmd, nw, 2);
-            if (tmp->next != NULL)
-                tmp = tmp->next;
-            // printf("2: %s\n", nw);
+            nw = strjoin_free(ft_strdup(v->cmd), nw, 3);
+            if (v->next != NULL)
+                v = v->next;
+            // printf("%s=====%s\n", nw, &s[i]);
         }
-        // printf("-_-  %s\n", &s[i]);
     }
     return (nw);
 }
