@@ -23,16 +23,19 @@ void	ecriture_info(t_env *lst)
 	ft_putendl(lst->ctn);
 }
 
-char	*strjoin_free(char *nw, char *sub)
+char	*strjoin_free(char *nw, char *sub, int i)
 {
 	char	*tmp;
 
 	if (nw && sub == NULL)
 		sub = nw;
-	else if (nw)
+	else if (nw && sub)
 	{
 		tmp = ft_strjoin(sub, nw);
-		free(sub);
+		if (i == 1 || i == 3)
+			free(nw);
+		if (i == 2 || i == 3)
+			free(sub);
 		return (tmp);
 	}
 	return (sub);

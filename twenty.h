@@ -288,7 +288,7 @@ int		set_up_term(void);
 // tools
 int     if_only(char *s, char c);
 void	ecriture_info(t_env *lst);
-char	*strjoin_free(char *nw, char *sub);
+char	*strjoin_free(char *nw, char *sub, int i);
 
 // touch
 t_edit  *touch(t_edit **ed, t_froz **fz, t_his **hs);

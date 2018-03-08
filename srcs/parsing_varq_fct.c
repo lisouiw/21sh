@@ -27,7 +27,6 @@ t_varq  *varq_double_quote(char *s, int *i, t_varq *v, t_env *env)
     while (s[++(*i)] != 34 && s[*i])
         ;
     v = add_struct_varq(translate_dquote(ft_strsub(s, y, *i - y), env), v );   
-    // v = add_struct_varq(ft_strsub(s, y, *i - y), v);
     (*i)++;
     return (v);
 }
@@ -35,15 +34,17 @@ t_varq  *varq_double_quote(char *s, int *i, t_varq *v, t_env *env)
 t_varq  *varq_env(char *s, int *i, t_varq *v, t_env *env)
 {
     int     y;
-    char    *sub;
 
     y = *i + 1;
-    while (s[++(*i)] && s[*i] != ' ' && s[++(*i)] != '$')
-        ;    
-    sub = ft_strsub(s, y,  *i - y );
-    v = add_struct_varq(search_var_env(sub, env), v);
-    free(sub);
-    if (s[*i])
+    while (s[++(*i)] && s[*i] != ' ' && s[*i] != '$')
+        ;
+    if (*i - y == 0)
+        v = add_struct_varq(ft_strsub(s, y - 1 , 1), v);
+    else
+        v = add_struct_varq(search_var_env(ft_strsub(s, y,  *i - y ), env), v);
+    if (*i - y != 0 && s[*i])
         (*i)++;
+    print_varq(v);
+    printf("================================================================\n");
     return (v);
 }

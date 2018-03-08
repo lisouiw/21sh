@@ -17,8 +17,6 @@ char    *search_var_env(char *sub, t_env *env)
 {
     char    *tmp;
 
-    if (sub[0] == '\0')
-        return(ft_strdup("$"));
     tmp = ft_strsub(env->name, 0, ft_strlen(env->name) - 1);
     while (ft_strcmp(sub, tmp) != 0)
     {
@@ -31,7 +29,11 @@ char    *search_var_env(char *sub, t_env *env)
     }
     free(tmp);
     if (ft_strcmp(sub, tmp) == 0)
+    {
+        free(sub);
         return (env->ctn);
+    }
+    free(sub);
     return (NULL);
 }
 
@@ -50,14 +52,14 @@ char    *translate_dquote(char *s, t_env *env)
         {
             while (s[i] && s[i] != '$')
                     ++i;
-            sub = strjoin_free(ft_strsub(s, in, i - in), sub);
+            sub = strjoin_free(ft_strsub(s, in, i - in), sub, 2);
         }
         if (s[i] && s[i] == '$')
         {
             in = i;
             while (s[++i] && s[i] != ' ' && s[i] != '$')
                 ;
-            sub = strjoin_free(search_var_env(ft_strsub(s, in + 1, i - in - 1), env), sub);
+            sub = strjoin_free(search_var_env(ft_strsub(s, in + 1, i - in - 1), env), sub, 3);
         }
     }
     return(sub);

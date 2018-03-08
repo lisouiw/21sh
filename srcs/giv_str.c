@@ -32,7 +32,7 @@ char    *join_cmd(char *cmd, t_edit *ed, t_froz *fz)
             tmp = ft_strjoin(cmd, "\n\0");  
         else
         {
-            nw = strjoin_free("\n", ed_str(ed, NULL, fz->nb[0] - giv_last(fz)));
+            nw = strjoin_free("\n", ed_str(ed, NULL, fz->nb[0] - giv_last(fz)), 2);
             tmp = ft_strjoin(cmd, nw);  
             free(nw);
         }
