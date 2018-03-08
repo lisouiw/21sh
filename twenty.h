@@ -207,8 +207,8 @@ int     parse_synthaxe(t_cmd *ex);
 
 char    *quote_variable(char *s, t_varq *v, t_env *env);
 t_varq  *add_struct_varq(char *s, t_varq *v);
-t_varq  *add_varq_name(char *s, int *i, t_varq *v, t_env *env);
-t_varq  *add_varq(char *s, t_varq *v, t_env *env);
+t_varq  *add_varq(char *s, int *i, t_varq *v, t_env *env);
+t_varq  *add_varq_loop(char *s, t_varq *v, t_env *env);
 
 // parsing_varq_fct.c
 t_varq  *varq_simple_quote(char *s, int *i, t_varq *v);

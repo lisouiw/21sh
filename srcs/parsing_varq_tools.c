@@ -31,7 +31,7 @@ char    *search_var_env(char *sub, t_env *env)
     if (ft_strcmp(sub, tmp) == 0)
     {
         free(sub);
-        return (env->ctn);
+        return (ft_strdup(env->ctn));
     }
     free(sub);
     return (NULL);
@@ -40,36 +40,30 @@ char    *search_var_env(char *sub, t_env *env)
 char    *translate_dquote(char *s, t_env *env)
 {
     int     i;
-    int     in;
     char    *sub;
+    t_varq  *v;
 
     i = 0;
     sub = NULL;
+    v = NULL;
     while (s[i])
     {
-        in = i;
-        if (s[i] && s[i] != '$')
-        {
-            while (s[i] && s[i] != '$')
-                    ++i;
-            sub = strjoin_free(ft_strsub(s, in, i - in), sub, 2);
-        }
-        if (s[i] && s[i] == '$')
-        {
-            in = i;
-            while (s[++i] && s[i] != ' ' && s[i] != '$')
-                ;
-            sub = strjoin_free(search_var_env(ft_strsub(s, in + 1, i - in - 1), env), sub, 3);
-        }
+        while (s[i] && s[i] != '$') // ["]['][$]
+            ++i;
+        if (s[i])
+            v = varq_env(s, &i, v, env);
     }
+    if (v != NULL)
+        sub = change_w_varq(s, v); //coller les modif
+    else
+        return (s);
     return(sub);
 }
 
 void    free_varq(t_varq *v)
 {
     t_varq      *tmp;
-    if (!v)
-        return;
+    
     while (v->next != NULL)
     {
         tmp = v;
@@ -79,4 +73,5 @@ void    free_varq(t_varq *v)
     }
     free(v->cmd);
     free(v);
+    // v = NULL;
 }

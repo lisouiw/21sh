@@ -1,9 +1,32 @@
 #include "../twenty.h"
 
+int     move_to_put_varq(char *s, int i, int o)
+{
+    if (o == '$')
+    {
+        if (s[i + 1] == '$')
+        {
+            while (s[++i] && s[i] == '$')
+                ;
+            if (s[i + 1] != ' ' || s[i + 1] != '\0')
+                --i;
+        }
+        else
+            while (s[++i] && s[i] != ' ' && s[i] != '$')
+                ;
+    }
+    else
+    {
+        while (s[++i] && s[i] != o)
+            ;
+        ++i;
+    }
+    return (i);
+}
+
 char    *change_w_varq(char *s, t_varq *v)
 {
     int     i;
-    int     o;
     int     in;
     char    *nw;
     t_varq  *tmp;
@@ -25,22 +48,18 @@ char    *change_w_varq(char *s, t_varq *v)
             }
             else        
                 nw = strjoin_free(ft_strsub(s, in, i - in), nw, 2);
-            printf("1: %s|\n", nw);
+            // printf("1: %s|\n", nw);
         }
         if (s[i] && (s[i] == '$' || s[i] == 34 || s[i] == 39))
         {
-            o = s[i];
             in = i;
-            while (o == '$' && s[++i] && s[i] != ' ' && s[i] != '$')
-                ;
-            while (o != '$' && s[++i] && s[i] != o)
-                ;
+            i = move_to_put_varq(s, i, s[i]);
             nw = strjoin_free(tmp->cmd, nw, 2);
             if (tmp->next != NULL)
                 tmp = tmp->next;
-            printf("2: %s\n", nw);
+            // printf("2: %s\n", nw);
         }
-        printf("-_-  %s\n", &s[i]);
+        // printf("-_-  %s\n", &s[i]);
     }
     return (nw);
 }

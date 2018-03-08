@@ -35,16 +35,22 @@ t_varq  *varq_env(char *s, int *i, t_varq *v, t_env *env)
 {
     int     y;
 
-    y = *i + 1;
-    while (s[++(*i)] && s[*i] != ' ' && s[*i] != '$')
-        ;
-    if (*i - y == 0)
-        v = add_struct_varq(ft_strsub(s, y - 1 , 1), v);
+    if (s[*i] == '$' && s[(*i + 1)] == '$')
+    {
+        y = *i;
+        while (s[++(*i)] && s[(*i + 1)] == '$')
+            ;
+        v = add_struct_varq(ft_strsub(s, y , *i - y), v);
+    }
     else
-        v = add_struct_varq(search_var_env(ft_strsub(s, y,  *i - y ), env), v);
-    if (*i - y != 0 && s[*i])
-        (*i)++;
-    print_varq(v);
-    printf("================================================================\n");
+    {
+        y = *i + 1;
+        while (s[++(*i)] && s[*i] != ' ' && s[*i] != '$' && s[*i] != 34 && s[*i] != 39)
+            ;
+        if (y - *i == 0)
+            v = add_struct_varq(ft_strsub(s, y - 1, 1), v);
+        else
+            v = add_struct_varq(search_var_env(ft_strsub(s, y, *i - y), env), v);
+    }
     return (v);
 }
