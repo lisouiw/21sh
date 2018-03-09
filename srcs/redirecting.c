@@ -1,6 +1,21 @@
 #include "../twenty.h"
 
 
+void    redirection(t_cmd **ex, t_env **env, t_exec *s)
+{
+    char    **arr;
+    
+    if (s)
+        ;
+    arr = ft_strsplit((*ex)->cmd, ' ');
+    *ex = (*ex)->next;
+    if (redirection_check_create(*ex))
+        redirecting_in(ex, env, arr);
+    else
+        exit(0);
+    free_tab(arr);
+}
+
 void    redirecting_in_child(t_cmd **ex, t_env **env, t_exec *s)
 {
     char        **arr = NULL;

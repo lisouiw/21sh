@@ -7,6 +7,8 @@ int         main(void)
     t_edit  *ed;
     t_his   *hs;
 
+    signal(SIGCHLD,sig_child);
+
     g_nb = init_shell(&fz, &env, &ed, &hs);
     while (42)
     {
@@ -17,6 +19,7 @@ int         main(void)
         {
             cursor_end(ed);                             //remettre le curseur a la fin pour les calculs
             env = treat_cmd(env, &ed, &hs, &fz);        //traiter la cmd
+            printf("SORTIE\n");
             init_for_new(&hs, &fz, &ed);                // init ed et mettre le prompt approprie
         }
         else
@@ -41,6 +44,8 @@ void    cursor_end(t_edit *ed)               //remettre le curseur a la fin pour
         put_my_cur(((i / g_nb->tb[0]) - 1), 'B');
     else if (i > (g_nb->tb[0]))
         put_my_cur((i / g_nb->tb[0]), 'B');
+    init();
+        
 }
 
 void    put_my_cur(int nb, char c)

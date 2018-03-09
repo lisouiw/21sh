@@ -1,20 +1,5 @@
 #include "../twenty.h"
 
-void    redirection(t_cmd **ex, t_env **env, t_exec *s)
-{
-    char    **arr;
-    
-    if (s)
-        ;
-    arr = ft_strsplit((*ex)->cmd, ' ');
-    *ex = (*ex)->next;
-    if (redirection_check_create(*ex))
-        redirecting_in(ex, env, arr);
-    else
-        exit(0);
-    free_tab(arr);
-}
-
 void    redirection_f(t_cmd **ex, t_env **env, t_exec *s)
 {
     char    **arr;
@@ -57,7 +42,9 @@ void    redirecting_in(t_cmd **ex, t_env **env, char **arr)
     if ((tmp = give_seven(*ex)) != NULL)
     {
         nw = (tmp[2] == NULL) ? open(tmp[1], O_RDONLY) : open(tmp[2], O_RDONLY);
-        dup2(nw, (arr[2] == NULL ? 0 : ft_atoi(tmp[0])));
+        // dup2(nw, (arr[2] == NULL ? 0 : ft_atoi(tmp[0])));
+        dup2((arr[2] == NULL ? 0 : ft_atoi(tmp[0])), nw);
+        
     }
     wait(0);
     *env = exec_fct_nf(arr, *env);

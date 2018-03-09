@@ -61,6 +61,7 @@ void    init_data(t_froz **fz)
 
 void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed)
 {
+    set_up_term();
     wait(0);
     tputs(tgetstr("sc", NULL), 0, ft_put);
     wait(0);

@@ -12,6 +12,10 @@
 # include <dirent.h>
 
 
+void	ls_signal(void);
+void	sig_child(int sig);
+
+
 
 #include <sys/types.h>
 #include <sys/wait.h>
