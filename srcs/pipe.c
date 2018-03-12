@@ -2,16 +2,15 @@
 
 void       end_pipe(t_cmd **ex, t_exec **s, t_proc *p)
 {
-    // int     i;
-
+    int     i = 0;
     
-    if (p)
+    if (p && i)
         ;
+        
     close((*s)->p[1]);
     if ((*ex)->next->type == 42)
     {
-        // kill (wait(NULL), 0);
-        wait(0);
+        // wait(0);
         dup2(1, (*s)->out);
         dup2(0, (*s)->in);
         // dup2((*s)->out, 1);
@@ -72,82 +71,16 @@ t_proc  *add_pid(t_proc *p, pid_t pid)
     }
     return (p);
 }
-void	sig_pipe(int sig)
-{
-    sig = 0;
-    printf("PIPEPUTE\n");
-}
-void	sig_int(int sig)
-{
-    sig = 0;
-    exit(0);
-}
-void	sig_quite(int sig)
-{
-    printf("INTPUTE %i\n", sig);
-    exit(0);
-}
-
-void	sig_child(int sig)
-{
-    char    buf[1];
-
-    sig = 0;
-    kill (wait(NULL), 0);
-    printf("wait = %i\n", waitpid(-1, NULL, WNOHANG));
-    if (waitpid(-1, NULL, WNOHANG) == -1)
-        return;
-
-    while (42)
-    {
-        read(1 , &buf,1);
-        if (buf[0] == '\n')
-        {
-            exit(0);
-            // kill (wait(NULL), 0);
-        }
-        if (waitpid(-1, NULL, WNOHANG) == -1)
-            return;
-        buf[0] = '\0';
-    }
-}
-
-void	ls_signal(void)
-{
-    signal(SIGPIPE, sig_pipe);
-    signal(SIGINT, sig_int);
-    signal(SIGILL, sig_quite);
-	signal(SIGTSTP, sig_quite);
-	signal(SIGCONT, sig_quite);
-    signal(SIGQUIT,sig_quite);
-	signal(SIGABRT,sig_quite);
-	signal(SIGKILL,sig_quite);
-	signal(SIGTERM,sig_quite);
-	signal(SIGUSR1,sig_quite);
-	signal(SIGUSR2,sig_quite);
-
-    signal(SIGSTOP,sig_quite);
-	signal(SIGTSTP,sig_quite);
-	signal(SIGTTIN	,sig_quite);
-	signal(SIGTTOU,sig_quite);
-	signal(SIGQUIT,sig_quite);
-	signal(SIGQUIT,sig_quite);
-    
-    // SIGCONT	19,18,25	Cont	Continuer si arrêté.
-   
-}
 
 t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
 {
-    // SIGPIPE
     pid_t   pid;
     t_proc  *p;
     int i = 0;
     s->in = 0;
     p = NULL;
 
-    
-    ls_signal();
+    // signal(SIGPIPE, sig_pipe);
     while ((*ex)->next != NULL && ++i< 5)
     {
         s->out = dup(1);
@@ -165,14 +98,21 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
                 redirection(&(*ex), &env, &(*s));
             else
                 env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env);
+            exit(0);
         }
         else
         {
+
+            // kill(wait(NULL), SIGKILL);
             p = add_pid(&(*p), pid);
             end_pipe(&(*ex), &s, &(*p));
         }
     }
-    printf("PIPE SORTIE\n");
+    signal(SIGCHLD, sig_child);
+    wait(0);
+        //    i = free_kill(&p);
+        // free_pid_loop(&(*p), i);
+    // printf("===========SORTIE[%i]===========\n", waitpid(-1, NULL, WNOHANG));
     return (env);
 }
 

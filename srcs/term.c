@@ -15,6 +15,8 @@ int		init(void)
 	term.c_lflag |= (ICANON);
 	term.c_cc[VEOF] = 3;
 	term.c_cc[VINTR] = 4;
+	
+
 	if (tcsetattr(0, TCSANOW, &term) == -1)
 		return (-1);
 	return (1);
@@ -32,8 +34,6 @@ int		set_up_term(void)
 		return (-1);
 	term.c_lflag &= ~(ECHO);
 	term.c_lflag &= ~(ICANON);
-	//term.c_lflag |= (ICANON);
-//	term.c_lflag &= ~(ECHOCTL);
 	term.c_cc[VEOF] = 3;
 	term.c_cc[VINTR] = 4;
 	term.c_cc[VMIN] = 1;
