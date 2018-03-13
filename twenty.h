@@ -240,7 +240,7 @@ void    cut(t_edit **ed, t_froz **fz);
 t_edit  *paste(t_edit *ed, t_froz **fz);
 
 //  pipe
-void    end_pipe(t_cmd **ex, t_exec **s, t_proc *p);
+void       end_pipe(t_cmd **ex, t_exec **s);
 int     pipe_on(t_cmd *ex);
 t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env);
 void    init_proc(t_proc *p);
@@ -280,10 +280,8 @@ int     redirection_file_check(t_cmd *ex);
 
 //  signal
 void	ls_signal(void);
-void	sig_pipe(int sig);
 void	sig_int(int sig);
 void	sig_quite(int sig);
-void	sig_child(int sig);
 
 
 // t 

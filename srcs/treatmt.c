@@ -59,12 +59,10 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
     while (ex->next != NULL)
     {
         if (pipe_on(ex)) //je vais avoir des pipes a exec
-        {
-            signal(SIGPIPE, sig_pipe);
             env = pipe_fct(&dot, &ex, env);
-        }
         else if (ex->type == 0 && (ex->next->type != 7 && ex->next->type != 8 && ex->next->type != 9))
         {
+            // printf("HOLA");
             env = exec_fct((arr = ft_strsplit(ex->cmd, ' ')), env);
             free_tab(arr);
             ex = ex->next;

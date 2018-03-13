@@ -1,31 +1,12 @@
 #include "../twenty.h"
 
-void       end_pipe(t_cmd **ex, t_exec **s, t_proc *p)
+void       end_pipe(t_cmd **ex, t_exec **s)
 {
-    int     i = 0;
-    int status = 0;
-    
-    if (p && i)
-        ;
     close((*s)->p[1]);
+    if ((*ex)->next->type == 42)
+        wait(0);
     dup2(1, (*s)->out);
     dup2(0, (*s)->in);
-    if ((*ex)->next->type == 42)
-    {
-        signal(SIGPIPE, sig_pipe);
-        // signal(SIGCHLD, sig_child);
- 
-        while ((wait(&status)) > 0);
-            // waitpid(0, NULL, WNOHANG);
-        // dup2((*s)->out, 1);
-    }
-    // if ((*ex)->next->type == 42)
-    // {
-    //     i = free_kill(&p);
-    //     free_pid_loop(&(*p), i);
-    // }
-    // if ((*ex)->next->type == 42)
-    //     wait(0);
     if ((*ex)->next->type == 7)
         while ((*ex)->type == 7 || (*ex)->next->type == 7 || (*ex)->type == 3)
             *ex = (*ex)->next;
@@ -44,13 +25,6 @@ int     pipe_on(t_cmd *ex)
         return (1);
     return (0);
 }
-
-// void    init_proc(t_proc *p)
-// {
-//     p = (t_proc*)malloc(sizeof(t_proc));
-//     p->pid = 0;
-//     p->next = NULL;
-// }
 
 t_proc  *add_pid(t_proc *p, pid_t pid)
 {
@@ -79,64 +53,35 @@ t_proc  *add_pid(t_proc *p, pid_t pid)
 t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
 {
     pid_t   pid;
-    t_proc  *p;
     s->in = 0;
-    p = NULL;
     
-    signal(SIGCHLD, sig_child);
-        signal(SIGPIPE, sig_pipe);
-    // ls_signal();
+    s->out = dup(1);
     while ((*ex)->next != NULL)
     {
         pipe(s->p);
-        // s->out = dup(1);
         if ((pid = fork()) == -1)
             exit(EXIT_FAILURE);
         else if (pid == 0)
         {
-            printf("================FILS=========================\n");
+            // printf("================FILS=========================\n");
             dup2(s->in, 0);
-            s->out = dup(1);
             if (pipe_on(*ex))
                 dup2(s->p[1], 1);
             close(s->p[0]);
             if ((*ex)->next->type == 7 || (*ex)->next->type == 8 ||(*ex)->next->type == 9 )
                 redirection(&(*ex), &env, &(*s));
             else
-            {
-                // ft_putstr("PUTE");
-                if ((*ex)->next->type == 42)
-                    waitpid(0, NULL, WNOHANG);
-                else
-                    wait(NULL);
                 env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env);
-            }
             // exit(0);
         }
         else
         {
-            // p = add_pid(&(*p), pid);
-            // wait(&pid);
-            // int returnStatus;    
-            // waitpid(pid, &returnStatus, 0);  // Parent process waits here for child to terminate.
-            // if (returnStatus == 0)  // Verify child process terminated without error.  
-            // {
-            //    printf("The child process terminated normally.");    
-            // }
-            // if (returnStatus == 1)      
-            // {
-            //    printf("The child process terminated with an error!.");    
-            // }
-            printf("================PERE=========================\n");
-            end_pipe(&(*ex), &s, &(*p));
+            // printf("================PERE=========================\n");
+            end_pipe(&(*ex), &s);
         }
     }
-        // write(1, "\r", 1);
-        // wait(0);
-        
+    wait(0);
     // printf("\n=========================================\n");
-        //    i = free_kill(&p);
-        // free_pid_loop(&(*p), i);
     return (env);
 }
 

@@ -2,7 +2,7 @@
 
 void	ls_signal(void)
 {
-    signal(SIGPIPE, sig_pipe);
+    signal(SIGPIPE, sig_quite);
     signal(SIGILL, sig_quite);
 	signal(SIGQUIT,sig_quite);
     signal(SIGINT, sig_int);
@@ -18,15 +18,14 @@ void	ls_signal(void)
 	signal(SIGTTIN	,sig_quite);
 	signal(SIGTTOU,sig_quite);
     signal(SIGCONT,sig_quite);
-    signal(-1, sig_quite);
 	// signal(SIGCHLD, sig_child);
 }
 
 
-void	sig_pipe(int sig)
-{   
-    printf("PIPE [%i]\n", sig);
-}
+// void	sig_pipe(int sig)
+// {   
+//     printf("PIPE [%i]\n", sig);
+// }
 void	sig_int(int sig)
 {
     printf("INT[%i]\n", sig);
@@ -40,37 +39,8 @@ void	sig_quite(int sig)
 
 void	sig_child(int sig)
 {
-    // pid_t   p;
     sig = 0;
-    // wait(0);
-    printf("\nSIG_CHILD[%i]\n",waitpid(-1, NULL, WNOHANG));
-    signal(SIGCHLD, sig_child);
-    signal(SIGPIPE, sig_pipe);
-    // kill(0, SIGPIPE);
-    // printf("SIG_CHILD[%i][%i]\n", sig, waitpid(0, NULL, WNOHANG));
-    
-    // while(wait(NULL) > 0);
-    // signal(SIGCHLD, sig_child);
-    // while ((p=waitpid(-1, NULL, WNOHANG | WUNTRACED)) == -1)
-    // {
-        // printf("==%i==\n", p);
-    // }
-    //     // if (p == 0)
-    //         // return;
-    // 	// signal(SIGCHLD, sig_child);
-    // }
-    // exit(0);
-    // kill((p - 1), SIGKILL);
-    
-    // signal(SIGCHLD, sig_child);
-    // printf("CHILD[%i][%i]\n", sig, waitpid(-1, NULL, WNOHANG));
-    
-    // signal(SIGCHLD, sig_child);
-    
-    // printf("======= CHILD [%i]===pid[%i]===\n", sig, (i = wait(NULL)));
-    //     printf("%i\n", i);
-//     kill(i -1 , SIGKILL);
-//     waitpid(-1, NULL, WNOHANG);
+    printf("AIDEZ MOI\n");
 }
 
 

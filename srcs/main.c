@@ -19,7 +19,6 @@ int         main(void)
         {
             cursor_end(ed);                             //remettre le curseur a la fin pour les calculs
             env = treat_cmd(env, &ed, &hs, &fz);        //traiter la cmd
-            printf("%i" ,waitpid(-1, NULL, WNOHANG));
             init_for_new(&hs, &fz, &ed);                // init ed et mettre le prompt approprie
         }
         else if (fz->buf[0] == 3)
