@@ -32,8 +32,8 @@ int    free_kill(t_proc **p)
 
     while ((*p)->next != NULL)
     {
-        kill((*p)->pid, SIGKILL);
-        if ((i = kill((*p)->pid, SIGKILL)) == -1)
+        kill((*p)->pid, SIGCHLD);
+        if ((i = kill((*p)->pid, SIGCHLD)) == -1)
             break;
         tmp = *p;
         *p = (*p)->next;
@@ -48,7 +48,7 @@ void    free_pid_loop(t_proc *p, int i)
     
     if (i != -1)
     {
-        kill(p->pid, SIGKILL);
+        kill(p->pid, SIGCHLD);
         free(p);
     }
     else if (p)

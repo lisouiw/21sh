@@ -14,7 +14,6 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
     {
         add_his(&(*hs), NULL, *fz);
         env = launchcmd(ex, env);
-        printf("%i" ,waitpid(-1, NULL, WNOHANG));
         free_all_ex(&ex);
         free((*fz)->cmd);
         (*fz)->cmd = NULL;
@@ -61,6 +60,7 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
     {
         if (pipe_on(ex)) //je vais avoir des pipes a exec
         {
+            signal(SIGPIPE, sig_pipe);
             env = pipe_fct(&dot, &ex, env);
         }
         else if (ex->type == 0 && (ex->next->type != 7 && ex->next->type != 8 && ex->next->type != 9))
