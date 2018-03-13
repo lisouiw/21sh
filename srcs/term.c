@@ -13,6 +13,7 @@ int		init(void)
 		return (-1);
 	term.c_lflag |= (ECHO);
 	term.c_lflag |= (ICANON);
+	term.c_lflag &= ~(ICRNL);
 	term.c_cc[VEOF] = 3;
 	term.c_cc[VINTR] = 4;
 	
@@ -34,6 +35,7 @@ int		set_up_term(void)
 		return (-1);
 	term.c_lflag &= ~(ECHO);
 	term.c_lflag &= ~(ICANON);
+	term.c_lflag |= (ICRNL);
 	term.c_cc[VEOF] = 3;
 	term.c_cc[VINTR] = 4;
 	term.c_cc[VMIN] = 1;
