@@ -252,31 +252,25 @@ void	my_tputs(t_edit *ed, t_froz *fz);
 void	put_cursor(t_edit *ed);
 void	save_init(t_edit *ed);
 void    print_shell(t_edit *ed, t_froz *fz);
-
 //  prompt
 void    put_prompt(t_froz *fz);
 void    put_prompt_init(t_froz **fz);
 int     giv_last(t_froz *fz);
 
-//  redirecting_fork
-char    **give_seven(t_cmd *ex);
-void    redirection(t_cmd **ex, t_env **env, t_exec *s);
-void    redirection_f(t_cmd **ex, t_env **env, t_exec *s);
-void    redirecting_in(t_cmd **ex, t_env **env, char **arr);
 
-
-//  redirecting
-// void    redirection(t_cmd **ex, t_env **env, t_exec *s);
-void    redirecting_in_child(t_cmd **ex, t_env **env, t_exec *s);
-
-void    redirecting_out(t_cmd **ex, t_env **env, int nw);
-void    app_redirecting_out(t_cmd **ex, t_env **env, int nw);
-void    redirecting_out_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s);
 
 //  redirecting_checking
 int     redirection_check_create(t_cmd *ex);
 void    redirection_file_create(t_cmd *ex);
 int     redirection_file_check(t_cmd *ex);
+
+//  redirecting
+char    **give_seven(t_cmd *ex);
+void    redirection(t_cmd **ex, t_env **env, t_exec *s);
+void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s);
+void    redirecting_exec(t_cmd **ex, t_env **env, char **arr);
+
+
 
 //  signal
 void	ls_signal(void);

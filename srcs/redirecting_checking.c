@@ -1,12 +1,12 @@
 #include "../twenty.h"
 
-int     redirection_check_create(t_cmd *ex)
+int     redirection_check_create(t_cmd *ex)    //
 {
     while ((ex)->type == 7 || (ex)->type == 8 || (ex)->type == 9)
     {
-        if ((ex)->type == 8 || (ex)->type == 9)
+        if ((ex)->type == 8 || (ex)->type == 9) //creer les fichier
             redirection_file_create(ex);
-        else if ((ex)->type == 7 && redirection_file_check(ex) == 0)
+        else if ((ex)->type == 7 && redirection_file_check(ex) == 0) //verif exist. Si non, exit.
                 return (0);
         ex = (ex)->next;
     }
@@ -47,6 +47,35 @@ int     redirection_file_check(t_cmd *ex)
     free_tab(arr);
     return (1);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // void    redirecting_out(t_cmd **ex, t_env **env, int nw)
 // {

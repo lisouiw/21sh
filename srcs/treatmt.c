@@ -68,7 +68,7 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
             ex = ex->next;
         }
         else if (ex->type == 0 && (ex->next->type == 7 || ex->next->type == 8  || ex->next->type == 9))
-            redirection_f(&ex, &env, &dot);
+            redirection_fork(&ex, &env, &dot);
         else
             ex = ex->next;
         // if (ex->type != 0)
