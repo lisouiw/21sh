@@ -33,7 +33,6 @@ char    *change_w_varq(char *s, t_varq *v)
     i = 0;
     nw = NULL;
                 
-    // printf("=============================\n");    
     while (s[i])
     {
         in = i;
@@ -48,7 +47,6 @@ char    *change_w_varq(char *s, t_varq *v)
             }
             else        
                 nw = strjoin_free(ft_strsub(s, in, i - in), nw, 3);
-                // printf("%s\n", nw);
         }
         if (s[i] && (s[i] == '$' || s[i] == 34 || s[i] == 39))
         {
@@ -57,7 +55,6 @@ char    *change_w_varq(char *s, t_varq *v)
             nw = strjoin_free(ft_strdup(v->cmd), nw, 3);
             if (v->next != NULL)
                 v = v->next;
-            // printf("%s=====%s\n", nw, &s[i]);
         }
     }
     return (nw);

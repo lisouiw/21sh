@@ -1,50 +1,5 @@
 #include "../twenty.h"
 
-// && 
-// ||
-// |
-// ;
-// ' '
-// >>
-// <<
-// &>
-//
-
-//quote laisse en raw
-//dquote interprete certaine variable
-
-// int     parsing_elem(t_cmd *ex)
-// {
-
-    // | = 3;
-    // && = 4;
-    // || = 5;
-    // << = 6;  <<[-]word
-
-
-    // >>
-    // &> >&    ->     >&word        &>word    >word 2>&1
-    //              [n]<&word    [n]>&word
-    //              [n]<&digit-  [n]>&digit-
-    // >    ->  [n]>word
-    // <    ->  [n]<
-
-
-    // Redirecting Input 7
-        // [n]<word
-    // Redirecting Output 8
-        // [n]>word
-    // Appending Redirected Output 9
-        //  [n]>>word
-    // Redirecting Standard Output and Standard Error 10
-        // &>word      >&word   :   >word 2>&1
-    // Here Documents 6
-        // <<[-]word
-    // Duplicating File Descriptors 11
-        // [n]<&word   [n]>&word
-    // Moving File Descriptors 12
-        // [n]<&digit-   [n]>&digit-
-
 t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex) //sub and put into ex
 {
     t_cmd   *nw;
@@ -182,20 +137,20 @@ void    join_redirecting(t_cmd **ex)
 int     parsing_op(char *s, t_cmd **ex, t_env *env) //get all op ctrl
 {
     int     i;
-    char    *m;
+    // char    *m;
         
     i = 0;
     while (s[i] && s[i] == ' ')
         ++i;
-    m = quote_variable(s, NULL, env);
-    // printf("m =%s s = %s", m, s);
-    *ex = separate_cmd(m, i, i, *ex);   //separate by simple word and metacharactere
+    s = quote_variable(s, NULL, env);
+    *ex = separate_cmd(s, i, i, *ex);   //separate by simple word and metacharactere
     i = parse_type(&(*ex));             // give at first a type as cmd(0) or a op ctrl(1)
                                         //parse variable environnement
-    *ex = parse_op_int(*ex, m);         // give all op ctrl specifique type 
+    *ex = parse_op_int(*ex, s);         // give all op ctrl specifique type 
+
     if ((i = parse_synthaxe(*ex)) != 0)
     {
-        free(m);
+        free(s);
         return(i);
     }
     join_redirecting(&(*ex));           // join les cas ls -a > co -q ----> ls -a q > co
@@ -203,6 +158,7 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env) //get all op ctrl
     // free(m);
     // print_ex_up(*ex);
     // sleep(3);
+    free(s);
     return (0);
 }
 
@@ -223,27 +179,41 @@ int     parsing_quote(char *s) //if all quotes are closed
     return (i);
 }
 
-int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex, t_env *env)
+int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env)
 {
     char    *nw;
 
     nw = NULL;
     *ex = init_ex(NULL);
-    (*fz)->cmd = join_cmd((*fz)->cmd, ed, *fz);
-    while (ed->rpz[0] == 0)
+    fz->stick = join_cmd_nw(fz->stick, ed, fz); //join avec \n
+    fz->cmd = join_cmd(fz->cmd, ed, fz); //join
+    while (ed->rpz[0] == 0) // debut de la liste
         ed = ed->next;
-    if (((*fz)->mode[3] = parsing_quote((*fz)->cmd))) //parsing_quote
-        return(0);
-    else if (((*fz)->mode[3] = parsing_op((*fz)->cmd, &(*ex), env))) // parsing_op
+    if ((fz->mode[3] = parsing_quote(fz->cmd))) //parsing_quote
     {
-        free_all_ex(&(*ex));
-        if (!((*fz)->mode[3] >= 0 && (*fz)->mode[3] < 6)) // autre && || |
-        {
-            printf("ERROR %i\n", (*fz)->mode[3]);
-            (*fz)->mode[3] = 0;
-        }
+        free_all_ex(ex);
+        return(0);
     }
-    else if ((*fz)->mode[3] == 0)
+    else if ((fz->mode[3] = parsing_op(ft_strdup(fz->cmd), &(*ex), env))) // parsing_op
+    {
+ 
+        free_all_ex(&(*ex));
+        
+        if (!(fz->mode[3] >= 0 && fz->mode[3] < 6)) // autre que && || |
+        {
+            printf("ERROR %i\n", fz->mode[3]);
+            free(fz->cmd);
+            fz->cmd = NULL;
+            fz->mode[3] = 0;
+            return(0);
+        }
+        
+         
+    }
+    else if (fz->mode[3] == 0)
+    {
+        // printf("PARSING OK\n");
         return(1);
+    }
     return(0);
 }

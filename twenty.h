@@ -43,6 +43,7 @@ typedef struct      s_froz
     char            buf[3]; // buffer pour lire le char tape
     char            *paste; // la chaine a coller
     char            *cmd; // keep cmd car imcomplete
+    char            *stick; // keep cmd car imcomplete
     int             nb[1]; // last position
 }                   t_froz;
 
@@ -69,6 +70,7 @@ typedef struct      s_edit
 typedef struct      s_his
 {
     char            *cmd;
+    char            *stick;
     struct  s_his   *next;
     struct  s_his   *prev;
 }                   t_his;
@@ -162,9 +164,9 @@ void    free_pid_loop(t_proc *p, int i);
 int    free_kill(t_proc **p);
 
 //giv_str
+char    *join_cmd_nw(char *cmd, t_edit *ed, t_froz *fz);
 char    *ed_str(t_edit *cmd, char *s, int nb);
 char    *join_cmd(char *cmd, t_edit *ed, t_froz *fz);
-
 
 // init
 t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs);
@@ -230,7 +232,7 @@ t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex);
 t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex);
 int     parsing_op(char *s, t_cmd **ex, t_env *env);
 int     parsing_quote(char *s);
-int     parsing(t_edit *ed, t_froz **fz, t_cmd **ex, t_env *env);
+int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env);
 void    join_redirecting(t_cmd **ex);
 
 // pascutcopy
@@ -318,3 +320,18 @@ t_env	*exec_fct_nf(char **cut, t_env *env);
 char    *change_w_varq(char *s, t_varq *v);
 
 #endif
+
+    // Redirecting Input 7
+        // [n]<word
+    // Redirecting Output 8
+        // [n]>word
+    // Appending Redirected Output 9
+        //  [n]>>word
+    // Redirecting Standard Output and Standard Error 10
+        // &>word      >&word   :   >word 2>&1
+    // Here Documents 6
+        // <<[-]word
+    // Duplicating File Descriptors 11
+        // [n]<&word   [n]>&word
+    // Moving File Descriptors 12
+        // [n]<&digit-   [n]>&digit-

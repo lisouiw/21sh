@@ -4,25 +4,29 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
 {
     t_cmd   *ex;
     
-    while ((*cmd)->rpz[0] == 0)
+    while ((*cmd)->rpz[0] == 0) // Go debut de la liste
         *cmd = (*cmd)->next;
-    if ((*fz)->nb[0] % g_nb->tb[0] != 1)
+    if ((*fz)->nb[0] % g_nb->tb[0] != 1) //eviter de fausser les calcul
         ft_putchar('\n');
     if ((*cmd)->c[0] == '\0' && (*fz)->cmd == NULL) //&& (*fz)->mode[3] != 0)  // quand il n'y a rien
         return(env);
-    else if (parsing(*cmd, &(*fz), &ex, env) == 1) // parsing good
+    else if (parsing(*cmd, *fz, &ex, env) == 1) // parsing. OK go loop
     {
-        add_his(&(*hs), NULL, *fz);
-        env = launchcmd(ex, env);
+        env = launchcmd(ex, env);   
+        add_his(&(*hs), NULL, *fz); //ajout historique
         free_all_ex(&ex);
         free((*fz)->cmd);
         (*fz)->cmd = NULL;
+        free((*fz)->stick);
+        (*fz)->stick = NULL;
     }
-    else if ((*fz)->mode[3] == 0) // parsing error qund lauch
+    else if ((*fz)->mode[3] == 0) // parsing error attend d'etre completer
     {
         add_his(&(*hs), NULL, *fz);
         free((*fz)->cmd);
         (*fz)->cmd = NULL;
+        free((*fz)->stick);
+        (*fz)->stick = NULL;
     }
     return (env);
 }
@@ -33,6 +37,7 @@ int     add_his(t_his **hs, t_his *nw, t_froz *fz)
     if (!(nw = (t_his*)malloc(sizeof(t_his))))
         return(0);
     nw->cmd = ft_strdup(fz->cmd);
+    nw->stick = ft_strdup(fz->stick);
     while ((*hs)->prev != NULL)
         *hs = (*hs)->prev;
     if (if_only(nw->cmd, ' ') || ((*hs)->next->cmd && ft_strcmp(nw->cmd, (*hs)->next->cmd) == 0 ))

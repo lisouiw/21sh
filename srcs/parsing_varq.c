@@ -66,8 +66,9 @@ char    *quote_variable(char *s, t_varq *v, t_env *env)
         nw = change_w_varq(s, v); //coller les modif
     else
         return(s);
+    free(s);
     // printf("nw = %s\n", nw);
-    // free(s);
+    // exit(0);
     free_varq(v);
     return (nw);
 }

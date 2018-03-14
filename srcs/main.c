@@ -13,7 +13,6 @@ int         main(void)
     {
         read(0, &fz->buf, 4);
         // printf("%i %i %i\n", fz->buf[0], fz->buf[1], fz->buf[2]);
-        // sleep(3);
         // exit(0);
         if (fz->buf[0] == 10)//touch enter
         {
@@ -21,7 +20,7 @@ int         main(void)
             env = treat_cmd(env, &ed, &hs, &fz);        //traiter la cmd
             init_for_new(&hs, &fz, &ed);                // init ed et mettre le prompt approprie
         }
-        else if (fz->buf[0] == 3)
+        else if (fz->buf[0] == 3)                       //ctrl-C rendre le prompt
         {
             write(1, "\n", 1);
             init_for_new(&hs, &fz, &ed);                // init ed et mettre le prompt approprie        

@@ -71,8 +71,8 @@ t_cmd   *parse_op_int(t_cmd *ex, char *s) // give op ctrl specifique type and
     while (ex->prev != NULL) // debut de la chaine 
         ex = ex->prev;
     
-    while (ex->prev != NULL) // debut de la chaine 
-        ex = ex->prev;
+    // while (ex->prev != NULL) // debut de la chaine 
+    //     ex = ex->prev;
     return (ex);
 }
 

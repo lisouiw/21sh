@@ -1,6 +1,5 @@
 #include "../twenty.h"
 
-
 void    redirection(t_cmd **ex, t_env **env, t_exec *s)
 {
     char    **arr;
@@ -19,7 +18,7 @@ void    redirection(t_cmd **ex, t_env **env, t_exec *s)
 void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
 {
     char    **arr;
-    pid_t       pid;
+    pid_t   pid;
     
 
     if (s || env)
@@ -62,5 +61,5 @@ void    redirecting_exec(t_cmd **ex, t_env **env, char **arr)
         
     }
     wait(0);
-    *env = exec_fct_nf(arr, *env);
+    *env = exec_fct_nf(arr, *env); //EXECUTION
 }
