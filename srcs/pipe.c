@@ -81,6 +81,8 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
         }
     }
     wait(0);
+
+    
     // write(1, "\n", 2);
     // printf("\n=========================================\n");
     return (env);

@@ -43,7 +43,7 @@ typedef struct      s_froz
     char            buf[3]; // buffer pour lire le char tape
     char            *paste; // la chaine a coller
     char            *cmd; // keep cmd car imcomplete
-    char            *stick; // keep cmd car imcomplete
+    // char            *cmd; // keep cmd car imcomplete
     int             nb[1]; // last position
 }                   t_froz;
 
@@ -70,7 +70,7 @@ typedef struct      s_edit
 typedef struct      s_his
 {
     char            *cmd;
-    char            *stick;
+    // char            *cmd;
     struct  s_his   *next;
     struct  s_his   *prev;
 }                   t_his;
@@ -294,6 +294,8 @@ int		set_up_term(void);
 int     if_only(char *s, char c);
 void	ecriture_info(t_env *lst);
 char	*strjoin_free(char *nw, char *sub, int i);
+int		white_space(char *s);
+
 
 // touch
 t_edit  *touch(t_edit **ed, t_froz **fz, t_his **hs);

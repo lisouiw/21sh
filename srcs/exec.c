@@ -33,9 +33,7 @@ t_env	*exec_fct_nf(char **cut, t_env *env)
 t_env	*exec_fct(char **cut, t_env *env)
 {
 	if (ft_strcmp("echo", cut[0]) == 0)
-	{
 		print_tab(cut, 0);
-	}
 	// else if (ft_strcmp("env", cut[0]) == 0)
 	// 	ecriture_info(env);
 	// else if (ft_strcmp("setenv", cut[0]) == 0)

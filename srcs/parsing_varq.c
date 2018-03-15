@@ -61,14 +61,11 @@ char    *quote_variable(char *s, t_varq *v, t_env *env)
 
     nw = NULL;
     v = add_varq_loop(s, NULL, env); //add les modif
-    // print_varq(v);
     if (v != NULL)
         nw = change_w_varq(s, v); //coller les modif
     else
         return(s);
     free(s);
-    // printf("nw = %s\n", nw);
-    // exit(0);
     free_varq(v);
     return (nw);
 }

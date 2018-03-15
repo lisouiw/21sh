@@ -48,7 +48,7 @@ t_froz      *init_fz(t_froz *fz)
     fz->mode[3] = 0;
     fz->nb[0] = 3;
     fz->paste = NULL;
-    fz->stick = NULL;
+    // fz->cmd = NULL;
     fz->cmd = NULL;
     return (fz);
 }

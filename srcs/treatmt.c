@@ -12,22 +12,23 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
         return(env);
     else if (parsing(*cmd, *fz, &ex, env) == 1) // parsing. OK go loop
     {
-        env = launchcmd(ex, env);   
         add_his(&(*hs), NULL, *fz); //ajout historique
+        env = launchcmd(ex, env);   
         free_all_ex(&ex);
+        // free((*fz)->cmd);
+        // (*fz)->cmd = NULL;
         free((*fz)->cmd);
         (*fz)->cmd = NULL;
-        free((*fz)->stick);
-        (*fz)->stick = NULL;
     }
     else if ((*fz)->mode[3] == 0) // parsing error attend d'etre completer
     {
         add_his(&(*hs), NULL, *fz);
+        // free((*fz)->cmd);
+        // (*fz)->cmd = NULL;
         free((*fz)->cmd);
         (*fz)->cmd = NULL;
-        free((*fz)->stick);
-        (*fz)->stick = NULL;
     }
+   
     return (env);
 }
 
@@ -36,8 +37,8 @@ int     add_his(t_his **hs, t_his *nw, t_froz *fz)
 {
     if (!(nw = (t_his*)malloc(sizeof(t_his))))
         return(0);
+    // nw->cmd = ft_strdup(fz->cmd);
     nw->cmd = ft_strdup(fz->cmd);
-    nw->stick = ft_strdup(fz->stick);
     while ((*hs)->prev != NULL)
         *hs = (*hs)->prev;
     if (if_only(nw->cmd, ' ') || ((*hs)->next->cmd && ft_strcmp(nw->cmd, (*hs)->next->cmd) == 0 ))
@@ -64,7 +65,9 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
     while (ex->next != NULL)
     {
         if (pipe_on(ex)) //je vais avoir des pipes a exec
+        {    
             env = pipe_fct(&dot, &ex, env);
+        }
         else if (ex->type == 0 && (ex->next->type != 7 && ex->next->type != 8 && ex->next->type != 9))
         {
             // printf("HOLA");

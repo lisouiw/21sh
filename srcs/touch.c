@@ -54,7 +54,7 @@ t_his   *histo(t_his *hs, char c, t_edit **ed, t_froz **fz)
             return(hs);
         }
         while (hs->cmd[++i])
-            *ed = add_ed(*ed, hs->stick[i], NULL, &(*fz));
+            *ed = add_ed(*ed, hs->cmd[i], NULL, &(*fz));
         *ed = giv_position(*ed, giv_last(*fz));
         (*fz)->nb[0] = i + giv_last(*fz);
     }

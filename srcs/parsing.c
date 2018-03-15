@@ -3,11 +3,14 @@
 t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex) //sub and put into ex
 {
     t_cmd   *nw;
+    char    *tmp;
 
     if (i == in)
         return (ex);
     if (ex->cmd == NULL && ex->prev->type == 42 && ex->next->type == 42)
     {
+        in = in  + white_space(tmp = ft_strsub(s, in , i - in));
+        free(tmp);
         ex->cmd = ft_strsub(s, in , i - in);
         ex->start = in;
     }
@@ -17,6 +20,8 @@ t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex) //sub and put into ex
             ex = ex->next;
         if (!(nw = (t_cmd*)malloc(sizeof(t_cmd))))
             return (NULL);
+        in = in  + white_space(tmp = ft_strsub(s, in , i - in));
+        free(tmp);
         nw->cmd = ft_strsub(s, in , i - in);
         ex->prev->next = nw;
         nw->next = ex;
@@ -144,6 +149,7 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env) //get all op ctrl
         ++i;
     s = quote_variable(s, NULL, env);
     *ex = separate_cmd(s, i, i, *ex);   //separate by simple word and metacharactere
+    // print_ex_up(*ex);
     i = parse_type(&(*ex));             // give at first a type as cmd(0) or a op ctrl(1)
                                         //parse variable environnement
     *ex = parse_op_int(*ex, s);         // give all op ctrl specifique type 
@@ -156,7 +162,8 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env) //get all op ctrl
     join_redirecting(&(*ex));           // join les cas ls -a > co -q ----> ls -a q > co
     join_ex(&(*ex));                    //join les 0 ensemble
     // free(m);
-    // print_ex_up(*ex);
+    // printf("=============================\n");
+    print_ex_up(*ex);
     // sleep(3);
     free(s);
     return (0);
@@ -185,8 +192,8 @@ int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env)
 
     nw = NULL;
     *ex = init_ex(NULL);
-    fz->stick = join_cmd_nw(fz->stick, ed, fz); //join avec \n
-    fz->cmd = join_cmd(fz->cmd, ed, fz); //join
+    fz->cmd = join_cmd_nw(fz->cmd, ed, fz); //join avec \n
+    // fz->cmd = join_cmd(fz->cmd, ed, fz); //join
     while (ed->rpz[0] == 0) // debut de la liste
         ed = ed->next;
     if ((fz->mode[3] = parsing_quote(fz->cmd))) //parsing_quote
@@ -196,14 +203,12 @@ int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env)
     }
     else if ((fz->mode[3] = parsing_op(ft_strdup(fz->cmd), &(*ex), env))) // parsing_op
     {
- 
         free_all_ex(&(*ex));
-        
         if (!(fz->mode[3] >= 0 && fz->mode[3] < 6)) // autre que && || |
         {
             printf("ERROR %i\n", fz->mode[3]);
-            free(fz->cmd);
-            fz->cmd = NULL;
+            // free(fz->cmd);
+            // fz->cmd = NULL;
             fz->mode[3] = 0;
             return(0);
         }

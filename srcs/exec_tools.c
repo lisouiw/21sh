@@ -62,5 +62,4 @@ void	print_tab(char **ta, int i)
 			write(1, " ", 1);
 	}
 	ft_putchar_fd('\n', 1);
-	// sleep(5);
 }

@@ -40,3 +40,15 @@ char	*strjoin_free(char *nw, char *sub, int i)
 	}
 	return (sub);
 }
+
+int		white_space(char *s)
+{
+	int		i;
+
+	i = -1;
+	if (s[i + 1] != ' ' && s[i + 1] != '\t' && s[i + 1] != '\n')
+		return(0);
+	while (s[++i] && (s[i] == ' ' || s[i] == '\t' || s[i] == '\n'))
+		;
+	return (i);
+}
