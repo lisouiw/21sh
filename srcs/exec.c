@@ -4,7 +4,6 @@ t_env	*exec_fct_nf(char **cut, t_env *env)
 {
 	if (ft_strcmp("echo", cut[0]) == 0)
 	{
-
 		print_tab(cut, 0);
 		exit(0);
 	}
@@ -73,7 +72,13 @@ void	b_other(char **cut, t_env *env)
 			}
 		}
 		else 
-			wait(0);
+		{
+			int status;
+			wait(&status);       /*you made a exit call in child you 
+								   need to wait on exit status of child*/
+			if(WIFEXITED(status))
+				 printf("child exited with = %d\n",WEXITSTATUS(status));
+		}
 	}
 	free_tab(tab_env);
 }
@@ -87,14 +92,11 @@ void	b_other_nf(char **cut, t_env *env)
 		if (wait(0) && execve(cut[0], cut, tab_env) == -1)
 			if (give_path_nf(env, cut, -1, tab_env) == -1)
 			{
-				exit(0);
 				ft_putstr("sh: command not found: ");
 				ft_putendl(cut[0]);
 				exit(-1);
 			}
-
 	}
-	
 	free_tab(tab_env);
 }
 

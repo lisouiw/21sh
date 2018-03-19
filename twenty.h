@@ -295,6 +295,7 @@ int     if_only(char *s, char c);
 void	ecriture_info(t_env *lst);
 char	*strjoin_free(char *nw, char *sub, int i);
 int		white_space(char *s);
+int     if_only_i(char *s, char c);
 
 
 // touch

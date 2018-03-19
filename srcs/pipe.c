@@ -6,7 +6,7 @@ void       end_pipe(t_cmd **ex, t_exec **s)
     if ((*ex)->next->type == 42)
         wait(0);
     dup2(1, (*s)->out);
-    // dup2(0, (*s)->in);
+    dup2(0, (*s)->in);
     if ((*ex)->next->type == 7)
         while ((*ex)->type == 7 || (*ex)->next->type == 7 || (*ex)->type == 3)
             *ex = (*ex)->next;
@@ -52,23 +52,25 @@ t_proc  *add_pid(t_proc *p, pid_t pid)
 
 t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
 {
+    int     pp = 1;
     pid_t   pid;
     s->in = 0;
     
     s->out = dup(1);
-    while ((*ex)->next != NULL)
+    while (pp == 1)
     {
         s->out = dup(1);
+        pp = pipe_on(*ex);
         pipe(s->p);
         if ((pid = fork()) == -1)
             exit(EXIT_FAILURE);
         else if (pid == 0)
         {
-            if ((*ex)->type == 3)
-             *ex = (*ex)->next;
+            // if ((*ex)->type == 3)
+            //  *ex = (*ex)->next;
             // printf("================FILS=====%s====================\n", (*ex)->cmd);
             dup2(s->in, 0);
-            if (pipe_on(*ex))
+            if (pp)
                 dup2(s->p[1], 1);
             close(s->p[0]);
             if ((*ex)->next->type == 7 || (*ex)->next->type == 8 ||(*ex)->next->type == 9 || (*ex)->next->type == 10 ||(*ex)->next->type == 11)
@@ -77,9 +79,7 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
                 env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env);
         }
         else
-        {
             end_pipe(&(*ex), &s);
-        }
     }
     wait(0);
 

@@ -161,7 +161,7 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env) //get all op ctrl
     join_ex(&(*ex));                    //join les 0 ensemble
     // free(m);
     // printf("=============================\n");
-    print_ex_up(*ex);
+    // print_ex_up(*ex);
     // sleep(3);
     free(s);
     return (0);
@@ -210,8 +210,6 @@ int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env)
             fz->mode[3] = 0;
             return(0);
         }
-        
-         
     }
     else if (fz->mode[3] == 0)
     {

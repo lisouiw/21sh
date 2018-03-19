@@ -28,9 +28,17 @@ void	ls_signal(void)
 // }
 void	sig_int(int sig)
 {
+    int status = 0;
     printf("INT[%i]\n", sig);
-    exit(0);
+    
+    waitpid(-1, &status, 0);
+    printf("child exited witho = %d | %d\n",WIFSIGNALED(status), WEXITSTATUS(status));
+    if(WIFSIGNALED(status) && WEXITSTATUS(status) == 0)
+         printf("child exited witha = %d | %d\n",WIFSIGNALED(status), WEXITSTATUS(status));
+    else
+        exit(0);
 }
+
 void	sig_quite(int sig)
 {
     printf("QUITE %i\n", sig);
