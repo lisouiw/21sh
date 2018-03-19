@@ -41,9 +41,9 @@ void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
 
 char    **give_seven(t_cmd *ex)
 {
-    while (ex->next->type == 8 || ex->next->type == 7 || ex->next->type == 9)
+    while (ex->next->type == 8 || ex->next->type == 7 || ex->next->type == 9|| ex->next->type == 10|| ex->next->type == 11)
         ex = ex->next;
-    while (ex->type == 8 || ex->type == 9)
+    while (ex->type == 8 || ex->type == 9|| ex->type == 10|| ex->type == 11)
         ex = ex->prev;
     if (ex->type != 7)
     // if (ex->type != 7 && ex->type != 6) add heredoc
@@ -58,13 +58,12 @@ void    redirecting_exec(t_cmd **ex, t_env **env, char **arr)
     
     if (env)
         ;   
-    printf("ouiiii\n");
     if ((tmp = give_seven(*ex)) != NULL)
     {
         nw = (tmp[2] == NULL) ? open(tmp[1], O_RDONLY) : open(tmp[2], O_RDONLY);
         dup2(nw, (arr[2] == NULL ? 0 : ft_atoi(tmp[0])));
         
     }
-    // wait(0);
-    // *env = exec_fct_nf(arr, *env); //EXECUTION
+    wait(0);
+    *env = exec_fct_nf(arr, *env); //EXECUTION
 }

@@ -12,12 +12,12 @@ int     redirection_check_create(t_cmd *ex)    //
                 return (0);
         else if (ex->type == 10)
         {
-            spl = ft_strsplit(ex->cmd, ' ');
+            // spl = ft_strsplit(ex->cmd, ' ');
             // dup2(2, 1);
             dup2(1, 2);
             // exit(0);
             // dup2(dup(ft_atoi(spl[2])), dup(ft_atoi(spl[0])));
-            free_tab(spl);
+            // free_tab(spl);
         }
         else if (ex->type == 11)
         {
