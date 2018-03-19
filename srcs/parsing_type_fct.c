@@ -6,6 +6,9 @@ t_cmd   *parse_redirec(t_cmd *ex, char *s)
     char    *tmp2;
     t_cmd   *tmp;
 
+    // printf("===========REDIRECTION==========\n");
+    // print_ex_up(ex);
+    
     if (ex->prev->cmd != NULL && ex->prev != NULL && isnumber(ex->prev->cmd) && s[ex->start -1] != ' ')
     {
         tmp = ex->prev;
@@ -19,7 +22,7 @@ t_cmd   *parse_redirec(t_cmd *ex, char *s)
         free(tmp->cmd);
         free(tmp);
     }
-    if (ex->next != NULL && ex->next->type != 42 &&  ex->next->type == 0)
+    if (ex->next != NULL && ex->next->type != 42 && ex->next->type == 0)
     {
         tmp1 = ft_strjoin(" " , ex->next->cmd);
         tmp2 = ft_strjoin(ex->cmd, tmp1);
@@ -27,7 +30,6 @@ t_cmd   *parse_redirec(t_cmd *ex, char *s)
         free(ex->cmd);
         ex->cmd = tmp2;
     }
-    // printf("===========REDIRECTION==========\n");
     // print_ex(ex);
     return (ex);
 }

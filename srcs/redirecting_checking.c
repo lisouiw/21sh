@@ -2,12 +2,32 @@
 
 int     redirection_check_create(t_cmd *ex)    //
 {
-    while ((ex)->type == 7 || (ex)->type == 8 || (ex)->type == 9)
+    char    **spl = NULL;
+
+    while ((ex)->type == 7 || (ex)->type == 8 || (ex)->type == 9 || (ex)->type == 10 || (ex)->type == 11)
     {
         if ((ex)->type == 8 || (ex)->type == 9) //creer les fichier
             redirection_file_create(ex);
         else if ((ex)->type == 7 && redirection_file_check(ex) == 0) //verif exist. Si non, exit.
                 return (0);
+        else if (ex->type == 10)
+        {
+            spl = ft_strsplit(ex->cmd, ' ');
+            // dup2(2, 1);
+            dup2(1, 2);
+            // exit(0);
+            // dup2(dup(ft_atoi(spl[2])), dup(ft_atoi(spl[0])));
+            free_tab(spl);
+        }
+        else if (ex->type == 11)
+        {
+            spl = ft_strsplit(ex->cmd, ' ');
+            printf("============\n");
+            print_tab(spl, -1);
+            if ( dup2(dup(ft_atoi(spl[0])), ft_atoi(spl[2])) ==  -1)
+                exit(0);
+            free_tab(spl);
+        }
         ex = (ex)->next;
     }
     return (1);

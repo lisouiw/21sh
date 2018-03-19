@@ -6,6 +6,7 @@ void    redirection(t_cmd **ex, t_env **env, t_exec *s)
     
     if (s)
         ;
+        // printf("redition\n");
     arr = ft_strsplit((*ex)->cmd, ' ');
     *ex = (*ex)->next;
     if (redirection_check_create(*ex))
@@ -45,6 +46,7 @@ char    **give_seven(t_cmd *ex)
     while (ex->type == 8 || ex->type == 9)
         ex = ex->prev;
     if (ex->type != 7)
+    // if (ex->type != 7 && ex->type != 6) add heredoc
         return (NULL);
     return (ft_strsplit(ex->cmd, ' '));
 }
@@ -54,12 +56,15 @@ void    redirecting_exec(t_cmd **ex, t_env **env, char **arr)
     int         nw;
     char        **tmp;
     
+    if (env)
+        ;   
+    printf("ouiiii\n");
     if ((tmp = give_seven(*ex)) != NULL)
     {
         nw = (tmp[2] == NULL) ? open(tmp[1], O_RDONLY) : open(tmp[2], O_RDONLY);
         dup2(nw, (arr[2] == NULL ? 0 : ft_atoi(tmp[0])));
         
     }
-    wait(0);
-    *env = exec_fct_nf(arr, *env); //EXECUTION
+    // wait(0);
+    // *env = exec_fct_nf(arr, *env); //EXECUTION
 }

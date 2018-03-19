@@ -466,8 +466,11 @@ void    loop_pipe(char ***cmd) //ls 3< "."
     int		p[2];
 	pid_t   pid;
     int		fd_in = 0;
+    int		fd_out = dup(1);
+    
     char    BUF[100];
     int     i;
+
     while (*cmd != NULL)
     {
         pipe(p);
@@ -475,11 +478,14 @@ void    loop_pipe(char ***cmd) //ls 3< "."
             exit(EXIT_FAILURE);
         else if (pid == 0)
         {
-			printf("===ENTREE==%i==fd_in = %i & p[0] = %i && p[1] = %i\n", pid, fd_in, p[0], p[1]);
+            // printf("===ENTREE==%i==fd_in = %i & p[0] = %i && p[1] = %i\n", pid, fd_in, p[0], p[1]);
             dup2(fd_in, 0);
             if (*(cmd + 1) != NULL)
+            {
                 dup2(p[1], 1);
-            printf("===NO=DUP==%i==fd_in = %i & p[0] = %i && p[1] = %i\n", pid, fd_in, p[0], p[1]);
+                 dup2(1, 2);
+            }
+            // printf("===NO=DUP==%i==fd_in = %i & p[0] = %i && p[1] = %i\n", pid, fd_in, p[0], p[1]);
             close(p[0]);
             execvp((*cmd)[0], *cmd);
         }
@@ -488,7 +494,9 @@ void    loop_pipe(char ***cmd) //ls 3< "."
             wait(NULL);
             close(p[1]);
             fd_in = p[0];
-			printf("===SORTIE=%i==fd_in = %i & p[0] = %i && p[1] = %i\n\n", pid, fd_in, p[0], p[1]);
+            dup2(1, fd_out);
+    		fd_out = dup(1);
+			// printf("===SORTIE=%i==fd_in = %i & p[0] = %i && p[1] = %i\n\n", pid, fd_in, p[0], p[1]);
             ++cmd;
         }
     }
@@ -496,13 +504,13 @@ void    loop_pipe(char ***cmd) //ls 3< "."
 
 int main()
 {
-	char *ls[] = {"ls", NULL};	
+	char *ls[] = {"ls","-z", NULL};	
 	char *wc[] = {"wc", "-c", NULL};
-	char *cat[] = {"cat", NULL};  
+	char *cat[] = {"cat", "-e", NULL};  
 	char *redic[] = {"../../../../tmp/test.txt", NULL};  
-	char *redic2[] = {"cat", NULL};  
+	char *redic2[] = {"cat","-e", NULL};  
 	// char **cmd[] = {wc, redic, NULL};
-	char **cmd[] = {cat ,ls, NULL};
+	char **cmd[] = {ls, cat , NULL};
 
 	loop_pipe(cmd);
 	return (0);

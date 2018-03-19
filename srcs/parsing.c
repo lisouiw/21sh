@@ -102,7 +102,7 @@ void    join_redirecting2(t_cmd **join, t_cmd **ex)
     char    *tmp2;
     t_cmd   *cmd;
 
-    while ((*ex)->type == 8 || (*ex)->type == 7||  (*ex)->type == 9)
+    while ((*ex)->type == 8 || (*ex)->type == 7||  (*ex)->type == 9 ||  (*ex)->type == 10)
     {
         *ex = (*ex)->next;
         if ((*ex)->type == 0)
@@ -130,7 +130,7 @@ void    join_redirecting(t_cmd **ex)
     {
         while ((*ex)->next != NULL)
         { 
-            if (((*ex)->type == 8 || (*ex)->type == 7 || (*ex)->type == 9) && (*ex)->prev->type == 0)// ls > co > co
+            if (((*ex)->type == 8 || (*ex)->type == 7 || (*ex)->type == 9 || (*ex)->type == 10) && (*ex)->prev->type == 0)// ls > co > co
                 join_redirecting2(&(*ex)->prev, &(*ex));
             if ((*ex)->next != NULL)
                 *ex = (*ex)->next;
@@ -149,11 +149,9 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env) //get all op ctrl
         ++i;
     s = quote_variable(s, NULL, env);
     *ex = separate_cmd(s, i, i, *ex);   //separate by simple word and metacharactere
-    // print_ex_up(*ex);
     i = parse_type(&(*ex));             // give at first a type as cmd(0) or a op ctrl(1)
                                         //parse variable environnement
-    *ex = parse_op_int(*ex, s);         // give all op ctrl specifique type 
-
+    *ex = parse_op_int(*ex, s);         // give all op ctrl specifique type | join n>&n
     if ((i = parse_synthaxe(*ex)) != 0)
     {
         free(s);
