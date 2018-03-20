@@ -1,12 +1,44 @@
 #include "../twenty.h"
+#include <unistd.h>
 
 void       end_pipe(t_cmd **ex, t_exec **s)
 {
+    signal(SIGCHLD, sig_child);
     close((*s)->p[1]);
-    if ((*ex)->next->type == 42)
-        wait(0);
+    // dup2(1, (*s)->out);
+    // dup2(0, (*s)->in);
+    // if ((*ex)->next->type == 42)
+    // {
+    //     // int status;
+    //     // waitpid(-1, &status, WUNTRACED);
+
+    //     // wait(&status);       /*you made a exit call in child you 
+    //     //                    need to wait on exit status of child*/
+    //     // if(WIFEXITED(status))
+    //     // //     exit(0);
+    //     // if (WEXITSTATUS(status))
+    //     //     exit(0);
+
+    //     // printf("child exited with = %d || %d",WEXITSTATUS(status), WEXITSTATUS(status));
+    //     wait(NULL);
+    // }
     dup2(1, (*s)->out);
     dup2(0, (*s)->in);
+    if ((*ex)->next->type == 42)
+    {
+        // int status;
+        // waitpid(-1, &status, WUNTRACED);
+
+        // wait(&status);       /*you made a exit call in child you 
+        //                    need to wait on exit status of child*/
+        // if(WIFEXITED(status))
+        // //     exit(0);
+        // if (WEXITSTATUS(status))
+        //     exit(0);
+
+        // printf("child exited with = %d || %d",WEXITSTATUS(status), WEXITSTATUS(status));
+        wait(0);
+    }
     if ((*ex)->next->type == 7)
         while ((*ex)->type == 7 || (*ex)->next->type == 7 || (*ex)->type == 3)
             *ex = (*ex)->next;
@@ -15,6 +47,7 @@ void       end_pipe(t_cmd **ex, t_exec **s)
     else if ((*ex)->next != NULL)
         *ex = (*ex)->next;
     (*s)->in = (*s)->p[0];
+    // printf("child exited with = %d |",WEXITSTATUS(status));
 }
 
 int     pipe_on(t_cmd *ex)
@@ -79,7 +112,9 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
                 env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env);
         }
         else
+        {
             end_pipe(&(*ex), &s);
+        }
     }
     wait(0);
 

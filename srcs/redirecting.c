@@ -6,7 +6,6 @@ void    redirection(t_cmd **ex, t_env **env, t_exec *s)
     
     if (s)
         ;
-        // printf("redition\n");
     arr = ft_strsplit((*ex)->cmd, ' ');
     *ex = (*ex)->next;
     if (redirection_check_create(*ex))
@@ -20,13 +19,11 @@ void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
 {
     char    **arr;
     pid_t   pid;
-    
 
     if (s || env)
         ;
     arr = ft_strsplit((*ex)->cmd, ' ');
     *ex = (*ex)->next;
-    
     if ((pid = fork()) == -1)
         exit(EXIT_FAILURE);
     else if (pid == 0)
@@ -41,9 +38,9 @@ void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
 
 char    **give_seven(t_cmd *ex)
 {
-    while (ex->next->type == 8 || ex->next->type == 7 || ex->next->type == 9|| ex->next->type == 10|| ex->next->type == 11)
+    while (ex->next->type == 8 || ex->next->type == 7 || ex->next->type == 9 || ex->next->type == 10 || ex->next->type == 11)
         ex = ex->next;
-    while (ex->type == 8 || ex->type == 9|| ex->type == 10|| ex->type == 11)
+    while (ex->type == 8 || ex->type == 9 || ex->type == 10 || ex->type == 11)
         ex = ex->prev;
     if (ex->type != 7)
     // if (ex->type != 7 && ex->type != 6) add heredoc

@@ -26,7 +26,7 @@ static int		ft_vide(const char *str)
 int				ft_atoi(const char *str)
 {
 	int					i;
-	unsigned int		nb;
+	int					nb;
 	int					ent;
 	int					sgn;
 

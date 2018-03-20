@@ -60,15 +60,10 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
     init_launch(&dot, &ex);
     while (ex->next != NULL)
     {
-        // printf("========%s===========\n", ex->cmd);
         if (pipe_on(ex)) //je vais avoir des pipes a exec
-        {    
             env = pipe_fct(&dot, &ex, env);
-            // printf("==PIPE===%s======%s=====\n", ex->cmd, ex->prev->cmd);
-        }
         else if (ex->type == 0 && (ex->next->type != 7 && ex->next->type != 8 && ex->next->type != 9 && ex->next->type != 10 && ex->next->type != 11))
         {
-            // printf("HOLA");
             env = exec_fct((arr = ft_strsplit(ex->cmd, ' ')), env);
             free_tab(arr);
             ex = ex->next;

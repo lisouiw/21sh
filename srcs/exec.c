@@ -57,7 +57,8 @@ void	b_other(char **cut, t_env *env)
 {
 	char	**tab_env;
     pid_t      pid;
-	
+	int status;
+
 	if ((tab_env = list_to_tab(env, NULL)))
 	{
 		if ((pid = fork()) == -1)
@@ -73,11 +74,13 @@ void	b_other(char **cut, t_env *env)
 		}
 		else 
 		{
-			int status;
-			wait(&status);       /*you made a exit call in child you 
-								   need to wait on exit status of child*/
-			if(WIFEXITED(status))
-				 printf("child exited with = %d\n",WEXITSTATUS(status));
+			wait(&status);      
+			// if (WTERMSIG(status) == 2)
+			// 	signal(SIGCHLD, SIG_IGN);
+			printf("B_OTHER: child exited witha = %i |%i | %i|%i|\n", 
+			WIFEXITED(status), WEXITSTATUS(status),
+			 WIFSIGNALED(status), WTERMSIG(status));
+			
 		}
 	}
 	free_tab(tab_env);
