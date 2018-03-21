@@ -62,9 +62,9 @@ void    init_data(t_froz **fz)
 
 void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed)
 {
-    // wait(0);
-    set_up_term();
     wait(0);
+    set_up_term();
+    // wait(0);
     tputs(tgetstr("sc", NULL), 0, ft_put);
     put_prompt_init(&(*fz));
     free_ed(&(*ed), *fz);

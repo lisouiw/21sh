@@ -1,5 +1,11 @@
 #include "../twenty.h"
 
+
+// void	sig_pipe(int sig)
+// {   
+//     printf("PIPE [%i]\n", sig);
+// }
+
 void	sig_int(int sig)
 {
     int status = 0;
@@ -41,6 +47,7 @@ void	sig_child(int sig)
 void	ls_signal(void)
 {
     signal(SIGINT, sig_int);
+    signal(SIGCHLD, sig_child);
 }
 
 
