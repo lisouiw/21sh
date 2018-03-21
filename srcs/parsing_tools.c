@@ -13,6 +13,19 @@ int     isnumber(char *s)
     return (1);
 }
 
+int     isnumber_len(char *s)
+{
+    int i;
+
+    i = -1;
+    while (s[++i])
+    {
+        if (!(s[i] >= '0' && s[i] <= '9'))
+            return (i);
+    }
+    return (1);
+}
+
 void    print_ex(t_cmd *ex)
 {
     while (ex->prev != NULL)

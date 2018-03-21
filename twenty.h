@@ -193,6 +193,7 @@ void    put_my_cur(int nb, char c);
 int     isnumber(char *s);
 void    print_ex(t_cmd *ex);
 void    print_ex_up(t_cmd *ex);
+int     isnumber_len(char *s);
 
 // parsing_type_fct
 

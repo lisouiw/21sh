@@ -5,9 +5,6 @@ t_cmd   *parse_redirec(t_cmd *ex, char *s)
     char    *tmp1;
     char    *tmp2;
     t_cmd   *tmp;
-
-    // printf("===========REDIRECTION==========\n");
-    // print_ex_up(ex);
     
     if (ex->prev->cmd != NULL && ex->prev != NULL && isnumber(ex->prev->cmd) && s[ex->start -1] != ' ')
     {
@@ -30,7 +27,7 @@ t_cmd   *parse_redirec(t_cmd *ex, char *s)
         free(ex->cmd);
         ex->cmd = tmp2;
     }
-    // print_ex(ex);
+    print_ex_up(ex);
     return (ex);
 }
 

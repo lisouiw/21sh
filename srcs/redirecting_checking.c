@@ -1,5 +1,46 @@
 #include "../twenty.h"
 
+
+int     parsing_dup_out(char *s, int n)
+{
+    size_t     len;
+    
+    // printf("===LEN=%zu===lenOFs=%zu====c[%c]===ISATTY[%i][%i][%i][%i]===\n", len, ft_strlen(s), s[len], isatty(99), isatty(1), isatty(2), isatty(3));
+    // len = isnumber_len(s);
+    if ((len = isnumber_len(s)) + 1 == ft_strlen(s) && s[len] == '-')
+    {
+        s[len] = '\0';
+        dup2((len = ft_atoi(s)), n);
+        close(len);
+    }
+    else
+    {
+        len = open(s, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+        dup2(len, n);
+    }
+    return(1);
+}
+
+int     parsing_dup_in(char *s, int n)
+{
+    size_t     len;
+    
+    if ((len = isnumber_len(s)) + 1 == ft_strlen(s) && s[len] == '-')
+    {
+        s[len] = '\0';
+        dup2(n, (len = ft_atoi(s)));
+        close(len);
+    }
+    else
+    {
+        len = open(s, O_RDONLY);
+        dup2(n, len);
+    }
+    return(1);
+}
+
+
+
 int     redirection_check_create(t_cmd *ex)    //
 {
     char    **spl = NULL;
@@ -13,13 +54,20 @@ int     redirection_check_create(t_cmd *ex)    //
         else if (ex->type == 10)
         {
             spl = ft_strsplit(ex->cmd, ' ');
-            dup2(ft_atoi(spl[2]), ft_atoi(spl[0]));
+            if (spl[2] == '\0')
+                isnumber(spl[1]) ? dup2(ft_atoi(spl[1]), 1) : parsing_dup_out(spl[1], 1);
+            else
+                isnumber(spl[2]) ? dup2(ft_atoi(spl[2]), ft_atoi(spl[0])) : parsing_dup_out(spl[2], ft_atoi(spl[0]));
+            // dup2(isnumber(spl[2]) ? ft_atoi(spl[2]) : parsing_dup(spl[2]), ft_atoi(spl[0]));
             free_tab(spl);
         }
         else if (ex->type == 11)
         {
             spl = ft_strsplit(ex->cmd, ' ');
-            dup2(ft_atoi(spl[0]), ft_atoi(spl[2]));
+            if (spl[2] == '\0')
+                isnumber(spl[1]) ? dup2(0, ft_atoi(spl[1])) : parsing_dup_in(spl[1], 0);
+            else
+                isnumber(spl[2]) ? dup2(ft_atoi(spl[0]), ft_atoi(spl[2])) : parsing_dup_in(spl[2], ft_atoi(spl[0]));
             free_tab(spl);
         }
         ex = (ex)->next;
@@ -226,4 +274,24 @@ int     redirection_file_check(t_cmd *ex)
 //         close(nw);
 //         dup2(1, i);
 //     }
+// }
+
+// int     parsing_dup_out(char *s, int n)
+// {
+//     size_t     len;
+    
+//     // printf("===LEN=%zu===lenOFs=%zu====c[%c]===ISATTY[%i][%i][%i][%i]===\n", len, ft_strlen(s), s[len], isatty(99), isatty(1), isatty(2), isatty(3));
+//     // len = isnumber_len(s);
+//     if ((len = isnumber_len(s)) + 1 == ft_strlen(s) && s[len] == '-')
+//     {
+//         s[len] = '\0';
+//         dup2((len = ft_atoi(s)), n);
+//         close(len);
+//     }
+//     else
+//     {
+//         len = open(s, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+//         dup2(len, n);
+//     }
+//     return(1);
 // }
