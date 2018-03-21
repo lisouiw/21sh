@@ -3,25 +3,8 @@
 
 void       end_pipe(t_cmd **ex, t_exec **s)
 {
-    // signal(SIGCHLD, sig_child);
+    signal(SIGCHLD, sig_child);
     close((*s)->p[1]);
-    // dup2(1, (*s)->out);
-    // dup2(0, (*s)->in);
-    // if ((*ex)->next->type == 42)
-    // {
-    //     // int status;
-    //     // waitpid(-1, &status, WUNTRACED);
-
-    //     // wait(&status);       /*you made a exit call in child you 
-    //     //                    need to wait on exit status of child*/
-    //     // if(WIFEXITED(status))
-    //     // //     exit(0);
-    //     // if (WEXITSTATUS(status))
-    //     //     exit(0);
-
-    //     // printf("child exited with = %d || %d",WEXITSTATUS(status), WEXITSTATUS(status));
-    //     wait(NULL);
-    // }
     dup2(1, (*s)->out);
     dup2(0, (*s)->in);
     if ((*ex)->next->type == 42)

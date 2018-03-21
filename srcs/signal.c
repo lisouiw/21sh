@@ -21,6 +21,19 @@ void	sig_int(int sig)
         exit(0);
 }
 
+// void	sig_int(int sig)
+// {
+//     int status = 0;
+//     printf("INT[%i]\n", sig);
+    
+//     waitpid(-1, &status, 0);
+//     printf("child exited witho = %d | %d\n",WIFSIGNALED(status), WEXITSTATUS(status));
+//     if(WIFSIGNALED(status) && WEXITSTATUS(status) == 0)
+//          printf("child exited witha = %d | %d\n",WIFSIGNALED(status), WEXITSTATUS(status));
+//     else
+//         exit(0);
+// }
+
 void	sig_quite(int sig)
 {
     printf("QUITE %i\n", sig);
@@ -47,7 +60,8 @@ void	sig_child(int sig)
 void	ls_signal(void)
 {
     signal(SIGINT, sig_int);
-    signal(SIGCHLD, sig_child);
+	signal(SIGCHLD, SIG_DFL);
+    
 }
 
 
