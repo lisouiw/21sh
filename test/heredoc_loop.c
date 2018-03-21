@@ -16,6 +16,8 @@ int     main()
     int     pid;
     int fd;
     int z;
+    char    *here = NULL;
+
 
     z = dup(0);
     while (i)
@@ -27,21 +29,26 @@ int     main()
             pid = fork();
             if (pid == 0)
             {
-                printf("==================\n");
+                write(0, here, ft_strlen(here));
+                wait(0);
                 execvp("cat", ls_args);
                 exit(0);
             }
             else
             {
-                wait(0);
+                wait(NULL);
+                write(1, "END\n", 4);
                return(0);
             }
         }
-        // else
-        // {
-        //     write(0, buf, ft_strlen(buf));
-        //     write(0, "\n", 1);
-        // }
+        else
+        {
+            if (here == NULL)
+                here = ft_strdup(buf);
+            else 
+                here = ft_strjoin(here, ft_strjoin("\n",buf));
+            free(buf);
+        }
     }
 }
 

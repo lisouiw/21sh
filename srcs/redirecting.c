@@ -6,6 +6,7 @@ void    redirection(t_cmd **ex, t_env **env, t_exec *s)
     
     if (s)
         ;
+    // printf("cousou\n");
     arr = ft_strsplit((*ex)->cmd, ' ');
     *ex = (*ex)->next;
     if (redirection_check_create(*ex))
@@ -36,12 +37,23 @@ void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
     free_tab(arr);
 }
 
+
+char    **heredoc_fct(t_cmd *ex)
+{
+    printf("[%s]\n", ex->cmd);
+    // exit(0);
+    return (NULL);
+}
+
 char    **give_seven(t_cmd *ex)
 {
-    while (ex->next->type == 8 || ex->next->type == 7 || ex->next->type == 9 || ex->next->type == 10 || ex->next->type == 11)
+    while (ex->next->type == 6 || ex->next->type == 7 || ex->next->type == 8 || ex->next->type == 9 || ex->next->type == 10 || ex->next->type == 11)
         ex = ex->next;
     while (ex->type == 8 || ex->type == 9 || ex->type == 10 || ex->type == 11)
         ex = ex->prev;
+    // if (ex->type == 6)
+    //     // return (heredoc_fct(ex));
+    // else if (ex->type != 7)
     if (ex->type != 7)
     // if (ex->type != 7 && ex->type != 6) add heredoc
         return (NULL);
@@ -53,8 +65,6 @@ void    redirecting_exec(t_cmd **ex, t_env **env, char **arr)
     int         nw;
     char        **tmp;
     
-    if (env)
-        ;   
     if ((tmp = give_seven(*ex)) != NULL)
     {
         nw = (tmp[2] == NULL) ? open(tmp[1], O_RDONLY) : open(tmp[2], O_RDONLY);

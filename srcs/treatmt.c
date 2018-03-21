@@ -62,13 +62,13 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
     {
         if (pipe_on(ex)) //je vais avoir des pipes a exec
             env = pipe_fct(&dot, &ex, env);
-        else if (ex->type == 0 && (ex->next->type != 7 && ex->next->type != 8 && ex->next->type != 9 && ex->next->type != 10 && ex->next->type != 11))
+        else if (ex->type == 0 && (ex->next->type != 6 && ex->next->type != 7 && ex->next->type != 8 && ex->next->type != 9 && ex->next->type != 10 && ex->next->type != 11))
         {
             env = exec_fct((arr = ft_strsplit(ex->cmd, ' ')), env);
             free_tab(arr);
             ex = ex->next;
         }
-        else if (ex->type == 0 && (ex->next->type == 7 || ex->next->type == 8  || ex->next->type == 9 || ex->next->type == 10 || ex->next->type == 11))
+        else if (ex->type == 0 && (ex->next->type == 6 || ex->next->type == 7 || ex->next->type == 8  || ex->next->type == 9 || ex->next->type == 10 || ex->next->type == 11))
             redirection_fork(&ex, &env, &dot);
         else
             ex = ex->next;

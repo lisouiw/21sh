@@ -145,6 +145,7 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env) //get all op ctrl
     // char    *m;
         
     i = 0;
+    // printf("====HOLA=====\n");
     while (s[i] && s[i] == ' ')
         ++i;
     s = quote_variable(s, NULL, env);
@@ -152,6 +153,7 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env) //get all op ctrl
     i = parse_type(&(*ex));             // give at first a type as cmd(0) or a op ctrl(1)
                                         //parse variable environnement
     *ex = parse_op_int(*ex, s);         // give all op ctrl specifique type | join n>&n
+    // print_ex_up(*ex);
     if ((i = parse_synthaxe(*ex)) != 0)
     {
         free(s);
@@ -189,7 +191,9 @@ int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env)
     char    *nw;
 
     nw = NULL;
+    // printf("====HOLA=====\n");
     *ex = init_ex(NULL);
+    // add_here(fz, ed_str(ed, NULL, fz->nb[0] - giv_last(fz)));
     fz->cmd = join_cmd_nw(fz->cmd, ed, fz); //join avec \n
     // fz->cmd = join_cmd(fz->cmd, ed, fz); //join
     while (ed->rpz[0] == 0) // debut de la liste

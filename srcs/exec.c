@@ -2,22 +2,24 @@
 
 t_env	*exec_fct_nf(char **cut, t_env *env)
 {
+	int		i =0;
+
 	if (ft_strcmp("echo", cut[0]) == 0)
 	{
 		print_tab(cut, 0);
 		exit(0);
 	}
-	// else if (ft_strcmp("env", cut[0]) == 0)
-	// 	ecriture_info(env);
-	// else if (ft_strcmp("setenv", cut[0]) == 0)
-	// {
-	// 	while (cut[1] && cut[++(*i)])
-	// 		b_export(cut[*i], &env);
-	// }
-	// else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
-	// 	b_unset(cut, &env, 0);
-	// else if (ft_strcmp("cd", cut[0]) == 0)
-	// 	b_cd(cut[1], &env);
+	else if (ft_strcmp("env", cut[0]) == 0)
+		ecriture_info(env);
+	else if (ft_strcmp("setenv", cut[0]) == 0)
+	{
+		while (cut[1] && cut[++i])
+			b_export(cut[i], &env);
+	}
+	else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
+		b_unset(cut, &env, 0);
+	else if (ft_strcmp("cd", cut[0]) == 0)
+		b_cd(cut[1], &env);
 	else if (ft_strcmp(cut[0], "exit") == 0) // && free_for_exit(line, cut, env))
     {
         printf("exit\n");
@@ -31,19 +33,21 @@ t_env	*exec_fct_nf(char **cut, t_env *env)
 
 t_env	*exec_fct(char **cut, t_env *env)
 {
+	int		i =0;
+	
 	if (ft_strcmp("echo", cut[0]) == 0)
 		print_tab(cut, 0);
-	// else if (ft_strcmp("env", cut[0]) == 0)
-	// 	ecriture_info(env);
-	// else if (ft_strcmp("setenv", cut[0]) == 0)
-	// {
-	// 	while (cut[1] && cut[++(*i)])
-	// 		b_export(cut[*i], &env);
-	// }
-	// else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
-	// 	b_unset(cut, &env, 0);
-	// else if (ft_strcmp("cd", cut[0]) == 0)
-	// 	b_cd(cut[1], &env);
+	else if (ft_strcmp("env", cut[0]) == 0)
+		ecriture_info(env);
+	else if (ft_strcmp("setenv", cut[0]) == 0)
+	{
+		while (cut[1] && cut[++i])
+			b_export(cut[i], &env);
+	}
+	else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
+		b_unset(cut, &env, 0);
+	else if (ft_strcmp("cd", cut[0]) == 0)
+		b_cd(cut[1], &env);
 	else if (ft_strcmp(cut[0], "exit") == 0) // && free_for_exit(line, cut, env))
 		exit(0);
     else
@@ -72,7 +76,8 @@ void	b_other(char **cut, t_env *env)
 				exit(-1);
 			}
 		}
-		// else 
+		else 
+			wait(NULL);
 		// {
 		// 	wait(&status);      
 		// 	// if (WTERMSIG(status) == 2)

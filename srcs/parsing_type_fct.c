@@ -73,7 +73,10 @@ t_cmd   *parse_less_than(t_cmd *ex, char *s)
         ex = parse_redirec(ex, s);
     }
     else if (ft_strcmp(ex->cmd, "<<") == 0)
+    {
         ex->type = 6;        
+        ex = parse_redirec(ex, s);
+    }
     else if (ft_strcmp(ex->cmd, "<&") == 0 )
     {
         ex->type = 11;        

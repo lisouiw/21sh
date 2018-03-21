@@ -88,20 +88,25 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
             dup2(s->in, 0);
             if (pp)
                 dup2(s->p[1], 1);
+                // printf("================FILS2=====%s====================\n", (*ex)->cmd);
             close(s->p[0]);
-            if ((*ex)->next->type == 7 || (*ex)->next->type == 8 ||(*ex)->next->type == 9 || (*ex)->next->type == 10 ||(*ex)->next->type == 11)
+            if ((*ex)->next->type == 6 || (*ex)->next->type == 7 || (*ex)->next->type == 8 ||(*ex)->next->type == 9 || (*ex)->next->type == 10 ||(*ex)->next->type == 11)
                 redirection(&(*ex), &env, &(*s));
-            else
+            else if ((*ex)->cmd != NULL)
                 env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env);
+            else
+                exit(0);
+                // write(1, "EORR\n", 5);
         }
         else
         {
+            if ((*ex)->next->type == 42)
+                wait(NULL);
+            // printf("================PAPA=====%s====================\n", (*ex)->cmd);
             end_pipe(&(*ex), &s);
         }
     }
     wait(0);
-
-    
     // write(1, "\n", 2);
     // printf("\n=========================================\n");
     return (env);

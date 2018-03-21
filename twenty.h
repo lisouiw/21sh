@@ -10,6 +10,7 @@
 # include <curses.h>
 # include <sys/ioctl.h>
 # include <dirent.h>
+# include <limits.h>
 
 
 void	ls_signal(void);
@@ -45,6 +46,7 @@ typedef struct      s_froz
     char            *cmd; // keep cmd car imcomplete
     // char            *cmd; // keep cmd car imcomplete
     int             nb[1]; // last position
+    struct  t_here  *here;
 }                   t_froz;
 
 typedef struct		s_env
@@ -116,13 +118,28 @@ typedef struct      s_proc
     struct  s_proc  *next;
 }                   t_proc;
 
+typedef struct      s_here
+{
+    char            *delim;
+    char            *doc;
+    int             ok;
+    struct  s_proc  *next;
+}                   t_here;
+
 typedef struct      s_varq
 {
     char            *cmd;
     struct  s_varq  *next;
 }                   t_varq;
 
-//ctrl 
+// cd
+void	cd_prev(t_env **env, char *buf);
+void	cd_home(t_env **env, char *buf);
+void	cd_name(t_env **env, char *cd, char *user, char *buf);
+void	cd_simple(t_env **env, char *cd, char *buf, char *real);
+void	b_cd(char *cd, t_env **env);
+
+//  ctrl 
 void    ctrl_touch(t_edit **ed, t_froz **fz, char c, t_his *hs);
 void    ctrl_de_test(t_edit *ed, t_froz *fz, char c, t_his *hs);
 t_edit  *move_word(t_edit *ed, char c);

@@ -1,11 +1,5 @@
 #include "../twenty.h"
 
-
-// void	sig_pipe(int sig)
-// {   
-//     printf("PIPE [%i]\n", sig);
-// }
-
 void	sig_int(int sig)
 {
     int status = 0;
@@ -20,19 +14,6 @@ void	sig_int(int sig)
     else
         exit(0);
 }
-
-// void	sig_int(int sig)
-// {
-//     int status = 0;
-//     printf("INT[%i]\n", sig);
-    
-//     waitpid(-1, &status, 0);
-//     printf("child exited witho = %d | %d\n",WIFSIGNALED(status), WEXITSTATUS(status));
-//     if(WIFSIGNALED(status) && WEXITSTATUS(status) == 0)
-//          printf("child exited witha = %d | %d\n",WIFSIGNALED(status), WEXITSTATUS(status));
-//     else
-//         exit(0);
-// }
 
 void	sig_quite(int sig)
 {
@@ -63,7 +44,6 @@ void	ls_signal(void)
 	signal(SIGCHLD, SIG_DFL);
     
 }
-
 
 
     // signal(SIGPIPE, sig_quite);
