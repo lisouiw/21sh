@@ -1,4 +1,5 @@
 #include "../twenty.h"
+#include <unistd.h>
 
 int   p;
 
@@ -12,31 +13,47 @@ int     main()
 {
     char    *ls_args[] = {"ls", NULL};
     char    *buf;
-    int     i = 1;
+    char    *init = NULL;
+    int     i = 0;
     int     pid;
+    int     p[2];
     int fd;
     int z;
 
     z = dup(0);
-    signal(SIGINT, sign);
-    while (i)
+    fd = dup(0);
+        // close(0);
+        
+    while (2)
     {
-        fd = open(NULL, O_RDONLY);
-        i = get_next_line(0, &buf);
+        // if ((fd = open(NULL, O_RDONLY)) == -1)
+        //     exit(0);
+        // dup2(p[0], fd);
+        get_next_line(z, &buf);
         if (strcmp("lo", buf) == 0)
         {
             pid = fork();
             if (pid == 0)
             {
-                printf("==================\n");
-                execvp("cat", ls_args);
+
+                write(0, init, ft_strlen(init));
+                execvp("ls", ls_args);
                 exit(0);
             }
             else
             {
-                wait(0);
+                wait(NULL);
+                // exit(0);
                return(0);
             }
+         
+        }
+        else
+        {
+            if (init == NULL)
+                init = ft_strdup(buf);
+            else
+            init = ft_strjoin(init,ft_strjoin("\n", buf));
         }
         // else
         // {
