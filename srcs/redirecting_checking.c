@@ -1,13 +1,79 @@
 #include "../twenty.h"
 
+
+int     parsing_dup_out(char *s, int n, t_cmd *ex)
+{
+    size_t     len;
+    // int saved_stdout;
+    
+    if ((len = isnumber_len(s)) + 1 == ft_strlen(s) && s[len] == '-')
+    {
+        s[len] = '\0';
+        dup2(ft_atoi(s), n);
+        redirection_check_create(ex->next);    
+        close(ft_atoi(s));
+    }
+    else
+    {
+        len = open(s, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+        dup2(dup(len), n);
+    }
+    return(1);
+}
+
+int     parsing_dup_in(char *s, int n, t_cmd *ex)
+{
+    size_t     len;
+    
+    if ((len = isnumber_len(s)) + 1 == ft_strlen(s) && s[len] == '-')
+    {
+        s[len] = '\0';
+        dup2(n, (len = ft_atoi(s)));
+        redirection_check_create(ex->next);        
+        close(len);
+    }
+    else
+    {
+        len = open(s, O_RDONLY);
+        dup2(n, len);
+    }
+    return(1);
+}
+
+
+
 int     redirection_check_create(t_cmd *ex)    //
 {
-    while ((ex)->type == 7 || (ex)->type == 8 || (ex)->type == 9)
+    char    **spl = NULL;
+
+    while ((ex)->type == 7 || (ex)->type == 8 || (ex)->type == 9 || (ex)->type == 10 || (ex)->type == 11)
     {
         if ((ex)->type == 8 || (ex)->type == 9) //creer les fichier
+        {
+            printf("=%i=%i=%i=\n", isatty(0), isatty(1), isatty(2));
             redirection_file_create(ex);
+        }
         else if ((ex)->type == 7 && redirection_file_check(ex) == 0) //verif exist. Si non, exit.
                 return (0);
+        else if (ex->type == 10)
+        {
+            spl = ft_strsplit(ex->cmd, ' ');
+            if (spl[2] == '\0')
+                isnumber(spl[1]) ? dup2(ft_atoi(spl[1]), 1) : parsing_dup_out(spl[1], 1, ex);
+            else
+                isnumber(spl[2]) ? dup2(ft_atoi(spl[2]), ft_atoi(spl[0])) : parsing_dup_out(spl[2], ft_atoi(spl[0]), ex);
+            // dup2(isnumber(spl[2]) ? ft_atoi(spl[2]) : parsing_dup(spl[2]), ft_atoi(spl[0]));
+            free_tab(spl);
+        }
+        else if (ex->type == 11)
+        {
+            spl = ft_strsplit(ex->cmd, ' ');
+            if (spl[2] == '\0')
+                isnumber(spl[1]) ? dup2(0, ft_atoi(spl[1])) : parsing_dup_in(spl[1], 0, ex);
+            else
+                isnumber(spl[2]) ? dup2(ft_atoi(spl[0]), ft_atoi(spl[2])) : parsing_dup_in(spl[2], ft_atoi(spl[0]), ex);
+            free_tab(spl);
+        }
         ex = (ex)->next;
     }
     return (1);
@@ -212,4 +278,24 @@ int     redirection_file_check(t_cmd *ex)
 //         close(nw);
 //         dup2(1, i);
 //     }
+// }
+
+// int     parsing_dup_out(char *s, int n)
+// {
+//     size_t     len;
+    
+//     // printf("===LEN=%zu===lenOFs=%zu====c[%c]===ISATTY[%i][%i][%i][%i]===\n", len, ft_strlen(s), s[len], isatty(99), isatty(1), isatty(2), isatty(3));
+//     // len = isnumber_len(s);
+//     if ((len = isnumber_len(s)) + 1 == ft_strlen(s) && s[len] == '-')
+//     {
+//         s[len] = '\0';
+//         dup2((len = ft_atoi(s)), n);
+//         close(len);
+//     }
+//     else
+//     {
+//         len = open(s, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+//         dup2(len, n);
+//     }
+//     return(1);
 // }

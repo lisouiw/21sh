@@ -13,9 +13,10 @@ int		init(void)
 		return (-1);
 	term.c_lflag |= (ECHO);
 	term.c_lflag |= (ICANON);
-	term.c_cc[VEOF] = 3;
-	term.c_cc[VINTR] = 4;
-	
+	// term.c_cc[VEOF] = 3;
+	// term.c_cc[VINTR] = 4;
+	term.c_cc[VEOF] = 4;
+	term.c_cc[VINTR] = 3;
 
 	if (tcsetattr(0, TCSANOW, &term) == -1)
 		return (-1);

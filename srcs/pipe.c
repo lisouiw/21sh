@@ -1,12 +1,27 @@
 #include "../twenty.h"
+#include <unistd.h>
 
 void       end_pipe(t_cmd **ex, t_exec **s)
 {
+    signal(SIGCHLD, sig_child);
     close((*s)->p[1]);
-    if ((*ex)->next->type == 42)
-        wait(0);
     dup2(1, (*s)->out);
     dup2(0, (*s)->in);
+    if ((*ex)->next->type == 42)
+    {
+        // int status;
+        // waitpid(-1, &status, WUNTRACED);
+
+        // wait(&status);       /*you made a exit call in child you 
+        //                    need to wait on exit status of child*/
+        // if(WIFEXITED(status))
+        // //     exit(0);
+        // if (WEXITSTATUS(status))
+        //     exit(0);
+
+        // printf("child exited with = %d || %d",WEXITSTATUS(status), WEXITSTATUS(status));
+        wait(0);
+    }
     if ((*ex)->next->type == 7)
         while ((*ex)->type == 7 || (*ex)->next->type == 7 || (*ex)->type == 3)
             *ex = (*ex)->next;
@@ -15,6 +30,7 @@ void       end_pipe(t_cmd **ex, t_exec **s)
     else if ((*ex)->next != NULL)
         *ex = (*ex)->next;
     (*s)->in = (*s)->p[0];
+    // printf("child exited with = %d |",WEXITSTATUS(status));
 }
 
 int     pipe_on(t_cmd *ex)
@@ -52,37 +68,45 @@ t_proc  *add_pid(t_proc *p, pid_t pid)
 
 t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
 {
+    int     pp = 1;
     pid_t   pid;
     s->in = 0;
     
     s->out = dup(1);
-    while ((*ex)->next != NULL)
+    while (pp == 1)
     {
+        s->out = dup(1);
+        pp = pipe_on(*ex);
         pipe(s->p);
         if ((pid = fork()) == -1)
             exit(EXIT_FAILURE);
         else if (pid == 0)
         {
-            // printf("================FILS=========================\n");
+            // if ((*ex)->type == 3)
+            //  *ex = (*ex)->next;
+            // printf("================FILS=====%s====================\n", (*ex)->cmd);
             dup2(s->in, 0);
-            if (pipe_on(*ex))
+            if (pp)
                 dup2(s->p[1], 1);
+                // printf("================FILS2=====%s====================\n", (*ex)->cmd);
             close(s->p[0]);
-            if ((*ex)->next->type == 7 || (*ex)->next->type == 8 ||(*ex)->next->type == 9 )
+            if ((*ex)->next->type == 6 || (*ex)->next->type == 7 || (*ex)->next->type == 8 ||(*ex)->next->type == 9 || (*ex)->next->type == 10 ||(*ex)->next->type == 11)
                 redirection(&(*ex), &env, &(*s));
-            else
+            else if ((*ex)->cmd != NULL)
                 env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env);
-            // exit(0);
+            else
+                exit(0);
+                // write(1, "EORR\n", 5);
         }
         else
         {
-            // printf("================PERE=========================\n");
+            if ((*ex)->next->type == 42)
+                wait(NULL);
+            // printf("================PAPA=====%s====================\n", (*ex)->cmd);
             end_pipe(&(*ex), &s);
         }
     }
     wait(0);
-
-    
     // write(1, "\n", 2);
     // printf("\n=========================================\n");
     return (env);

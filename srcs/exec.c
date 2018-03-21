@@ -2,23 +2,24 @@
 
 t_env	*exec_fct_nf(char **cut, t_env *env)
 {
+	int		i =0;
+
 	if (ft_strcmp("echo", cut[0]) == 0)
 	{
-
 		print_tab(cut, 0);
 		exit(0);
 	}
-	// else if (ft_strcmp("env", cut[0]) == 0)
-	// 	ecriture_info(env);
-	// else if (ft_strcmp("setenv", cut[0]) == 0)
-	// {
-	// 	while (cut[1] && cut[++(*i)])
-	// 		b_export(cut[*i], &env);
-	// }
-	// else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
-	// 	b_unset(cut, &env, 0);
-	// else if (ft_strcmp("cd", cut[0]) == 0)
-	// 	b_cd(cut[1], &env);
+	else if (ft_strcmp("env", cut[0]) == 0)
+		ecriture_info(env);
+	else if (ft_strcmp("setenv", cut[0]) == 0)
+	{
+		while (cut[1] && cut[++i])
+			b_export(cut[i], &env);
+	}
+	else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
+		b_unset(cut, &env, 0);
+	else if (ft_strcmp("cd", cut[0]) == 0)
+		b_cd(cut[1], &env);
 	else if (ft_strcmp(cut[0], "exit") == 0) // && free_for_exit(line, cut, env))
     {
         printf("exit\n");
@@ -32,19 +33,21 @@ t_env	*exec_fct_nf(char **cut, t_env *env)
 
 t_env	*exec_fct(char **cut, t_env *env)
 {
+	int		i =0;
+	
 	if (ft_strcmp("echo", cut[0]) == 0)
 		print_tab(cut, 0);
-	// else if (ft_strcmp("env", cut[0]) == 0)
-	// 	ecriture_info(env);
-	// else if (ft_strcmp("setenv", cut[0]) == 0)
-	// {
-	// 	while (cut[1] && cut[++(*i)])
-	// 		b_export(cut[*i], &env);
-	// }
-	// else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
-	// 	b_unset(cut, &env, 0);
-	// else if (ft_strcmp("cd", cut[0]) == 0)
-	// 	b_cd(cut[1], &env);
+	else if (ft_strcmp("env", cut[0]) == 0)
+		ecriture_info(env);
+	else if (ft_strcmp("setenv", cut[0]) == 0)
+	{
+		while (cut[1] && cut[++i])
+			b_export(cut[i], &env);
+	}
+	else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
+		b_unset(cut, &env, 0);
+	else if (ft_strcmp("cd", cut[0]) == 0)
+		b_cd(cut[1], &env);
 	else if (ft_strcmp(cut[0], "exit") == 0) // && free_for_exit(line, cut, env))
 		exit(0);
     else
@@ -58,7 +61,8 @@ void	b_other(char **cut, t_env *env)
 {
 	char	**tab_env;
     pid_t      pid;
-	
+	// int status;
+
 	if ((tab_env = list_to_tab(env, NULL)))
 	{
 		if ((pid = fork()) == -1)
@@ -73,7 +77,16 @@ void	b_other(char **cut, t_env *env)
 			}
 		}
 		else 
-			wait(0);
+			wait(NULL);
+		// {
+		// 	wait(&status);      
+		// 	// if (WTERMSIG(status) == 2)
+		// 	// 	signal(SIGCHLD, SIG_IGN);
+		// 	printf("B_OTHER: child exited witha = %i |%i | %i|%i|\n", 
+		// 	WIFEXITED(status), WEXITSTATUS(status),
+		// 	 WIFSIGNALED(status), WTERMSIG(status));
+			
+		// }
 	}
 	free_tab(tab_env);
 }
@@ -87,14 +100,11 @@ void	b_other_nf(char **cut, t_env *env)
 		if (wait(0) && execve(cut[0], cut, tab_env) == -1)
 			if (give_path_nf(env, cut, -1, tab_env) == -1)
 			{
-				exit(0);
 				ft_putstr("sh: command not found: ");
 				ft_putendl(cut[0]);
 				exit(-1);
 			}
-
 	}
-	
 	free_tab(tab_env);
 }
 

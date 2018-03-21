@@ -3,28 +3,25 @@
 t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
 {
     t_cmd   *ex;
+    // char    *tmp;
     
     while ((*cmd)->rpz[0] == 0) // Go debut de la liste
         *cmd = (*cmd)->next;
     if ((*fz)->nb[0] % g_nb->tb[0] != 1) //eviter de fausser les calcul
         ft_putchar('\n');
-    if ((*cmd)->c[0] == '\0' && (*fz)->cmd == NULL) //&& (*fz)->mode[3] != 0)  // quand il n'y a rien
+    if (((*cmd)->c[0] == '\0' || if_only_i(ed_str(*cmd, NULL, (*fz)->nb[0] - giv_last(*fz)),' ')) && (*fz)->cmd == NULL) //&& (*fz)->mode[3] != 0)  // quand il n'y a rien
         return(env);
     else if (parsing(*cmd, *fz, &ex, env) == 1) // parsing. OK go loop
     {
         add_his(&(*hs), NULL, *fz); //ajout historique
         env = launchcmd(ex, env);   
         free_all_ex(&ex);
-        // free((*fz)->cmd);
-        // (*fz)->cmd = NULL;
         free((*fz)->cmd);
         (*fz)->cmd = NULL;
     }
     else if ((*fz)->mode[3] == 0) // parsing error attend d'etre completer
     {
         add_his(&(*hs), NULL, *fz);
-        // free((*fz)->cmd);
-        // (*fz)->cmd = NULL;
         free((*fz)->cmd);
         (*fz)->cmd = NULL;
     }
@@ -37,7 +34,6 @@ int     add_his(t_his **hs, t_his *nw, t_froz *fz)
 {
     if (!(nw = (t_his*)malloc(sizeof(t_his))))
         return(0);
-    // nw->cmd = ft_strdup(fz->cmd);
     nw->cmd = ft_strdup(fz->cmd);
     while ((*hs)->prev != NULL)
         *hs = (*hs)->prev;
@@ -65,17 +61,14 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
     while (ex->next != NULL)
     {
         if (pipe_on(ex)) //je vais avoir des pipes a exec
-        {    
             env = pipe_fct(&dot, &ex, env);
-        }
-        else if (ex->type == 0 && (ex->next->type != 7 && ex->next->type != 8 && ex->next->type != 9))
+        else if (ex->type == 0 && (ex->next->type != 6 && ex->next->type != 7 && ex->next->type != 8 && ex->next->type != 9 && ex->next->type != 10 && ex->next->type != 11))
         {
-            // printf("HOLA");
             env = exec_fct((arr = ft_strsplit(ex->cmd, ' ')), env);
             free_tab(arr);
             ex = ex->next;
         }
-        else if (ex->type == 0 && (ex->next->type == 7 || ex->next->type == 8  || ex->next->type == 9))
+        else if (ex->type == 0 && (ex->next->type == 6 || ex->next->type == 7 || ex->next->type == 8  || ex->next->type == 9 || ex->next->type == 10 || ex->next->type == 11))
             redirection_fork(&ex, &env, &dot);
         else
             ex = ex->next;

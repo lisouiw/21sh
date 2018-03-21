@@ -1,5 +1,23 @@
 #include "../twenty.h"
 
+int     if_only_i(char *s, char c)
+{
+	int		i;
+
+	i = -1;
+    while (++i && s[i] == c)
+        ;
+	if (s[i] == '\0')
+	{
+		if (s)
+			free(s);
+		return (1);
+	}
+	if (s)
+		free(s);
+    return (0);
+}
+
 int     if_only(char *s, char c)
 {
         
