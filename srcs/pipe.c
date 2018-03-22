@@ -3,25 +3,14 @@
 
 void       end_pipe(t_cmd **ex, t_exec **s)
 {
+    // printf("%s\n", (*ex)->cmd);
     signal(SIGCHLD, sig_child);
     close((*s)->p[1]);
+
+    if ((*ex)->next->type == 42)
+        wait(0);
     dup2(1, (*s)->out);
     dup2(0, (*s)->in);
-    if ((*ex)->next->type == 42)
-    {
-        // int status;
-        // waitpid(-1, &status, WUNTRACED);
-
-        // wait(&status);       /*you made a exit call in child you 
-        //                    need to wait on exit status of child*/
-        // if(WIFEXITED(status))
-        // //     exit(0);
-        // if (WEXITSTATUS(status))
-        //     exit(0);
-
-        // printf("child exited with = %d || %d",WEXITSTATUS(status), WEXITSTATUS(status));
-        wait(0);
-    }
     if ((*ex)->next->type == 7)
         while ((*ex)->type == 7 || (*ex)->next->type == 7 || (*ex)->type == 3)
             *ex = (*ex)->next;
@@ -37,7 +26,13 @@ int     pipe_on(t_cmd *ex)
 {
     while (ex->type != 3 && ex->type != 4 && ex->type != 5 && ex->type != 13 && ex->type != 42)
             ex = ex->next;
-    if (ex->type == 3)
+    // printf("ex->type %i ex->prev->cmd = %s , ex->cmd= %s\n", ex->type, ex->prev->cmd, ex->cmd);
+    if (ex->type == 3 && ex->next->type == 0)
+    {
+        ex = ex->next;
+        return (1);
+    }
+    else if (ex->type == 3)
         return (1);
     return (0);
 }
@@ -74,41 +69,42 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
     
     s->out = dup(1);
     while (pp == 1)
+    // while ((*ex)->next != NULL)
     {
         s->out = dup(1);
         pp = pipe_on(*ex);
+        if ((*ex)->cmd == NULL)
+            return(env);
+        // printf("================PIPEE=====%s====================\n", (*ex)->cmd);
         pipe(s->p);
         if ((pid = fork()) == -1)
             exit(EXIT_FAILURE);
         else if (pid == 0)
         {
-            // if ((*ex)->type == 3)
-            //  *ex = (*ex)->next;
             // printf("================FILS=====%s====================\n", (*ex)->cmd);
             dup2(s->in, 0);
+            // if (pipe_on(*ex))
             if (pp)
                 dup2(s->p[1], 1);
-                // printf("================FILS2=====%s====================\n", (*ex)->cmd);
             close(s->p[0]);
             if ((*ex)->next->type == 6 || (*ex)->next->type == 7 || (*ex)->next->type == 8 ||(*ex)->next->type == 9 || (*ex)->next->type == 10 ||(*ex)->next->type == 11)
                 redirection(&(*ex), &env, &(*s));
-            else if ((*ex)->cmd != NULL)
-                env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env);
             else
-                exit(0);
-                // write(1, "EORR\n", 5);
+            {
+                if ((*ex)->type == 3)
+                    *ex = (*ex)->next;
+                env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env);
+            }
         }
         else
         {
             if ((*ex)->next->type == 42)
                 wait(NULL);
-            // printf("================PAPA=====%s====================\n", (*ex)->cmd);
+            // printf("===============PAPA=====%s====================\n", (*ex)->cmd);
             end_pipe(&(*ex), &s);
         }
     }
     wait(0);
-    // write(1, "\n", 2);
-    // printf("\n=========================================\n");
     return (env);
 }
 
@@ -179,3 +175,16 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
 //     }
 //     return (env);
 // }
+
+
+  // int status;
+        // waitpid(-1, &status, WUNTRACED);
+
+        // wait(&status);       /*you made a exit call in child you 
+        //                    need to wait on exit status of child*/
+        // if(WIFEXITED(status))
+        // //     exit(0);
+        // if (WEXITSTATUS(status))
+        //     exit(0);
+
+        // printf("child exited with = %d || %d",W

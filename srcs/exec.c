@@ -2,12 +2,12 @@
 
 t_env	*exec_fct_nf(char **cut, t_env *env)
 {
-	int		i =0;
+	int		i = 0;
 
 	if (ft_strcmp("echo", cut[0]) == 0)
 	{
 		print_tab(cut, 0);
-		exit(0);
+		exit(0);//tuer le process en inutilise
 	}
 	else if (ft_strcmp("env", cut[0]) == 0)
 		ecriture_info(env);
@@ -20,20 +20,19 @@ t_env	*exec_fct_nf(char **cut, t_env *env)
 		b_unset(cut, &env, 0);
 	else if (ft_strcmp("cd", cut[0]) == 0)
 		b_cd(cut[1], &env);
-	else if (ft_strcmp(cut[0], "exit") == 0) // && free_for_exit(line, cut, env))
+	 if (ft_strcmp(cut[0], "exit") == 0) // && free_for_exit(line, cut, env))
     {
         printf("exit\n");
         exit(0);
     }
-    else
+	else
 		b_other_nf(cut, env);
-		// b_other(ar, env);
     return (env);
 }
 
 t_env	*exec_fct(char **cut, t_env *env)
 {
-	int		i =0;
+	int		i = 0;
 	
 	if (ft_strcmp("echo", cut[0]) == 0)
 		print_tab(cut, 0);
@@ -52,8 +51,6 @@ t_env	*exec_fct(char **cut, t_env *env)
 		exit(0);
     else
 		b_other(cut, env);
-		// b_other(ar, env);
-
     return (env);
 }
 

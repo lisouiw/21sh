@@ -33,6 +33,14 @@ t_num	*g_nb;
 
 ///
 
+typedef struct      s_here
+{
+    char            *delim;
+    char            *doc;
+    int             ok;
+    struct  s_proc  *next;
+}                   t_here;
+
 typedef struct      s_froz
 {
     int             mode[4];
@@ -118,14 +126,6 @@ typedef struct      s_proc
     struct  s_proc  *next;
 }                   t_proc;
 
-typedef struct      s_here
-{
-    char            *delim;
-    char            *doc;
-    int             ok;
-    struct  s_proc  *next;
-}                   t_here;
-
 typedef struct      s_varq
 {
     char            *cmd;
@@ -184,6 +184,10 @@ int    free_kill(t_proc **p);
 char    *join_cmd_nw(char *cmd, t_edit *ed, t_froz *fz);
 char    *ed_str(t_edit *cmd, char *s, int nb);
 char    *join_cmd(char *cmd, t_edit *ed, t_froz *fz);
+
+//heredoc
+void    add_here(t_froz *fz, char *s);
+
 
 // init
 t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs);
@@ -248,10 +252,11 @@ void    free_varq(t_varq *v);
 // parsing
 t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex);
 t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex);
-int     parsing_op(char *s, t_cmd **ex, t_env *env);
+// int     parsing_op(char *s, t_cmd **ex, t_env *env);
 int     parsing_quote(char *s);
 int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env);
 void    join_redirecting(t_cmd **ex);
+int     parsing_op(char *s, t_cmd **ex, t_env *env, t_froz *fz);
 
 // pascutcopy
 t_edit  *copy(t_edit *ed, t_froz **fz);

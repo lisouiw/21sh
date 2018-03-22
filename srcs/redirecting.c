@@ -6,7 +6,6 @@ void    redirection(t_cmd **ex, t_env **env, t_exec *s)
     
     if (s)
         ;
-    // printf("cousou\n");
     arr = ft_strsplit((*ex)->cmd, ' ');
     *ex = (*ex)->next;
     if (redirection_check_create(*ex))
@@ -51,11 +50,7 @@ char    **give_seven(t_cmd *ex)
         ex = ex->next;
     while (ex->type == 8 || ex->type == 9 || ex->type == 10 || ex->type == 11)
         ex = ex->prev;
-    // if (ex->type == 6)
-    //     // return (heredoc_fct(ex));
-    // else if (ex->type != 7)
     if (ex->type != 7)
-    // if (ex->type != 7 && ex->type != 6) add heredoc
         return (NULL);
     return (ft_strsplit(ex->cmd, ' '));
 }

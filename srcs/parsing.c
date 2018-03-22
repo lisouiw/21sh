@@ -139,15 +139,15 @@ void    join_redirecting(t_cmd **ex)
 }
 
 
-int     parsing_op(char *s, t_cmd **ex, t_env *env) //get all op ctrl
+int     parsing_op(char *s, t_cmd **ex, t_env *env, t_froz *fz) //get all op ctrl
 {
     int     i;
-    // char    *m;
         
     i = 0;
     // printf("====HOLA=====\n");
     while (s[i] && s[i] == ' ')
         ++i;
+    add_here(fz, s);
     s = quote_variable(s, NULL, env);
     *ex = separate_cmd(s, i, i, *ex);   //separate by simple word and metacharactere
     i = parse_type(&(*ex));             // give at first a type as cmd(0) or a op ctrl(1)
@@ -161,9 +161,8 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env) //get all op ctrl
     }
     join_redirecting(&(*ex));           // join les cas ls -a > co -q ----> ls -a q > co
     join_ex(&(*ex));                    //join les 0 ensemble
-    // free(m);
     // printf("=============================\n");
-    // print_ex_up(*ex);
+    print_ex_up(*ex);
     // sleep(3);
     free(s);
     return (0);
@@ -191,11 +190,8 @@ int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env)
     char    *nw;
 
     nw = NULL;
-    // printf("====HOLA=====\n");
     *ex = init_ex(NULL);
-    // add_here(fz, ed_str(ed, NULL, fz->nb[0] - giv_last(fz)));
     fz->cmd = join_cmd_nw(fz->cmd, ed, fz); //join avec \n
-    // fz->cmd = join_cmd(fz->cmd, ed, fz); //join
     while (ed->rpz[0] == 0) // debut de la liste
         ed = ed->next;
     if ((fz->mode[3] = parsing_quote(fz->cmd))) //parsing_quote
@@ -203,7 +199,7 @@ int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env)
         free_all_ex(ex);
         return(0);
     }
-    else if ((fz->mode[3] = parsing_op(ft_strdup(fz->cmd), &(*ex), env))) // parsing_op
+    else if ((fz->mode[3] = parsing_op(ft_strdup(fz->cmd), &(*ex), env, fz))) // parsing_op
     {
         free_all_ex(&(*ex));
         if (!(fz->mode[3] >= 0 && fz->mode[3] < 6)) // autre que && || |

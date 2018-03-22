@@ -4,19 +4,22 @@
 int     parsing_dup_out(char *s, int n, t_cmd *ex)
 {
     size_t     len;
-    // int saved_stdout;
-    
+    int         fd;
+    if (ex)
+        ;
+    // printf("%i == %i\n", ft_atoi(s), n);
     if ((len = isnumber_len(s)) + 1 == ft_strlen(s) && s[len] == '-')
     {
         s[len] = '\0';
-        dup2(ft_atoi(s), n);
-        redirection_check_create(ex->next);    
-        close(ft_atoi(s));
+        // printf("====%i====\n", isatty(2));
+        dup2(2, n);
+        // redirection_check_create(ex->next);    
+        close(2);
     }
     else
     {
-        len = open(s, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-        dup2(dup(len), n);
+        fd = open(s, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+        dup2(dup(fd), n);
     }
     return(1);
 }
@@ -25,11 +28,13 @@ int     parsing_dup_in(char *s, int n, t_cmd *ex)
 {
     size_t     len;
     
+    if (ex)
+    ;
     if ((len = isnumber_len(s)) + 1 == ft_strlen(s) && s[len] == '-')
     {
         s[len] = '\0';
         dup2(n, (len = ft_atoi(s)));
-        redirection_check_create(ex->next);        
+        // redirection_check_create(ex->next);        
         close(len);
     }
     else
@@ -46,24 +51,26 @@ int     redirection_check_create(t_cmd *ex)    //
 {
     char    **spl = NULL;
 
-    while ((ex)->type == 7 || (ex)->type == 8 || (ex)->type == 9 || (ex)->type == 10 || (ex)->type == 11)
+    while ((ex)->type == 6 || (ex)->type == 7 || (ex)->type == 8 || (ex)->type == 9 || (ex)->type == 10 || (ex)->type == 11)
     {
+        printf("%i\n", ex->type);
         if ((ex)->type == 8 || (ex)->type == 9) //creer les fichier
-        {
-            printf("=%i=%i=%i=\n", isatty(0), isatty(1), isatty(2));
             redirection_file_create(ex);
-        }
         else if ((ex)->type == 7 && redirection_file_check(ex) == 0) //verif exist. Si non, exit.
                 return (0);
         else if (ex->type == 10)
         {
-            spl = ft_strsplit(ex->cmd, ' ');
-            if (spl[2] == '\0')
-                isnumber(spl[1]) ? dup2(ft_atoi(spl[1]), 1) : parsing_dup_out(spl[1], 1, ex);
-            else
-                isnumber(spl[2]) ? dup2(ft_atoi(spl[2]), ft_atoi(spl[0])) : parsing_dup_out(spl[2], ft_atoi(spl[0]), ex);
-            // dup2(isnumber(spl[2]) ? ft_atoi(spl[2]) : parsing_dup(spl[2]), ft_atoi(spl[0]));
-            free_tab(spl);
+            dup2(1, 2);
+            // close(2);
+            // aggregation_out(ft_strsplit(ex->cmd, ' '))
+            // spl = ft_strsplit(ex->cmd, ' ');
+            // if (spl[2] == '\0')
+            //     isnumber(spl[1]) ? dup2(ft_atoi(spl[1]), 1) : parsing_dup_out(spl[1], 1, ex);
+            // else
+            //     isnumber(spl[2]) ? dup2(ft_atoi(spl[2]), ft_atoi(spl[0])) : parsing_dup_out(spl[2], ft_atoi(spl[0]), ex);
+            // dup2(1,2);
+            // // dup2(isnumber(spl[2]) ? ft_atoi(spl[2]) : parsing_dup_(spl[2]), ft_atoi(spl[0]));
+            // free_tab(spl);
         }
         else if (ex->type == 11)
         {
@@ -74,6 +81,8 @@ int     redirection_check_create(t_cmd *ex)    //
                 isnumber(spl[2]) ? dup2(ft_atoi(spl[0]), ft_atoi(spl[2])) : parsing_dup_in(spl[2], ft_atoi(spl[0]), ex);
             free_tab(spl);
         }
+        // else if (ex->type == 6)
+        //     printf("HOLA\n");
         ex = (ex)->next;
     }
     return (1);
