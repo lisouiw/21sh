@@ -38,7 +38,7 @@ typedef struct      s_here
 {
     char            *delim;
     char            *doc;
-    int             ok;
+    int             ok[2];
     struct  s_here  *next;
     struct  s_here  *prev;
 }                   t_here;
