@@ -25,6 +25,7 @@ int         main(void)
         else
             ed = touch(&ed, &fz, &hs);                  //add les touch -> ed
         init_data(&fz);
+
     }
 }
 

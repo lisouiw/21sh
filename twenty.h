@@ -39,7 +39,8 @@ typedef struct      s_here
     char            *delim;
     char            *doc;
     int             ok;
-    struct  s_proc  *next;
+    struct  s_here  *next;
+    struct  s_here  *prev;
 }                   t_here;
 
 typedef struct      s_froz
@@ -55,7 +56,7 @@ typedef struct      s_froz
     char            *cmd; // keep cmd car imcomplete
     // char            *cmd; // keep cmd car imcomplete
     int             nb[1]; // last position
-    struct  t_here  *here;
+    struct  s_here  *here;
 }                   t_froz;
 
 typedef struct		s_env
@@ -187,7 +188,9 @@ char    *ed_str(t_edit *cmd, char *s, int nb);
 char    *join_cmd(char *cmd, t_edit *ed, t_froz *fz);
 
 //heredoc
-void    add_here(t_froz *fz, char *s);
+// void    add_here(t_froz *fz, char *s);
+void    add_here(t_froz *fz, t_cmd *ex);
+
 
 
 // init
@@ -278,6 +281,10 @@ void	my_tputs(t_edit *ed, t_froz *fz);
 void	put_cursor(t_edit *ed);
 void	save_init(t_edit *ed);
 void    print_shell(t_edit *ed, t_froz *fz);
+
+//print
+void    print_here(t_froz *fz);
+
 //  prompt
 void    put_prompt(t_froz *fz);
 void    put_prompt_init(t_froz **fz);

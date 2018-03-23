@@ -144,13 +144,11 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env, t_froz *fz) //get all op ctr
     int     i;
         
     i = 0;
-    // printf("====HOLA=====\n");
     while (s[i] && s[i] == ' ')
         ++i;
-    add_here(fz, s);
     s = quote_variable(s, NULL, env);
     *ex = separate_cmd(s, i, i, *ex);   //separate by simple word and metacharactere
-    i = parse_type(&(*ex));             // give at first a type as cmd(0) or a op ctrl(1)
+    i = parse_type(ex);             // give at first a type as cmd(0) or a op ctrl(1)
                                         //parse variable environnement
     *ex = parse_op_int(*ex, s);         // give all op ctrl specifique type | join n>&n
     // print_ex_up(*ex);
@@ -159,9 +157,11 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env, t_froz *fz) //get all op ctr
         free(s);
         return(i);
     }
-    join_redirecting(&(*ex));           // join les cas ls -a > co -q ----> ls -a q > co
-    join_ex(&(*ex));                    //join les 0 ensemble
+    join_redirecting(ex);           // join les cas ls -a > co -q ----> ls -a q > co
+    join_ex(ex);                    //join les 0 ensemble
+    add_here(fz, *ex);
     print_ex_up(*ex);
+    // sleep(3);
     free(s);
     return (0);
 }
@@ -197,7 +197,7 @@ int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env)
         free_all_ex(ex);
         return(0);
     }
-    else if ((fz->mode[3] = parsing_op(ft_strdup(fz->cmd), &(*ex), env, fz))) // parsing_op
+    else if ((fz->mode[3] = parsing_op(ft_strdup(fz->cmd), ex, env, fz))) // parsing_op
     {
         free_all_ex(&(*ex));
         if (!(fz->mode[3] >= 0 && fz->mode[3] < 6)) // autre que && || |
@@ -216,3 +216,33 @@ int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env)
     }
     return(0);
 }
+
+
+
+
+
+
+// void    add_here_struct(t_froz *fz, char *s)
+// {
+//     char    **t;
+
+//     t = ft_strsplit(s, ' ');
+//     if (fz->here == NULL)
+//     {
+//         fz->here = (t_here*)malloc(sizeof(t_here));
+//         fz->here->delim = ft_strdup(t[1]);
+//         fz->here->doc = NULL;
+//         fz->here->ok = 0;
+//         fz->here->next = NULL;
+//     }
+//     else if (fz->here->delim == NULL)
+//     {
+//         fz->here = (t_here*)malloc(sizeof(t_here));
+//         fz->here->delim = ft_strdup(t[1]);
+//         fz->here->doc = NULL;
+//         fz->here->ok = 0;
+//         fz->here->next = NULL;
+//     }
+//     free_tab(t);
+//     fz->here = fz->here->next;
+// }

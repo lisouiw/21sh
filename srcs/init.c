@@ -15,7 +15,7 @@ t_his   *init_hs(t_his *hs, t_his *next)
     return (hs);
 }
 
-t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs)
+t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs) //init start all struct
 {
     struct ttysize	ts;
 
@@ -48,7 +48,9 @@ t_froz      *init_fz(t_froz *fz)
     fz->mode[3] = 0;
     fz->nb[0] = 3;
     fz->paste = NULL;
-    fz->here = NULL;
+    fz->here = (t_here*)malloc(sizeof(t_here));
+    fz->here->next = NULL;
+    fz->here->prev = NULL;
     fz->cmd = NULL;
     return (fz);
 }
@@ -60,7 +62,7 @@ void    init_data(t_froz **fz)
     (*fz)->buf[2] = 0;
 }
 
-void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed)
+void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed) //init for next exec
 {
     // int     status;
     // wait(&status);
@@ -80,6 +82,7 @@ void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed)
     {
         free((*fz)->cmd);
         (*fz)->cmd = NULL;
+        // free_here   fz->here;
     }
     if (*hs == NULL)
         return;
