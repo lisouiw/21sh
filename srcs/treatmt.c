@@ -58,6 +58,7 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
     char    **arr;
 
     init_launch(&dot, &ex);
+
     while (ex->next != NULL)
     {
         if (pipe_on(ex)) //je vais avoir des pipes a exec

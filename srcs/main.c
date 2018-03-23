@@ -2,15 +2,12 @@
 
 int         main(void)
 {
-    t_froz  *fz;
     t_env   *env;
-    t_edit  *ed;
-    t_his   *hs;
 
-    ls_signal();
     g_nb = init_shell(&fz, &env, &ed, &hs);
     while (42)
     {
+        ls_signal(fz->mode[3]);
         read(0, &fz->buf, 4);
         // printf("%i %i %i\n", fz->buf[0], fz->buf[1], fz->buf[2]);
         // exit(0);

@@ -3,8 +3,7 @@
 void	sig_int(int sig)
 {
     int status = 0;
-    sig = 0;
-    // printf("INT[%i]\n", sig);
+    printf("INT[%i]\n", sig);
     
     // set_up_term();
     waitpid(-1, &status, 0);
@@ -15,6 +14,19 @@ void	sig_int(int sig)
         exit(0);
 }
 
+void	sig_int3(int sig)
+{
+
+    fz->mode[3] = 0;
+    // int status = 0;
+    // printf("INT[%i]333333\n", sig);
+    
+    sig = 0;
+    add_his(&hs, NULL, fz); //ajout historique
+    set_up_term();
+    write(1, "\n", 1);
+    init_for_new(&hs, &fz, &ed);    
+}
 void	sig_quite(int sig)
 {
     printf("QUITE %i\n", sig);
@@ -25,7 +37,7 @@ void	sig_child(int sig)
 {
     int status = 0;
     sig = 0;
-
+    // printf("INT[%i]\n", sig);
     // printf("AIDEZ MOI\n");
     wait(&status);
     // printf("SIG_Child exited witha = %d |%d | %d| %d|\n", WIFEXITED(status), WEXITSTATUS(status),WIFSIGNALED(status), WTERMSIG(status) );
@@ -38,11 +50,24 @@ void	sig_child(int sig)
     // printf("child exited witha = %d |%d | %d| %d| %d| \n", WTERMSIG(status) , WCOREDUMP(status),WIFSTOPPED(status), WSTOPSIG(status), WIFCONTINUED(status));
 }
 
-void	ls_signal(void)
+void	ls_signal(int i)
 {
-    signal(SIGINT, sig_int);
-	signal(SIGCHLD, SIG_DFL);
-    
+    // printf("SINAL[%i]\n", i);
+//     signal(SIGSTOP,sig_quite);
+// signal(SIGTSTP, sig_quite);
+ 
+    if (i != 0)
+    {
+        signal(SIGINT, sig_int3);
+        signal(SIGCHLD, SIG_DFL);
+    }
+    else 
+    {
+        signal(SIGINT, sig_int);
+        signal(SIGCHLD, SIG_DFL);
+    }
+	// signal(SIGQUIT,sig_quite);
+    // signal(SIGKILL,sig_quite);
 }
 
 

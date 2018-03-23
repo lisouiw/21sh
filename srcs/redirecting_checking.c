@@ -12,14 +12,14 @@ int     parsing_dup_out(char *s, int n, t_cmd *ex)
     {
         s[len] = '\0';
         // printf("====%i====\n", isatty(2));
-        dup2(2, n);
+        dup2(ft_atoi(s), n);
         // redirection_check_create(ex->next);    
-        close(2);
+        close(n);
     }
     else
     {
         fd = open(s, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-        dup2(dup(fd), n);
+        dup2(fd, n);
     }
     return(1);
 }
@@ -33,9 +33,9 @@ int     parsing_dup_in(char *s, int n, t_cmd *ex)
     if ((len = isnumber_len(s)) + 1 == ft_strlen(s) && s[len] == '-')
     {
         s[len] = '\0';
-        dup2(n, (len = ft_atoi(s)));
+        dup2(n, ft_atoi(s));
         // redirection_check_create(ex->next);        
-        close(len);
+        close(ft_atoi(s));
     }
     else
     {
@@ -60,17 +60,13 @@ int     redirection_check_create(t_cmd *ex)    //
                 return (0);
         else if (ex->type == 10)
         {
-            dup2(1, 2);
-            // close(2);
             // aggregation_out(ft_strsplit(ex->cmd, ' '))
-            // spl = ft_strsplit(ex->cmd, ' ');
-            // if (spl[2] == '\0')
-            //     isnumber(spl[1]) ? dup2(ft_atoi(spl[1]), 1) : parsing_dup_out(spl[1], 1, ex);
-            // else
-            //     isnumber(spl[2]) ? dup2(ft_atoi(spl[2]), ft_atoi(spl[0])) : parsing_dup_out(spl[2], ft_atoi(spl[0]), ex);
-            // dup2(1,2);
-            // // dup2(isnumber(spl[2]) ? ft_atoi(spl[2]) : parsing_dup_(spl[2]), ft_atoi(spl[0]));
-            // free_tab(spl);
+            spl = ft_strsplit(ex->cmd, ' ');
+            if (spl[2] == '\0')
+                isnumber(spl[1]) ? dup2(ft_atoi(spl[1]), 1) : parsing_dup_out(spl[1], 1, ex);
+            else
+                isnumber(spl[2]) ? dup2(ft_atoi(spl[2]), ft_atoi(spl[0])) : parsing_dup_out(spl[2], ft_atoi(spl[0]), ex);
+            free_tab(spl);
         }
         else if (ex->type == 11)
         {
@@ -81,8 +77,6 @@ int     redirection_check_create(t_cmd *ex)    //
                 isnumber(spl[2]) ? dup2(ft_atoi(spl[0]), ft_atoi(spl[2])) : parsing_dup_in(spl[2], ft_atoi(spl[0]), ex);
             free_tab(spl);
         }
-        // else if (ex->type == 6)
-        //     printf("HOLA\n");
         ex = (ex)->next;
     }
     return (1);

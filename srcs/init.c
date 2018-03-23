@@ -62,8 +62,11 @@ void    init_data(t_froz **fz)
 
 void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed)
 {
+    // int     status;
+    // wait(&status);
+    // printf("%i | %i | %i | %i | %i | %i | %i| %i\n",WIFEXITED(status),WEXITSTATUS(status),WIFSIGNALED(status),WTERMSIG(status),WCOREDUMP(status),WIFSTOPPED(status),WSTOPSIG(status),WIFCONTINUED(status));
     wait(0);
-    set_up_term();
+    (*fz)->mode[3] == 0 ? set_up_term() : set_up_term_prompt();
     // wait(0);
     tputs(tgetstr("sc", NULL), 0, ft_put);
     put_prompt_init(&(*fz));
@@ -73,6 +76,11 @@ void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed)
     (*fz)->mode[0] = 0;
     (*fz)->mode[1] = 0;
     (*fz)->mode[2] = 1;
+    if ((*fz)->mode[3] == 0)
+    {
+        free((*fz)->cmd);
+        (*fz)->cmd = NULL;
+    }
     if (*hs == NULL)
         return;
     while ((*hs)->prev != NULL)

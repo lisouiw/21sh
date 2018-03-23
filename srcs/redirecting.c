@@ -46,7 +46,8 @@ char    **heredoc_fct(t_cmd *ex)
 
 char    **give_seven(t_cmd *ex)
 {
-    while (ex->next->type == 6 || ex->next->type == 7 || ex->next->type == 8 || ex->next->type == 9 || ex->next->type == 10 || ex->next->type == 11)
+    // while (ex->next->type == 6 || ex->next->type == 7 || ex->next->type == 8 || ex->next->type == 9 || ex->next->type == 10 || ex->next->type == 11)
+    while (ex->next->type >= 6 &&  ex->next->type <= 11)
         ex = ex->next;
     while (ex->type == 8 || ex->type == 9 || ex->type == 10 || ex->type == 11)
         ex = ex->prev;

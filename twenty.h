@@ -13,7 +13,6 @@
 # include <limits.h>
 
 
-void	ls_signal(void);
 void	sig_child(int sig);
 
 
@@ -22,8 +21,10 @@ void	sig_child(int sig);
 #include <sys/wait.h>
 
 ///GLOBALE
-
-struct termios		term;
+struct  s_his       *hs;
+struct  termios		term;
+struct  s_froz       *fz;
+struct  s_edit      *ed;
 
 typedef struct		s_num
 {
@@ -47,7 +48,7 @@ typedef struct      s_froz
     //mode 0        copier
     //mode 1        couper
     //mode 2        histo
-    //mode 3        // regular  0
+    //mode 3        prompt
         
     char            buf[3]; // buffer pour lire le char tape
     char            *paste; // la chaine a coller
@@ -298,9 +299,10 @@ void    redirecting_exec(t_cmd **ex, t_env **env, char **arr);
 
 
 //  signal
-void	ls_signal(void);
+// void	ls_signal(void);
 void	sig_int(int sig);
 void	sig_quite(int sig);
+void	ls_signal(int i);
 
 
 // t 
@@ -312,6 +314,7 @@ int		free_for_exit(char *line, char **cut, t_env *env);
 // term
 int 	init(void);
 int		set_up_term(void);
+int		set_up_term_prompt(void);
 
 // tools
 int     if_only(char *s, char c);
