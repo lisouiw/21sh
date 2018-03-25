@@ -144,11 +144,13 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env, t_froz *fz) //get all op ctr
     int     i;
         
     i = 0;
+    if (fz)
+        ;
     while (s[i] && s[i] == ' ')
         ++i;
     s = quote_variable(s, NULL, env);
     *ex = separate_cmd(s, i, i, *ex);   //separate by simple word and metacharactere
-    i = parse_type(ex);             // give at first a type as cmd(0) or a op ctrl(1)
+    i = parse_type(ex);                 // give at first a type as cmd(0) or a op ctrl(1)
                                         //parse variable environnement
     *ex = parse_op_int(*ex, s);         // give all op ctrl specifique type | join n>&n
     // print_ex_up(*ex);
@@ -159,11 +161,10 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env, t_froz *fz) //get all op ctr
     }
     join_redirecting(ex);           // join les cas ls -a > co -q ----> ls -a q > co
     join_ex(ex);                    //join les 0 ensemble
-    add_here(fz, *ex);
     print_ex_up(*ex);
-    // sleep(3);
     free(s);
-    return (0);
+    return (add_here(fz, *ex));
+    // return (0);
 }
 
 int     parsing_quote(char *s) //if all quotes are closed
@@ -185,9 +186,6 @@ int     parsing_quote(char *s) //if all quotes are closed
 
 int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env)
 {
-    char    *nw;
-
-    nw = NULL;
     *ex = init_ex(NULL);
     fz->cmd = join_cmd_nw(fz->cmd, ed, fz); //join avec \n
     while (ed->rpz[0] == 0) // debut de la liste
@@ -200,7 +198,7 @@ int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env)
     else if ((fz->mode[3] = parsing_op(ft_strdup(fz->cmd), ex, env, fz))) // parsing_op
     {
         free_all_ex(&(*ex));
-        if (!(fz->mode[3] >= 0 && fz->mode[3] < 6)) // autre que && || |
+        if (!(fz->mode[3] >= 0 && fz->mode[3] <= 6)) // autre que && || |
         {
             printf("ERROR %i\n", fz->mode[3]);
             // free(fz->cmd);

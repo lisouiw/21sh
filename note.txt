@@ -1,8 +1,0 @@
-< [7]
-    remplacer la case par le chiffre exemple 
-
-
-heredoc 
-faire attention au espace
-
-historique rajout adaptation

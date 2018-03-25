@@ -189,7 +189,7 @@ char    *join_cmd(char *cmd, t_edit *ed, t_froz *fz);
 
 //heredoc
 // void    add_here(t_froz *fz, char *s);
-void    add_here(t_froz *fz, t_cmd *ex);
+int     add_here(t_froz *fz, t_cmd *ex);
 
 
 
@@ -341,7 +341,7 @@ t_edit  *giv_position(t_edit *ed, int i);
 
 // treatmt
 t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz);
-int     add_his(t_his **hs, t_his *nw, t_froz *fz);
+void     add_his(t_his **hs, t_his *nw, t_froz *fz);
 t_env   *launchcmd(t_cmd *ex, t_env *env);
 t_env	*exec_fct(char **ar, t_env *env);
 char    **give_tab(char **ar, t_cmd **ex);

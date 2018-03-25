@@ -13,7 +13,7 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
         return(env);
     else if (parsing(*cmd, *fz, &ex, env) == 1) // parsing. OK go loop
     {
-        add_his(&(*hs), NULL, *fz); //ajout historique
+        add_his(hs, NULL, *fz); //ajout historique
         env = launchcmd(ex, env);   
         free_all_ex(&ex);
         free((*fz)->cmd);
@@ -21,7 +21,7 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
     }
     else if ((*fz)->mode[3] == 0) // parsing error attend d'etre completer
     {
-        add_his(&(*hs), NULL, *fz);
+        add_his(hs, NULL, *fz);
         free((*fz)->cmd);
         (*fz)->cmd = NULL;
     }
@@ -30,10 +30,10 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
 }
 
 
-int     add_his(t_his **hs, t_his *nw, t_froz *fz)
+void     add_his(t_his **hs, t_his *nw, t_froz *fz)
 {
-    if (!(nw = (t_his*)malloc(sizeof(t_his))))
-        return(0);
+    if (!(fz->cmd && (nw = (t_his*)malloc(sizeof(t_his)))))
+        return;
     nw->cmd = ft_strdup(fz->cmd);
     while ((*hs)->prev != NULL)
         *hs = (*hs)->prev;
@@ -41,14 +41,13 @@ int     add_his(t_his **hs, t_his *nw, t_froz *fz)
     {
         free(nw->cmd);
         free(nw);
-        return(0);
+        return ;
     }
     (*hs)->next->prev = nw;
     nw->next = (*hs)->next;
     nw->prev = *hs;
     (*hs)->next = nw;
     *hs = (*hs)->next;
-    return (1);
 }
 
 

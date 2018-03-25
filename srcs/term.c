@@ -57,13 +57,10 @@ int		set_up_term_prompt(void) ///TERMINAL_PROMPT_SPECIAL
 		return (-1);
 	term.c_lflag &= ~(ECHO);
 	term.c_lflag &= ~(ICANON);
-	// term.c_lflag |= (ISIG);
 	// term.c_cc[VEOF] = 3;
 	// term.c_cc[VINTR] = 4;
 	term.c_cc[VEOF] = 4;
 	term.c_cc[VINTR] = 3;
-	term.c_cc[VMIN] = 1;
-	term.c_cc[VTIME] = 0;
 	if (tcsetattr(0, TCSANOW, &term) == -1)
 		return (-1);
 	return (1);

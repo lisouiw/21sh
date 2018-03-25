@@ -51,6 +51,7 @@ t_froz      *init_fz(t_froz *fz)
     fz->here = (t_here*)malloc(sizeof(t_here));
     fz->here->next = NULL;
     fz->here->prev = NULL;
+    fz->here->delim = NULL;
     fz->cmd = NULL;
     return (fz);
 }

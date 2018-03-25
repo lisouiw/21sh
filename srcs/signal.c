@@ -16,14 +16,11 @@ void	sig_int(int sig)
 
 void	sig_int3(int sig)
 {
-
+    ls_signal(0);       // pour ravoir le ctrl D
     fz->mode[3] = 0;
-    // int status = 0;
     // printf("INT[%i]333333\n", sig);
-    
     sig = 0;
     add_his(&hs, NULL, fz); //ajout historique
-    set_up_term();
     write(1, "\n", 1);
     init_for_new(&hs, &fz, &ed);    
 }
