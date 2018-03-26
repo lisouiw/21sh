@@ -1,5 +1,7 @@
 #include "../twenty.h"
 
+//LEKS AU NIVEAU DU STUCT HEREDOC
+
 void    free_ex(t_cmd **ex)
 {
     if (*ex != NULL)

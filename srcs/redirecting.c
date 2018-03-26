@@ -33,8 +33,15 @@ void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
         else
             exit(0);
     }
+    else
+    {
+        dup2(1, s->out);
+        dup2(0, s->in);
+    }
     free_tab(arr);
 }
+
+// problem stockage here
 
 char    **give_seven(t_cmd *ex)
 {
@@ -45,6 +52,8 @@ char    **give_seven(t_cmd *ex)
     if (ex->type == 6)
     {
         dup2(open("/tmp/in", O_RDONLY), 0);
+        while ((ex->type >= 6 && ex->type <= 11) || ex->type == 0)
+            ex = ex->next;
         return (NULL);
     }
     if (ex->type != 7)

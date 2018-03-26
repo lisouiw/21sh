@@ -19,9 +19,14 @@ t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs) //init st
 {
     struct ttysize	ts;
 
+    if ((*env = give_env(NULL)) == NULL)
+    {
+        ft_putstr_fd("give an env\n", 2);
+        exit(0);
+        
+    }
     set_up_term();
     tputs(tgetstr("cl", NULL), 0, ft_put);
-    *env = give_env(NULL);
     *ed = init_edit(NULL);
     *hs = init_hs(NULL, NULL);
     *fz = init_fz(NULL);

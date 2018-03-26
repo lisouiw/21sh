@@ -9,11 +9,13 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
         *cmd = (*cmd)->next;
     if ((*fz)->nb[0] % g_nb->tb[0] != 1) //eviter de fausser les calcul
         ft_putchar('\n');
-    if (((*cmd)->c[0] == '\0' || if_only_i(ed_str(*cmd, NULL, (*fz)->nb[0] - giv_last(*fz)),' ')) && (*fz)->cmd == NULL) //&& (*fz)->mode[3] != 0)  // quand il n'y a rien
+    if ((*cmd)->c[0] == '\0' || (if_only_i(ed_str(*cmd, NULL, (*fz)->nb[0] - giv_last(*fz)),' ') && (*fz)->cmd == NULL)) //&& (*fz)->mode[3] != 0)  // quand il n'y a rien
         return(env);
     else if (parsing(*cmd, *fz, &ex, env) == 1) // parsing. OK go loop
     {
         add_his(hs, NULL, *fz); //ajout historique
+        printf("===%s==\n", (*fz)->cmd);
+        print_ex_up(ex);
         env = launchcmd(ex, env);   
         free_all_ex(&ex);
         free((*fz)->cmd);
@@ -25,7 +27,6 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
         free((*fz)->cmd);
         (*fz)->cmd = NULL;
     }
-   
     return (env);
 }
 
@@ -61,13 +62,14 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
     {
         if (pipe_on(ex)) //je vais avoir des pipes a exec
             env = pipe_fct(&dot, &ex, env);
-        else if (ex->type == 0 && (ex->next->type != 6 && ex->next->type != 7 && ex->next->type != 8 && ex->next->type != 9 && ex->next->type != 10 && ex->next->type != 11))
+        // else if (ex->type == 0 && (ex->next->type != 6 && ex->next->type != 7 && ex->next->type != 8 && ex->next->type != 9 && ex->next->type != 10 && ex->next->type != 11))
+        else if (ex->type == 0 && !(ex->next->type >= 6 && ex->next->type <= 11))
         {
             env = exec_fct((arr = ft_strsplit(ex->cmd, ' ')), env);
             free_tab(arr);
             ex = ex->next;
         }
-        else if (ex->type == 0 && (ex->next->type == 6 || ex->next->type == 7 || ex->next->type == 8  || ex->next->type == 9 || ex->next->type == 10 || ex->next->type == 11))
+        else if (ex->type == 0 && ex->next->type >= 6  && ex->next->type <= 11)
             redirection_fork(&ex, &env, &dot);
         else
             ex = ex->next;

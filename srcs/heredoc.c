@@ -64,16 +64,21 @@ int    add_delim(t_froz *fz, t_cmd *ex) // ajouter les limiteur
             add_here_struct(fz, ex->cmd);
         ex = ex->next;
     }
-    print_here(fz);
+    // print_here(fz);
     return (check_struct(fz));
 }
 
 void    add_doc_s(t_froz *fz, char *s)      //add doc
 {
+    int fd;
+
+    fd = 0;
     if (ft_strcmp(s, fz->here->delim) == 0)
     {
         fz->here->ok[0] = 1;
-        // open("/tmp/")
+        fd = open("/tmp/in", O_CREAT | O_RDWR | O_TRUNC, 0644);
+        write(fd, fz->here->doc, ft_strlen(fz->here->doc));
+        close(fd);
         free(s);
     }
     else if (fz->here->doc == NULL)
@@ -89,7 +94,7 @@ int    add_doc(t_froz *fz, char *s)
     while (fz->here->ok[0] == 1)
         fz->here = fz->here->next;
     add_doc_s(fz, s);
-    print_here(fz);
+    // print_here(fz);
     while (fz->here->prev != NULL)
         fz->here = fz->here->prev;
     return (0);
