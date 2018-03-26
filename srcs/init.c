@@ -52,6 +52,7 @@ t_froz      *init_fz(t_froz *fz)
     fz->here->next = NULL;
     fz->here->prev = NULL;
     fz->here->delim = NULL;
+    fz->here->ok[0] = 0;
     fz->cmd = NULL;
     return (fz);
 }
@@ -76,15 +77,7 @@ void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed) //init for next exec
     free_ed(&(*ed), *fz);
     (*ed)->rpz[2] = giv_last(*fz);
     (*ed)->rpz[3] = giv_last(*fz);
-    (*fz)->mode[0] = 0;
-    (*fz)->mode[1] = 0;
-    (*fz)->mode[2] = 1;
-    if ((*fz)->mode[3] == 0)
-    {
-        free((*fz)->cmd);
-        (*fz)->cmd = NULL;
-        // free_here   fz->here;
-    }
+    free_init_fz(*fz);
     if (*hs == NULL)
         return;
     while ((*hs)->prev != NULL)

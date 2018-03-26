@@ -122,7 +122,7 @@ int		give_path_nf(t_env *env, char **cut, int i, char **tab_env)
 			if ((a = access(cmd, F_OK)) == 0)
 			{
 				if (wait(0))
-					execve(cmd, cut, tab_env);
+					a = execve(cmd, cut, tab_env);
 			}
 			free(cmd);
 		}

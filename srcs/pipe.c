@@ -3,10 +3,8 @@
 
 void       end_pipe(t_cmd **ex, t_exec **s)
 {
-    // printf("%s\n", (*ex)->cmd);
     signal(SIGCHLD, sig_child);
     close((*s)->p[1]);
-
     if ((*ex)->next->type == 42)
         wait(0);
     dup2(1, (*s)->out);
@@ -19,14 +17,12 @@ void       end_pipe(t_cmd **ex, t_exec **s)
     else if ((*ex)->next != NULL)
         *ex = (*ex)->next;
     (*s)->in = (*s)->p[0];
-    // printf("child exited with = %d |",WEXITSTATUS(status));
 }
 
 int     pipe_on(t_cmd *ex)
 {
     while (ex->type != 3 && ex->type != 4 && ex->type != 5 && ex->type != 13 && ex->type != 42)
             ex = ex->next;
-    // printf("ex->type %i ex->prev->cmd = %s , ex->cmd= %s\n", ex->type, ex->prev->cmd, ex->cmd);
     if (ex->type == 3 && ex->next->type == 0)
     {
         ex = ex->next;
@@ -69,25 +65,20 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
     
     s->out = dup(1);
     while (pp == 1)
-    // while ((*ex)->next != NULL)
     {
-        s->out = dup(1);
         pp = pipe_on(*ex);
         if ((*ex)->cmd == NULL)
             return(env);
-        // printf("================PIPEE=====%s====================\n", (*ex)->cmd);
         pipe(s->p);
         if ((pid = fork()) == -1)
             exit(EXIT_FAILURE);
-        else if (pid == 0)
+        else if (pid == 0)   /////////////////////////////CHILD///////////////////////////
         {
-            // printf("================FILS=====%s====================\n", (*ex)->cmd);
             dup2(s->in, 0);
-            // if (pipe_on(*ex))
             if (pp)
                 dup2(s->p[1], 1);
             close(s->p[0]);
-            if ((*ex)->next->type == 6 || (*ex)->next->type == 7 || (*ex)->next->type == 8 ||(*ex)->next->type == 9 || (*ex)->next->type == 10 ||(*ex)->next->type == 11)
+            if ((*ex)->next->type >= 6 && (*ex)->next->type <= 11)
                 redirection(&(*ex), &env, &(*s));
             else
             {
@@ -96,11 +87,10 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
                 env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env);
             }
         }
-        else
+        else  //////////////////////PARENT////////////////////////////////
         {
-            if ((*ex)->next->type == 42)
+            if ((*ex)->next->type == 42) //derniere commande./
                 wait(NULL);
-            // printf("===============PAPA=====%s====================\n", (*ex)->cmd);
             end_pipe(&(*ex), &s);
         }
     }

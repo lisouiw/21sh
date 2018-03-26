@@ -51,7 +51,7 @@ int     redirection_check_create(t_cmd *ex)    //
 {
     char    **spl = NULL;
 
-    while ((ex)->type == 6 || (ex)->type == 7 || (ex)->type == 8 || (ex)->type == 9 || (ex)->type == 10 || (ex)->type == 11)
+    while ((ex)->type >= 6 && (ex)->type <= 11)
     {
         if ((ex)->type == 8 || (ex)->type == 9) //creer les fichier
             redirection_file_create(ex);
@@ -61,6 +61,7 @@ int     redirection_check_create(t_cmd *ex)    //
         {
             // aggregation_out(ft_strsplit(ex->cmd, ' '))
             spl = ft_strsplit(ex->cmd, ' ');
+            // dup2(1, 2);
             if (spl[2] == '\0')
                 isnumber(spl[1]) ? dup2(ft_atoi(spl[1]), 1) : parsing_dup_out(spl[1], 1, ex);
             else

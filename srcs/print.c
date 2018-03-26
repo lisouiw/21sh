@@ -7,8 +7,8 @@ void    print_here(t_froz *fz)
         fz->here = fz->here->prev;
     while(fz->here->next != NULL)
     {
-        printf("%s\n", fz->here->delim);
+        printf("[%s][%s]\n", fz->here->doc,fz->here->delim);
         fz->here = fz->here->next;
     }
-    printf("%s\n", fz->here->delim);
+    printf("[%s][%s]\n", fz->here->doc,fz->here->delim);
 }

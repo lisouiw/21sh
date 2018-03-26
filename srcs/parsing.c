@@ -163,7 +163,7 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env, t_froz *fz) //get all op ctr
     join_ex(ex);                    //join les 0 ensemble
     print_ex_up(*ex);
     free(s);
-    return (add_here(fz, *ex));
+    return (add_delim(fz, *ex));
     // return (0);
 }
 
@@ -187,6 +187,8 @@ int     parsing_quote(char *s) //if all quotes are closed
 int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env)
 {
     *ex = init_ex(NULL);
+     if (fz->mode[3] == 6)
+        add_doc(fz, ed_str(ed, NULL, fz->nb[0] - giv_last(fz)));
     fz->cmd = join_cmd_nw(fz->cmd, ed, fz); //join avec \n
     while (ed->rpz[0] == 0) // debut de la liste
         ed = ed->next;

@@ -118,6 +118,7 @@ typedef struct      s_exec
     int             p[2];
     int             in;
     int             out;
+    int             err;
     int             ok; // por les || , &&
     int             cmd;
 }                   t_exec;
@@ -179,8 +180,7 @@ int		give_path_nf(t_env *env, char **cut, int i, char **tab_env);
 //free
 void    free_ex(t_cmd **ex);
 void    free_all_ex(t_cmd **ex);
-void    free_pid_loop(t_proc *p, int i);
-int    free_kill(t_proc **p);
+void    free_init_fz(t_froz *fz);
 
 //giv_str
 char    *join_cmd_nw(char *cmd, t_edit *ed, t_froz *fz);
@@ -188,10 +188,9 @@ char    *ed_str(t_edit *cmd, char *s, int nb);
 char    *join_cmd(char *cmd, t_edit *ed, t_froz *fz);
 
 //heredoc
-// void    add_here(t_froz *fz, char *s);
-int     add_here(t_froz *fz, t_cmd *ex);
-
-
+int    add_delim(t_froz *fz, t_cmd *ex);
+// int    add_doc(t_froz *fz);
+int    add_doc(t_froz *fz, char *s);
 
 // init
 t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs);
@@ -298,11 +297,10 @@ void    redirection_file_create(t_cmd *ex);
 int     redirection_file_check(t_cmd *ex);
 
 //  redirecting
-char    **give_seven(t_cmd *ex);
 void    redirection(t_cmd **ex, t_env **env, t_exec *s);
 void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s);
 void    redirecting_exec(t_cmd **ex, t_env **env, char **arr);
-
+char    **give_red_input(t_cmd *ex);
 
 
 //  signal

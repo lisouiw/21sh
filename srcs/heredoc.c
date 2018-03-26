@@ -1,6 +1,6 @@
 #include "../twenty.h"
 
-void    add_here_struct(t_froz *fz, char *s)
+void    add_here_struct(t_froz *fz, char *s) //ajouter les limiteurs
 {
     char    **t;
     t = ft_strsplit(s, ' ');
@@ -37,29 +37,60 @@ void    add_here_struct(t_froz *fz, char *s)
     free_tab(t);
 }
 
-int     check_struct(t_froz *fz)
+int     check_struct(t_froz *fz)    //check les heredocs completer ou pas
 {
     while(fz->here->prev != NULL)
         fz->here = fz->here->prev;
+    while (fz->here->delim != NULL && fz->here->ok[0] == 1)
+        fz->here = fz->here->next;
+    if (fz->here->delim == NULL && fz->here->next == NULL)
+        fz->mode[3] = 0;
+    else
+        fz->mode[3] = 6;
     while(fz->here->prev != NULL)
         fz->here = fz->here->prev;
-    return (1);
+    return (fz->mode[3]);
 }
 
-int    add_here(t_froz *fz, t_cmd *ex)
+int    add_delim(t_froz *fz, t_cmd *ex) // ajouter les limiteur
 {
-    print_ex_up(ex);
     fz->mode[3] = 6;
-    while (ex->prev->prev != NULL)
+    while (ex->prev->prev != NULL)  //revenir au debut de la liste parse
         ex = ex->prev;
     while (ex->cmd != NULL)
     {
         // printf("->%s\n", fz->here->delim);
-        if (ex->type == 6)
+        if (ex->type == 6)              //if [<<]
             add_here_struct(fz, ex->cmd);
         ex = ex->next;
     }
     print_here(fz);
-    // check_struct(fz);
+    return (check_struct(fz));
+}
+
+void    add_doc_s(t_froz *fz, char *s)      //add doc
+{
+    if (ft_strcmp(s, fz->here->delim) == 0)
+    {
+        fz->here->ok[0] = 1;
+        // open("/tmp/")
+        free(s);
+    }
+    else if (fz->here->doc == NULL)
+        fz->here->doc = s;
+    else
+        fz->here->doc = ft_strjoin_free(ft_strjoin_free(fz->here->doc, "\n", 1), s, 2);
+}
+
+int    add_doc(t_froz *fz, char *s)
+{
+    while (fz->here->prev != NULL)
+        fz->here = fz->here->prev;
+    while (fz->here->ok[0] == 1)
+        fz->here = fz->here->next;
+    add_doc_s(fz, s);
+    print_here(fz);
+    while (fz->here->prev != NULL)
+        fz->here = fz->here->prev;
     return (0);
 }

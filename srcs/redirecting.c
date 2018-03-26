@@ -36,21 +36,17 @@ void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
     free_tab(arr);
 }
 
-
-char    **heredoc_fct(t_cmd *ex)
-{
-    printf("[%s]\n", ex->cmd);
-    // exit(0);
-    return (NULL);
-}
-
 char    **give_seven(t_cmd *ex)
 {
-    // while (ex->next->type == 6 || ex->next->type == 7 || ex->next->type == 8 || ex->next->type == 9 || ex->next->type == 10 || ex->next->type == 11)
     while (ex->next->type >= 6 &&  ex->next->type <= 11)
         ex = ex->next;
-    while (ex->type == 8 || ex->type == 9 || ex->type == 10 || ex->type == 11)
+    while (ex->type >= 8 && ex->type <= 11)
         ex = ex->prev;
+    if (ex->type == 6)
+    {
+        dup2(open("/tmp/in", O_RDONLY), 0);
+        return (NULL);
+    }
     if (ex->type != 7)
         return (NULL);
     return (ft_strsplit(ex->cmd, ' '));
@@ -61,6 +57,8 @@ void    redirecting_exec(t_cmd **ex, t_env **env, char **arr)
     int         nw;
     char        **tmp;
     
+    if (env)
+        ;
     if ((tmp = give_seven(*ex)) != NULL)
     {
         nw = (tmp[2] == NULL) ? open(tmp[1], O_RDONLY) : open(tmp[2], O_RDONLY);
