@@ -22,7 +22,7 @@ void	sig_int3(int sig)
 {
     ls_signal(0);       // pour ravoir le ctrl D
     fz->mode[3] = 0;
-    // printf("INT[%i]333333\n", sig);
+    printf("INT[%i]333333\n", sig);
     sig = 0;
     add_his(&hs, NULL, fz); //ajout historique
     write(1, "\n", 1);
@@ -36,18 +36,16 @@ void	sig_quite(int sig)
 
 void	sig_child(int sig)
 {
+    ls_signal(0);       // pour ravoir le ctrl D
     int status = 0;
-    sig = 0;
-    // printf("INT[%i]\n", sig);
+    printf("INT[%i]\n", sig);
     // printf("AIDEZ MOI\n");
     wait(&status);
-    // printf("SIG_Child exited witha = %d |%d | %d| %d|\n", WIFEXITED(status), WEXITSTATUS(status),WIFSIGNALED(status), WTERMSIG(status) );
+    printf("SIG_Child exited witha = %d |%d | %d| %d|\n", WIFEXITED(status), WEXITSTATUS(status),WIFSIGNALED(status), WTERMSIG(status) );
     // if (WTERMSIG(status) == 2)
     //     kill(0, SIGCONT);
     if (WTERMSIG(status) == 13)
         write(1, "\n", 1);
-    
-
     // printf("child exited witha = %d |%d | %d| %d| %d| \n", WTERMSIG(status) , WCOREDUMP(status),WIFSTOPPED(status), WSTOPSIG(status), WIFCONTINUED(status));
 }
 

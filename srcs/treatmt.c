@@ -58,6 +58,7 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
     init_launch(&dot, &ex);
     while (ex->next != NULL)
     {
+        printf("cmd = %s && type = %i\n", ex->cmd, ex->type);
         if (pipe_on(ex)) //je vais avoir des pipes a exec
             env = pipe_fct(&dot, &ex, env);
         else if (ex->type == 0 && !(ex->next->type >= 6 && ex->next->type <= 11))

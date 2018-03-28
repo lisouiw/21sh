@@ -3,7 +3,8 @@
 
 void       end_pipe(t_cmd **ex, t_exec **s)
 {
-    signal(SIGCHLD, sig_child);
+    signal(SIGCHLD, SIG_DFL);
+    // signal(SIGCHLD, sig_child);
     close((*s)->p[1]);
     if ((*ex)->next->type == 42)
         wait(0);
@@ -83,11 +84,7 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
             if ((*ex)->next->type >= 6 && (*ex)->next->type <= 11)
                 redirection(&(*ex), &env, &(*s));
             else if ((*ex)->type == 0)
-            {
-                // if ((*ex)->type == 3)
-                    // *ex = (*ex)->next;
                 env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env);
-            }
         }
         else  //////////////////////PARENT////////////////////////////////
         {
