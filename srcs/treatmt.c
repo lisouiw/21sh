@@ -3,8 +3,7 @@
 t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
 {
     t_cmd   *ex;
-    // char    *tmp;
-    
+
     while ((*cmd)->rpz[0] == 0) // Go debut de la liste
         *cmd = (*cmd)->next;
     if ((*fz)->nb[0] % g_nb->tb[0] != 1) //eviter de fausser les calcul
@@ -14,8 +13,7 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
     else if (parsing(*cmd, *fz, &ex, env) == 1) // parsing. OK go loop
     {
         add_his(hs, NULL, *fz); //ajout historique
-        printf("===%s==\n", (*fz)->cmd);
-        print_ex_up(ex);
+        // print_ex_up(ex);
         env = launchcmd(ex, env);   
         free_all_ex(&ex);
         free((*fz)->cmd);
@@ -62,23 +60,48 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
     {
         if (pipe_on(ex)) //je vais avoir des pipes a exec
             env = pipe_fct(&dot, &ex, env);
-        // else if (ex->type == 0 && (ex->next->type != 6 && ex->next->type != 7 && ex->next->type != 8 && ex->next->type != 9 && ex->next->type != 10 && ex->next->type != 11))
         else if (ex->type == 0 && !(ex->next->type >= 6 && ex->next->type <= 11))
         {
             env = exec_fct((arr = ft_strsplit(ex->cmd, ' ')), env);
             free_tab(arr);
             ex = ex->next;
         }
-        else if (ex->type == 0 && ex->next->type >= 6  && ex->next->type <= 11)
+        else if (ex->type == 0 && ex->next->type >= 6 && ex->next->type <= 11)
             redirection_fork(&ex, &env, &dot);
         else
             ex = ex->next;
+    }
+    return (env);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         // if (ex->type != 0)
         //     dot.cmd = ex->type;
         // if (ex->type == 0 && ex->next->type != 3 && ex->next->type != 7 && ex->next->type != 8 && ex->next->type != 9 && dot.cmd != 3)
         //     env = exec_fct(ft_strsplit(ex->cmd, ' '), env);
         // else if (ex->type == 0 && ex->next->type == 3)
         // printf("Cmd = %s\n", ex->cmd);
-    }
-    return (env);
-}

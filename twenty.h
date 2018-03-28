@@ -135,6 +135,10 @@ typedef struct      s_varq
     struct  s_varq  *next;
 }                   t_varq;
 
+//aggreagation
+void    aggregation_out(char **t, t_cmd *ex);
+void    aggregation_in(char **t, t_cmd *ex);
+
 // cd
 void	cd_prev(t_env **env, char *buf);
 void	cd_home(t_env **env, char *buf);
@@ -289,12 +293,12 @@ void    put_prompt(t_froz *fz);
 void    put_prompt_init(t_froz **fz);
 int     giv_last(t_froz *fz);
 
-
-
 //  redirecting_checking
 int     redirection_check_create(t_cmd *ex);
 void    redirection_file_create(t_cmd *ex);
 int     redirection_file_check(t_cmd *ex);
+int     parsing_dup_out(char *s, int n, t_cmd *ex);
+int     parsing_dup_in(char *s, int n, t_cmd *ex);
 
 //  redirecting
 void    redirection(t_cmd **ex, t_env **env, t_exec *s);

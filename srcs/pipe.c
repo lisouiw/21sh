@@ -61,8 +61,8 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
 {
     int     pp = 1;
     pid_t   pid;
-    s->in = 0;
     
+    s->in = 0;
     s->out = dup(1);
     while (pp == 1)
     {
@@ -70,7 +70,9 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
         if ((*ex)->cmd == NULL)
             return(env);
         pipe(s->p);
-        if ((pid = fork()) == -1)
+        if (!(((*ex)->next->type >= 6 && (*ex)->next->type <= 11) || (*ex)->type == 0 ))
+                *ex = (*ex)->next;
+        else if ((pid = fork()) == -1)
             exit(EXIT_FAILURE);
         else if (pid == 0)   /////////////////////////////CHILD///////////////////////////
         {
@@ -80,10 +82,10 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
             close(s->p[0]);
             if ((*ex)->next->type >= 6 && (*ex)->next->type <= 11)
                 redirection(&(*ex), &env, &(*s));
-            else
+            else if ((*ex)->type == 0)
             {
-                if ((*ex)->type == 3)
-                    *ex = (*ex)->next;
+                // if ((*ex)->type == 3)
+                    // *ex = (*ex)->next;
                 env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env);
             }
         }

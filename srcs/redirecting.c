@@ -1,6 +1,6 @@
 #include "../twenty.h"
 
-void    redirection(t_cmd **ex, t_env **env, t_exec *s)
+void    redirection(t_cmd **ex, t_env **env, t_exec *s) //redirection for pipe
 {
     char    **arr;
     
@@ -33,11 +33,11 @@ void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
         else
             exit(0);
     }
-    else
-    {
-        dup2(1, s->out);
-        dup2(0, s->in);
-    }
+    // else
+    // {
+    //     dup2(1, s->out);
+    //     dup2(0, s->in);
+    // }
     free_tab(arr);
 }
 
@@ -56,7 +56,7 @@ char    **give_seven(t_cmd *ex)
             ex = ex->next;
         return (NULL);
     }
-    if (ex->type != 7)
+    else if (ex->type != 7)
         return (NULL);
     return (ft_strsplit(ex->cmd, ' '));
 }
