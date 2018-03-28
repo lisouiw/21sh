@@ -39,6 +39,8 @@ void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
         else
             exit(0);
     }
+    else
+        wait(0);
     dup2(1, s->out);
     dup2(0, s->in);
     free_tab(arr);
