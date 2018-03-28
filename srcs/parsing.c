@@ -102,7 +102,8 @@ void    join_redirecting2(t_cmd **join, t_cmd **ex)
     char    *tmp2;
     t_cmd   *cmd;
 
-    while ((*ex)->type == 8 || (*ex)->type == 7||  (*ex)->type == 9 ||  (*ex)->type == 10)
+    // while ((*ex)->type == 8 || (*ex)->type == 7|| *ex)->type == 9 ||  (*ex)->type == 10)
+    while ((*ex)->type >= 6 && (*ex)->type <= 11)
     {
         *ex = (*ex)->next;
         if ((*ex)->type == 0)
@@ -130,8 +131,10 @@ void    join_redirecting(t_cmd **ex)
     {
         while ((*ex)->next != NULL)
         { 
-            if (((*ex)->type == 8 || (*ex)->type == 7 || (*ex)->type == 9 || (*ex)->type == 10) && (*ex)->prev->type == 0)// ls > co > co
-                join_redirecting2(&(*ex)->prev, &(*ex));
+            // if (((*ex)->type == 8 || (*ex)->type == 7 || (*ex)->type == 9 || (*ex)->type == 10) && (*ex)->prev->type == 0)// ls > co > co
+            if ((*ex)->type >= 6 && (*ex)->type <= 11)
+
+                join_redirecting2(&(*ex)->prev, ex);
             if ((*ex)->next != NULL)
                 *ex = (*ex)->next;
         }            
@@ -161,10 +164,9 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env, t_froz *fz) //get all op ctr
     }
     join_redirecting(ex);           // join les cas ls -a > co -q ----> ls -a q > co
     join_ex(ex);                    //join les 0 ensemble
-    // print_ex_up(*ex);
+    print_ex_up(*ex);
     free(s);
     return (add_delim(fz, *ex));
-    // return (0);
 }
 
 int     parsing_quote(char *s) //if all quotes are closed
@@ -187,10 +189,11 @@ int     parsing_quote(char *s) //if all quotes are closed
 int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env)
 {
     *ex = init_ex(NULL);
-     if (fz->mode[3] == 6)
+    if (fz->mode[3] == 6)   //if mode heredoc , no save in fz->cmd else if yes
         add_doc(fz, ed_str(ed, NULL, fz->nb[0] - giv_last(fz)));
-    fz->cmd = join_cmd_nw(fz->cmd, ed, fz); //join avec \n
-    while (ed->rpz[0] == 0) // debut de la liste
+    else
+        fz->cmd = join_cmd_nw(fz->cmd, ed, fz); //join avec \n
+    while (ed->rpz[0] == 0) // position: debut de la liste
         ed = ed->next;
     if ((fz->mode[3] = parsing_quote(fz->cmd))) //parsing_quote
     {

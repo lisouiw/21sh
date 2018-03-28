@@ -3,8 +3,12 @@
 void	sig_int(int sig)
 {
     int status = 0;
-    printf("INT[%i]\n", sig);
     
+    while (ed->rpz[0] == 0)
+        ed = ed->next;
+    if (ed->rpz[0] == 1 && ed->rpz[1] != 1)
+        return;
+    printf("INT[%i]\n", sig);
     // set_up_term();
     waitpid(-1, &status, 0);
     // printf("child exited witho = %d | %d\n",WIFSIGNALED(status), WEXITSTATUS(status));
