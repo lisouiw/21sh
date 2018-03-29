@@ -272,7 +272,8 @@ void    cut(t_edit **ed, t_froz **fz);
 t_edit  *paste(t_edit *ed, t_froz **fz);
 
 //  pipe
-void       end_pipe(t_cmd **ex, t_exec **s);
+void       end_pipe(t_cmd **ex, t_exec **s, int pp);
+// void       end_pipe(t_cmd **ex, t_exec **s);
 int     pipe_on(t_cmd *ex);
 t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env);
 void    init_proc(t_proc *p);

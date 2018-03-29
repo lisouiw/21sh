@@ -58,7 +58,6 @@ void	b_other(char **cut, t_env *env)
 {
 	char	**tab_env;
     pid_t      pid;
-	// int status;
 
 	if ((tab_env = list_to_tab(env, NULL)))
 	{
@@ -75,15 +74,6 @@ void	b_other(char **cut, t_env *env)
 		}
 		else 
 			wait(NULL);
-		// {
-		// 	wait(&status);      
-		// 	// if (WTERMSIG(status) == 2)
-		// 	// 	signal(SIGCHLD, SIG_IGN);
-		// 	printf("B_OTHER: child exited witha = %i |%i | %i|%i|\n", 
-		// 	WIFEXITED(status), WEXITSTATUS(status),
-		// 	 WIFSIGNALED(status), WTERMSIG(status));
-			
-		// }
 	}
 	free_tab(tab_env);
 }

@@ -1,15 +1,15 @@
 #include "../twenty.h"
 #include <unistd.h>
 
-void       end_pipe(t_cmd **ex, t_exec **s)
+void       end_pipe(t_cmd **ex, t_exec **s, int pp)
 {
     signal(SIGCHLD, SIG_DFL);
     // signal(SIGCHLD, sig_child);
     close((*s)->p[1]);
-    // if ((*ex)->next->type == 42)
-    //     wait(0);
     dup2(1, (*s)->out);
     dup2(0, (*s)->in);
+    if (pp == 0)
+        wait(0);
     if ((*ex)->next->type == 7)
         while ((*ex)->type == 7 || (*ex)->next->type == 7 || (*ex)->type == 3)
             *ex = (*ex)->next;
@@ -64,9 +64,9 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
         }
         else  //////////////////////PARENT////////////////////////////////
         {
-            if ((*ex)->next->type == 42) //derniere commande./
+            if (pp == 0) //derniere commande./
                 wait(NULL);
-            end_pipe(&(*ex), &s);
+            end_pipe(&(*ex), &s, pp);
         }
     }
     // wait(0);
