@@ -13,6 +13,7 @@ int		init(void)		//EXECUTION
 		return (-1);
 	term.c_lflag |= (ECHO);
 	term.c_lflag |= (ICANON);
+	term.c_lflag &= ~(ECHOCTL);
 	// term.c_cc[VEOF] = 3;
 	// term.c_cc[VINTR] = 4;
 	term.c_cc[VEOF] = 4;
@@ -34,10 +35,12 @@ int		set_up_term(void) ///TERMINAL
 	if (tcgetattr(0, &term) == -1)
 		return (-1);
 	term.c_lflag &= ~(ECHO);
+	term.c_lflag &= ~(ECHOCTL);
 	term.c_lflag &= ~(ICANON);
-	term.c_lflag |= (ISIG);
+	// term.c_lflag |= (ISIG);
 	term.c_cc[VEOF] = 3;
 	term.c_cc[VINTR] = 4;
+	term.c_cc[VSTART] = 17;
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;
 	if (tcsetattr(0, TCSANOW, &term) == -1)

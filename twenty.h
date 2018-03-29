@@ -151,7 +151,9 @@ void    ctrl_touch(t_edit **ed, t_froz **fz, char c, t_his *hs);
 void    ctrl_de_test(t_edit *ed, t_froz *fz, char c, t_his *hs);
 t_edit  *move_word(t_edit *ed, char c);
 t_edit  *up_down(t_edit *ed, char c);
-t_edit  *home_end(t_edit *ed, char c, t_froz *fz);
+// t_edit  *home_end(t_edit *ed, char c, t_froz *fz);
+t_edit  *home_end(t_edit *ed,t_froz *fz);
+
 
 //ed
 void    modif_edit(t_edit **ed, t_edit **nw);

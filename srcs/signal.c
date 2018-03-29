@@ -51,10 +51,8 @@ void	sig_child(int sig)
 
 void	ls_signal(int i)
 {
-    // printf("SINAL[%i]\n", i);
-//     signal(SIGSTOP,sig_quite);
-// signal(SIGTSTP, sig_quite);
- 
+	signal(SIGCONT, sig_quite);
+    
     if (i != 0)
     {
         signal(SIGINT, sig_int3);
@@ -65,8 +63,6 @@ void	ls_signal(int i)
         signal(SIGINT, sig_int);
         signal(SIGCHLD, SIG_DFL);
     }
-	// signal(SIGQUIT,sig_quite);
-    // signal(SIGKILL,sig_quite);
 }
 
 

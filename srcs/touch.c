@@ -31,7 +31,9 @@ t_edit  *extern_touch(t_edit *ed, t_froz **fz, t_his **hs)
 {
     while (ed->rpz[2] == 0) //se mettre au nv cursor
         ed = ed->next;
-    if ((*fz)->buf[0] == 27 && (*fz)->buf[1] == 91 && ((*fz)->buf[2] == 68 || (*fz)->buf[2] == 67))  // left/right
+    if ((*fz)->buf[0] == 27 && (*fz)->buf[1] == 91 && ((*fz)->buf[2] == 72 || (*fz)->buf[2] == 70))
+        ed = home_end(ed, *fz);
+    else if ((*fz)->buf[0] == 27 && (*fz)->buf[1] == 91 && ((*fz)->buf[2] == 68 || (*fz)->buf[2] == 67))  // left/right
         ed = left_right(ed, *fz);
     else if (*hs && (*fz)->mode[2] > 0 && (*fz)->buf[0] == 27 && (*fz)->buf[1] == 91 && ((*fz)->buf[2] == 65 || (*fz)->buf[2] == 66)) //historique : haut/bas
         *hs = histo(*hs, (*fz)->buf[2], &ed, &(*fz));

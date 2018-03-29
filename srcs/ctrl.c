@@ -8,10 +8,11 @@ void    ctrl_touch(t_edit **ed, t_froz **fz, char c, t_his *hs)
         ctrl_de_test(*ed, *fz, c , hs);
     else if (c == 5 || c == 23)
         *ed = move_word(*ed, c);
-    else if (c == 1 || c == 17)
-        *ed = up_down(*ed, c);
     else if (c == 11 || c == 12)
-        *ed = home_end(*ed, c, *fz);
+    // else if (c == 1 || c == 17)
+        *ed = up_down(*ed, c);
+    // else if (c == 11 || c == 12)
+    //     *ed = home_end(*ed, c, *fz);
     else if (c == 2) //copier B
         *ed = copy(*ed, &(*fz));
     else if (c == 24) //couper X
@@ -23,18 +24,19 @@ void    ctrl_touch(t_edit **ed, t_froz **fz, char c, t_his *hs)
         *ed = paste(*ed, &(*fz));
 }
 
-t_edit  *home_end(t_edit *ed, char c, t_froz *fz)
+t_edit  *home_end(t_edit *ed, t_froz *fz)
 {
     int     i;
 
-    if (c == 11) //ctrl k
+    if (fz->buf[2] == 72)
+    // if (c == 11) //ctrl k
     {
         ed->rpz[2] = 0;
         while (ed->rpz[0] == 0)
             ed = ed->next;
         ed->rpz[2] = giv_last(fz);    
     }
-    else if (c == 12 && ed->rpz[1] == 0) //ctrl l
+    else if (fz->buf[2] == 70 && ed->rpz[1] == 0) //ctrl l
     {
         i = ed->rpz[2];
         ed->rpz[2] = 0;
@@ -57,16 +59,16 @@ t_edit  *up_down(t_edit *ed, char c)
     
     cur = ed->rpz[3];
     ed->rpz[2] = 0;
-    if (c == 1) //ctrl a
+    if (c == 11) //ctrl a
     {
         while (ed->rpz[1] != 1 && ed->rpz[3] < cur + g_nb->tb[0] && ed->next->rpz[3] < cur + g_nb->tb[0] + 1)
             ed = ed->next;
         ed->rpz[2] = ed->rpz[3];
     }
-    else if (c == 17) //ctrl q
+    else if (c == 12) //ctrl q
     {
-        // while (ed->rpz[0] == 0 && ed->rpz[3] < cur + g_nb->tb[0] && ed->prev->rpz[3] > cur - g_nb->tb[0] - 1)
-        while (ed->rpz[0] == 0 && ed->prev->rpz[3] > cur - g_nb->tb[0] - 1)
+        while (ed->rpz[0] == 0 && ed->rpz[3] < cur + g_nb->tb[0] && ed->prev->rpz[3] > cur - g_nb->tb[0] - 1)
+        // while (ed->rpz[0] == 0 && ed->prev->rpz[3] > cur - g_nb->tb[0] - 1)
             ed = ed->prev;
         ed->rpz[2] = ed->rpz[3];
     }
