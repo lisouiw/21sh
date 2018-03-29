@@ -27,7 +27,6 @@ t_edit  *touch(t_edit **ed, t_froz **fz, t_his **hs)
     return (*ed);
 }
 
-
 t_edit  *extern_touch(t_edit *ed, t_froz **fz, t_his **hs)
 {
     while (ed->rpz[2] == 0) //se mettre au nv cursor

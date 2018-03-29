@@ -22,10 +22,11 @@ int         main(void)
             write(1, "\n", 1);
             init_for_new(&hs, &fz, &ed);                // init ed et mettre le prompt approprie        
         }
+        else if (fz->buf[0] == 0 && fz->buf[1] ==  0 && fz->buf[2] == 0) //cat -e | ./21sh
+            exit(0);
         else
             ed = touch(&ed, &fz, &hs);                  //add les touch -> ed
         init_data(&fz);
-
     }
 }
 
