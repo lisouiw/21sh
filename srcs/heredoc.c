@@ -84,7 +84,8 @@ void    add_doc_s(t_froz *fz, char *s)      //add doc
     else if (fz->here->doc == NULL)
         fz->here->doc = s;
     else
-        fz->here->doc = ft_strjoin_free(ft_strjoin_free(fz->here->doc, "\n", 1), s, 2);
+        fz->here->doc = strjoin_free(strjoin_free(fz->here->doc, "\n", 1), s, 3);
+
 }
 
 int    add_doc(t_froz *fz, char *s)

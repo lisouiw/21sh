@@ -276,7 +276,6 @@ void       end_pipe(t_cmd **ex, t_exec **s);
 int     pipe_on(t_cmd *ex);
 t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env);
 void    init_proc(t_proc *p);
-t_proc  *add_pid(t_proc *p, pid_t pid);
 
 // print_shell
 int		ft_put(int c);

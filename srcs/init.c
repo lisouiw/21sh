@@ -77,7 +77,12 @@ void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed) //init for next exec
     wait(0);
     (*fz)->mode[3] == 0 ? set_up_term() : set_up_term_prompt();
     // wait(0);
+    
+    wait(0);
     tputs(tgetstr("sc", NULL), 0, ft_put);
+    
+    wait(0);
+
     put_prompt_init(&(*fz));
     free_ed(&(*ed), *fz);
     (*ed)->rpz[2] = giv_last(*fz);

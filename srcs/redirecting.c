@@ -6,16 +6,12 @@ void    redirection(t_cmd **ex, t_env **env, t_exec *s) //redirection for pipe
     
     if (s)
         ;
-    s->in = dup(0);
-    s->out = dup(1);
     arr = ft_strsplit((*ex)->cmd, ' ');
     *ex = (*ex)->next;
     if (redirection_check_create(*ex))
         redirecting_exec(ex, env, arr);
     else
         exit(0);
-    dup2(1, s->out);
-    dup2(0, s->in);
     free_tab(arr);
 }
 

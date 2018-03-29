@@ -6,8 +6,8 @@ void       end_pipe(t_cmd **ex, t_exec **s)
     signal(SIGCHLD, SIG_DFL);
     // signal(SIGCHLD, sig_child);
     close((*s)->p[1]);
-    if ((*ex)->next->type == 42)
-        wait(0);
+    // if ((*ex)->next->type == 42)
+    //     wait(0);
     dup2(1, (*s)->out);
     dup2(0, (*s)->in);
     if ((*ex)->next->type == 7)
@@ -34,39 +34,15 @@ int     pipe_on(t_cmd *ex)
     return (0);
 }
 
-t_proc  *add_pid(t_proc *p, pid_t pid)
-{
-    t_proc  *nw;
-    t_proc  *tmp;
-    
-    if (p == NULL)
-    {
-        p = (t_proc*)malloc(sizeof(t_proc));
-        p->pid = pid;
-        p->next = NULL;
-    }
-    else
-    {
-        tmp = p;
-        while (tmp->next != NULL)
-            tmp = tmp->next;
-        nw = (t_proc*)malloc(sizeof(t_proc));
-        nw->pid = pid;
-        nw->next = NULL;
-        tmp->next = nw;
-    }
-    return (p);
-}
-
 t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
 {
     int     pp = 1;
     pid_t   pid;
     
     s->in = 0;
-    s->out = dup(1);
     while (pp == 1)
     {
+        s->out = dup(1);
         pp = pipe_on(*ex);
         if ((*ex)->cmd == NULL)
             return(env);
@@ -93,7 +69,7 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
             end_pipe(&(*ex), &s);
         }
     }
-    wait(0);
+    // wait(0);
     return (env);
 }
 

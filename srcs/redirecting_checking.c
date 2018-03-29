@@ -69,13 +69,9 @@ void    redirection_file_create(t_cmd *ex)
       
     arr = ft_strsplit((ex)->cmd, ' ');
     if ((ex)->type == 8)
-    {
         nw = (arr[2] == NULL) ? open(arr[1], O_CREAT | O_RDWR | O_TRUNC, 0644) : open(arr[2], O_CREAT | O_RDWR| O_TRUNC, 0644);
-    }
-    else
-    {
+    else // ex->type == 9
         nw = (arr[2] == NULL) ? open(arr[1], O_CREAT | O_RDWR | O_APPEND, 0644) : open(arr[2], O_CREAT | O_RDWR | O_APPEND, 0644);
-    }
     dup2(nw, (arr[2] == NULL ? 1 : ft_atoi(arr[0])));
     free_tab(arr);
     close(nw);
