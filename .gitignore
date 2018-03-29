@@ -2,3 +2,5 @@ objs/*
 libft/objs/*
 a.out
 21sh
+21sh.dSYM
+21sh.dSYM/*
