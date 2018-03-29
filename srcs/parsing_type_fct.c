@@ -39,7 +39,7 @@ t_cmd   *parse_ampersand(t_cmd *ex)
     if (ft_strcmp(ex->cmd, "&&") == 0)
         ex->type = 4;
     else
-        ex->type = -1;    
+        ex->type = -4;    
     return (ex);
 }
 

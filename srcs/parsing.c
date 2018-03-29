@@ -4,7 +4,7 @@ t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex) //sub and put into ex
 {
     t_cmd   *nw;
     char    *tmp;
-
+    
     if (i == in)
         return (ex);
     if (ex->cmd == NULL && ex->prev->type == 42 && ex->next->type == 42)
@@ -156,7 +156,7 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env, t_froz *fz) //get all op ctr
     i = parse_type(ex);                 // give at first a type as cmd(0) or a op ctrl(1)
                                         //parse variable environnement
     *ex = parse_op_int(*ex, s);         // give all op ctrl specifique type | join n>&n
-    // print_ex_up(*ex);
+    print_ex_up(*ex);
     if ((i = parse_synthaxe(*ex)) != 0)
     {
         free(s);
@@ -204,48 +204,14 @@ int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env)
     {
         free_all_ex(&(*ex));
         if (!(fz->mode[3] >= 0 && fz->mode[3] <= 6)) // autre que && || |
-        {
-            printf("ERROR %i\n", fz->mode[3]);
-            // free(fz->cmd);
-            // fz->cmd = NULL;
-            fz->mode[3] = 0;
-            return(0);
-        }
+            return (error_syntax(fz));
+        //     // ERROR==PARSING
+        //     printf("ERROR %i\n", fz->mode[3]);
+        //     fz->mode[3] = 0;
+        //     return(0);
+        // }
     }
     else if (fz->mode[3] == 0)
-    {
-        // printf("PARSING OK\n");
         return(1);
-    }
     return(0);
 }
-
-
-
-
-
-
-// void    add_here_struct(t_froz *fz, char *s)
-// {
-//     char    **t;
-
-//     t = ft_strsplit(s, ' ');
-//     if (fz->here == NULL)
-//     {
-//         fz->here = (t_here*)malloc(sizeof(t_here));
-//         fz->here->delim = ft_strdup(t[1]);
-//         fz->here->doc = NULL;
-//         fz->here->ok = 0;
-//         fz->here->next = NULL;
-//     }
-//     else if (fz->here->delim == NULL)
-//     {
-//         fz->here = (t_here*)malloc(sizeof(t_here));
-//         fz->here->delim = ft_strdup(t[1]);
-//         fz->here->doc = NULL;
-//         fz->here->ok = 0;
-//         fz->here->next = NULL;
-//     }
-//     free_tab(t);
-//     fz->here = fz->here->next;
-// }

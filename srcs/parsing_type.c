@@ -10,19 +10,21 @@ int     parse_synthaxe(t_cmd *ex)
     ex = ex->next;
     i = ex->type;
     if (i == 3 | i == 4 || i == 5 || i == 13 )
-            return (-1);
+            return (-ex->type);
+    else if (i < 0)
+            return (ex->type);
     while (ex->next != NULL)
     {
         if ((ex->type == 3 || ex->type == 4 || ex->type == 5 ) && ex->prev->type == 0 && ex->next->type == 42)
             return (ex->type); // pipe, and , or    cmd1 [op] cmd2
         else if ((ex->type == 3 || ex->type == 4 || ex->type == 5 ) && ex->prev->type != 0 && ex->next->type != 0)
-            return (-1); // pipe, and , or    cmd1 [op] cmd2
+            return (-ex->type); // pipe, and , or    cmd1 [op] cmd2
         else if ((ex->type == 6 || ex->type == 7 || ex->type == 8 || ex->type == 9 || ex->type == 10 || ex->type == 11) && ex->next->type != 0)
-            return (-2); // <<,  <, >, >>, >&, <& word
+            return (-ex->type); // <<,  <, >, >>, >&, <& word
         else if (ex->type == 13 && (ex->prev->type == 3 || ex->prev->type == 4 || ex->prev->type == 5))
-            return (-3); // cmd [;]
-        else if (ex->type == -1)
-            return (-4); // cmd [;]
+            return (-ex->type); // cmd [;]
+        else if (ex->type < 0)
+            return (ex->type); // cmd [;]
         ex = ex->next;
     }
     while (ex->prev != NULL)

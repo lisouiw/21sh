@@ -169,6 +169,9 @@ void	b_unset(char **cut, t_env **env, int i);
 t_env	*add_env(char *environ, t_env *env, size_t one, size_t all);
 t_env	*give_env(t_env *env);
 
+//error
+int     error_syntax(t_froz *fz);
+
 //exec_tools
 int		give_path(t_env *env, char **cut, int i, char **tab_env);
 char	**list_to_tab(t_env *env, char **tab_env);
