@@ -15,7 +15,11 @@ t_edit  *paste(t_edit *ed, t_froz **fz)
 t_edit  *copy(t_edit *ed, t_froz **fz)
 {
     if ((*fz)->mode[0] == 1) // give the cmd
+    {
+        if ((*fz)->paste != NULL)
+            free((*fz)->paste);
         (*fz)->paste = keep_paste(&ed, NULL);
+    }
     (*fz)->mode[0] = ((*fz)->mode[0] == 0) ? 1 : 0;
     if ((*fz)->mode[1] == 1 || (*fz)->mode[0] == 0)
     {

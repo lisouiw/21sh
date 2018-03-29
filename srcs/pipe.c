@@ -4,7 +4,6 @@
 void       end_pipe(t_cmd **ex, t_exec **s, int pp)
 {
     signal(SIGCHLD, SIG_DFL);
-    // signal(SIGCHLD, sig_child);
     close((*s)->p[1]);
     dup2(1, (*s)->out);
     dup2(0, (*s)->in);

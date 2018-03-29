@@ -156,7 +156,7 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env, t_froz *fz) //get all op ctr
     i = parse_type(ex);                 // give at first a type as cmd(0) or a op ctrl(1)
                                         //parse variable environnement
     *ex = parse_op_int(*ex, s);         // give all op ctrl specifique type | join n>&n
-    print_ex_up(*ex);
+    // print_ex_up(*ex);
     if ((i = parse_synthaxe(*ex)) != 0)
     {
         free(s);
@@ -164,7 +164,7 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env, t_froz *fz) //get all op ctr
     }
     join_redirecting(ex);           // join les cas ls -a > co -q ----> ls -a q > co
     join_ex(ex);                    //join les 0 ensemble
-    print_ex_up(*ex);
+    // print_ex_up(*ex);
     free(s);
     return (add_delim(fz, *ex));
 }
