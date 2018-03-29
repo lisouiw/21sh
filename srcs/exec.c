@@ -87,8 +87,8 @@ void	b_other_nf(char **cut, t_env *env)
 		if (wait(0) && execve(cut[0], cut, tab_env) == -1)
 			if (give_path_nf(env, cut, -1, tab_env) == -1)
 			{
-				ft_putstr("sh: command not found: ");
-				ft_putendl(cut[0]);
+				ft_putstr_fd("sh: command not found: ", 2);
+				ft_putendl_fd(cut[0], 2);
 				exit(-1);
 			}
 	}
