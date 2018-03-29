@@ -2,7 +2,7 @@
 
 int         main(void)
 {
-    t_env   *env;
+    t_env   *env = NULL;
 
     g_nb = init_shell(&fz, &env, &ed, &hs);
     while (42)

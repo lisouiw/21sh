@@ -3,7 +3,8 @@
 t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
 {
     t_cmd   *ex;
-
+    
+    ex = NULL;
     while ((*cmd)->rpz[0] == 0) // Go debut de la liste
         *cmd = (*cmd)->next;
     if ((*fz)->nb[0] % g_nb->tb[0] != 1) //eviter de fausser les calcul

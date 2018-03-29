@@ -21,9 +21,8 @@ t_num   *init_shell(t_froz **fz, t_env **env, t_edit **ed, t_his **hs) //init st
 
     if ((*env = give_env(NULL)) == NULL)
     {
-        ft_putstr_fd("give an env\n", 2);
+        ft_putstr_fd("Need An Environment\n", 2);
         exit(0);
-        
     }
     set_up_term();
     tputs(tgetstr("cl", NULL), 0, ft_put);
@@ -53,12 +52,13 @@ t_froz      *init_fz(t_froz *fz)
     fz->mode[3] = 0;
     fz->nb[0] = 3;
     fz->paste = NULL;
-    fz->here = (t_here*)malloc(sizeof(t_here));
+    fz->cmd = NULL;
+    if (!(fz->here = (t_here*)malloc(sizeof(t_here))))
+        return (NULL);
     fz->here->next = NULL;
     fz->here->prev = NULL;
     fz->here->delim = NULL;
     fz->here->ok[0] = 0;
-    fz->cmd = NULL;
     return (fz);
 }
 
@@ -71,13 +71,15 @@ void    init_data(t_froz **fz)
 
 void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed) //init for next exec
 {
-    if ( (*fz)->mode[3] == 0)
-    {
-        int     status;
-        wait(&status);
-        // printf("%i | %i | %i | %i | %i | %i | %i| %i\n",WIFEXITED(status),WEXITSTATUS(status),WIFSIGNALED(status),WTERMSIG(status),WCOREDUMP(status),WIFSTOPPED(status),WSTOPSIG(status),WIFCONTINUED(status));
-    }
-    wait(0);
+    // if ( (*fz)->mode[3] == 0)
+    // {
+    //     int     status;
+    //     wait(&status);
+    //     // printf("%i | %i | %i | %i | %i | %i | %i| %i\n",WIFEXITED(status),WEXITSTATUS(status),WIFSIGNALED(status),WTERMSIG(status),WCOREDUMP(status),WIFSTOPPED(status),WSTOPSIG(status),WIFCONTINUED(status));
+    // }
+    int     status;
+    wait(&status);
+    // wait(0);
     (*fz)->mode[3] == 0 ? set_up_term() : set_up_term_prompt();
     wait(0);
     tputs(tgetstr("sc", NULL), 0, ft_put);
@@ -97,24 +99,24 @@ void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed) //init for next exec
 t_cmd   *init_ex(t_cmd *ex)
 {
     if (!(ex = (t_cmd*)malloc(sizeof(t_cmd))))
-        return (0);
+        return (NULL);
     ex->cmd = NULL;    
     ex->type = 0;
-    ex->prev = (t_cmd*)malloc(sizeof(t_cmd));
+    if (!(ex->prev = (t_cmd*)malloc(sizeof(t_cmd))))
+        return (NULL);
     ex->prev->cmd = NULL;
     ex->prev->prev = NULL;
     ex->prev->type = 42;
     ex->prev->start = 0;
     ex->prev->next = ex;    
 
-    ex->next = (t_cmd*)malloc(sizeof(t_cmd));
+    if (!(ex->next = (t_cmd*)malloc(sizeof(t_cmd))))
+        return (NULL);
     ex->next->cmd = NULL;    
     ex->next->next = NULL;
     ex->next->prev = ex;
     ex->next->type = 42;
     ex->next->start = 0;
-
-
     return (ex);
 }
 

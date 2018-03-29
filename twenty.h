@@ -190,6 +190,9 @@ int		give_path_nf(t_env *env, char **cut, int i, char **tab_env);
 void    free_ex(t_cmd **ex);
 void    free_all_ex(t_cmd **ex);
 void    free_init_fz(t_froz *fz);
+// void    free_hs(void);
+void    free_for_exit(void);
+
 
 //giv_str
 char    *join_cmd_nw(char *cmd, t_edit *ed, t_froz *fz);
@@ -323,7 +326,7 @@ void	ls_signal(int i);
 void	free_list(t_env **env);
 char	*t_strjoin(char *f, char *s, char *t);
 void	free_tab(char **array);
-int		free_for_exit(char *line, char **cut, t_env *env);
+// int		free_for_exit(char *line, char **cut, t_env *env);
 
 // term
 int 	init(void);

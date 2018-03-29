@@ -48,7 +48,13 @@ t_env	*exec_fct(char **cut, t_env *env)
 	else if (ft_strcmp("cd", cut[0]) == 0)
 		b_cd(cut[1], &env);
 	else if (ft_strcmp(cut[0], "exit") == 0) // && free_for_exit(line, cut, env))
+	{
+		free_tab(cut);
+		free_list(&env);
+		free_for_exit();
 		exit(0);
+	}
+		// free_for_exit()
     else
 		b_other(cut, env);
     return (env);

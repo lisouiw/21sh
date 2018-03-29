@@ -42,10 +42,10 @@ void	free_tab(char **array)
 	array = NULL;
 }
 
-int		free_for_exit(char *line, char **cut, t_env *env)
-{
-	ft_strdel(&line);
-	free_tab(cut);
-	free_list(&env);
-	return (1);
-}
+// int		free_for_exit(char *line, char **cut, t_env *env)
+// {
+// 	ft_strdel(&line);
+// 	free_tab(cut);
+// 	free_list(&env);
+// 	return (1);
+// }

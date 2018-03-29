@@ -53,3 +53,36 @@ void    free_init_fz(t_froz *fz)
         fz->here->delim = NULL;
     }
 }
+
+void    free_for_exit(void)
+{
+    while (hs->prev != NULL)
+        hs = hs->prev;
+    while (hs->next != NULL)
+    {
+        free(hs->cmd);
+        hs = hs->next;
+        free(hs->prev);
+    }
+        free(hs);
+    if (fz->cmd)
+        free(fz->cmd);
+    if (fz->paste)
+        free(fz->paste);
+
+    while (fz->here->prev != NULL)
+        fz->here = fz->here->prev;
+    while (fz->here->next != NULL)
+    {
+        if (fz->here->delim)
+            free(fz->here->delim);
+        if (fz->here->doc)
+            free(fz->here->doc);
+        fz->here = fz->here->next;
+        free(fz->here->prev);
+        fz->here->prev = NULL;
+    }
+    free(fz->here);
+    free(fz);
+    // free_init_fz(fz);
+}

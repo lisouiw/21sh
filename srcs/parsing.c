@@ -4,13 +4,17 @@ t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex) //sub and put into ex
 {
     t_cmd   *nw;
     char    *tmp;
-    
+
+    nw = NULL;
+    tmp = NULL;
     if (i == in)
         return (ex);
     if (ex->cmd == NULL && ex->prev->type == 42 && ex->next->type == 42)
     {
         in = in  + white_space(tmp = ft_strsub(s, in , i - in));
-        free(tmp);
+        
+        if (tmp)
+            free(tmp);
         ex->cmd = ft_strsub(s, in , i - in);
         ex->start = in;
     }
@@ -21,7 +25,8 @@ t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex) //sub and put into ex
         if (!(nw = (t_cmd*)malloc(sizeof(t_cmd))))
             return (NULL);
         in = in  + white_space(tmp = ft_strsub(s, in , i - in));
-        free(tmp);
+        if (tmp)
+            free(tmp);
         nw->cmd = ft_strsub(s, in , i - in);
         ex->prev->next = nw;
         nw->next = ex;
@@ -33,7 +38,7 @@ t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex) //sub and put into ex
 }
 
 
-t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex) // sep word && metacharactere
+t_cmd   *separate_cmd(char *s, int i, int in, t_cmd *ex) // sep word && metacharactere
 {
     int     q;
 
@@ -88,8 +93,8 @@ void   join_ex(t_cmd **ex)
             (*ex)->next = (*ex)->next->next;
             (*ex)->next->prev = *ex;
             free(tmp);
-            free(cmd);
             free(cmd->cmd);
+            free(cmd);
         }
         else
             *ex = (*ex)->next;
