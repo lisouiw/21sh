@@ -10,6 +10,7 @@ t_edit  *touch(t_edit **ed, t_froz **fz, t_his **hs)
         {
             while ((*ed)->rpz[2] == 0) //se mettre au nv cursor
                 *ed = (*ed)->next;
+                
             if ((*ed)->rpz[0] != 1)
             {
                 *ed = erase_ed(*ed);

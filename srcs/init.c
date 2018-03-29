@@ -71,9 +71,12 @@ void    init_data(t_froz **fz)
 
 void    init_for_new(t_his **hs, t_froz **fz, t_edit **ed) //init for next exec
 {
-    // int     status;
-    // wait(&status);
-    // printf("%i | %i | %i | %i | %i | %i | %i| %i\n",WIFEXITED(status),WEXITSTATUS(status),WIFSIGNALED(status),WTERMSIG(status),WCOREDUMP(status),WIFSTOPPED(status),WSTOPSIG(status),WIFCONTINUED(status));
+    if ( (*fz)->mode[3] == 0)
+    {
+        int     status;
+        wait(&status);
+        // printf("%i | %i | %i | %i | %i | %i | %i| %i\n",WIFEXITED(status),WEXITSTATUS(status),WIFSIGNALED(status),WTERMSIG(status),WCOREDUMP(status),WIFSTOPPED(status),WSTOPSIG(status),WIFCONTINUED(status));
+    }
     wait(0);
     (*fz)->mode[3] == 0 ? set_up_term() : set_up_term_prompt();
     wait(0);
