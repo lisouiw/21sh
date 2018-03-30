@@ -168,6 +168,14 @@ void	b_export(char *cut, t_env **env);
 void	b_unset(char **cut, t_env **env, int i);
 t_env	*add_env(char *environ, t_env *env, size_t one, size_t all);
 t_env	*give_env(t_env *env);
+void    b_setenv(char **cut, t_env *env);
+
+//env2
+
+void    lst_add_tenv(t_env **alst, t_env *new);
+t_env   *t_env_tmp(t_env *env);
+int     env_flags_check(char **cut);
+void    builtin_env(char **cut, t_env *env);
 
 //error
 int     error_syntax(t_froz *fz);
@@ -178,13 +186,12 @@ char	**list_to_tab(t_env *env, char **tab_env);
 void	print_tab(char **ta, int i);
 
 // exec
-void	b_other(char **cut, t_env *env);
+void	b_other(char **cut, t_env *env, t_exec *s);
+// void	b_other(char **cut, t_env *env);
 void	b_other_nf(char **cut, t_env *env);
 int		give_path_nf(t_env *env, char **cut, int i, char **tab_env);
-
-// execution
-
-
+t_env	*exec_fct_nf(char **cut, t_env *env, t_cmd **ex);
+t_env	*exec_fct(char **cut, t_env *env, t_exec *s);
 
 //free
 void    free_ex(t_cmd **ex);
@@ -339,6 +346,8 @@ void	ecriture_info(t_env *lst);
 char	*strjoin_free(char *nw, char *sub, int i);
 int		white_space(char *s);
 int     if_only_i(char *s, char c);
+int     if_chr_ex(char *s, char c);
+
 
 
 // touch
@@ -353,9 +362,9 @@ t_edit  *giv_position(t_edit *ed, int i);
 t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz);
 void     add_his(t_his **hs, t_his *nw, t_froz *fz);
 t_env   *launchcmd(t_cmd *ex, t_env *env);
-t_env	*exec_fct(char **ar, t_env *env);
+// t_env	*exec_fct(char **ar, t_env *env);
 char    **give_tab(char **ar, t_cmd **ex);
-t_env	*exec_fct_nf(char **cut, t_env *env);
+// t_env	*exec_fct_nf(char **cut, t_env *env);
 
 
 // void    redirecting_out_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s);

@@ -7,6 +7,19 @@ void	free_elem(t_env *tmp)
 	free(tmp);
 }
 
+
+void	b_setenv(char **cut, t_env *env)
+{
+	int		i;
+
+	i = 0;
+	if (!cut[1])
+		ecriture_info(env);
+	else
+		while (cut[++i])
+			b_export(cut[i], &env);
+}
+
 void	b_export(char *cut, t_env **env)
 {
 	t_env	*tmp;
@@ -14,7 +27,7 @@ void	b_export(char *cut, t_env **env)
 
 	tmp = NULL;
 	kp = *env;
-	if (ft_strchr(cut, '='))
+	if (if_chr_ex(cut, '='))
 	{
 		tmp = add_env(cut, NULL, ft_strlen(ft_strchr(cut, '=')),
 				ft_strlen(cut));

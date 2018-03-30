@@ -64,12 +64,12 @@ void    free_for_exit(void)
         hs = hs->next;
         free(hs->prev);
     }
-        free(hs);
+    free(hs);
+    
     if (fz->cmd)
         free(fz->cmd);
     if (fz->paste)
         free(fz->paste);
-
     while (fz->here->prev != NULL)
         fz->here = fz->here->prev;
     while (fz->here->next != NULL)
@@ -84,5 +84,6 @@ void    free_for_exit(void)
     }
     free(fz->here);
     free(fz);
+	exit(EXIT_FAILURE);
     // free_init_fz(fz);
 }

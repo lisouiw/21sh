@@ -18,6 +18,18 @@ int     if_only_i(char *s, char c)
     return (0);
 }
 
+int     if_chr_ex(char *s, char c)
+{
+	int		i;
+	
+	i = -1;
+    while (s[++i] && s[i] != c)
+        ;
+    if (s[i] == c)
+        return (1);
+    return (0);
+}
+
 int     if_only(char *s, char c)
 {
         

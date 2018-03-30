@@ -75,5 +75,5 @@ void    redirecting_exec(t_cmd **ex, t_env **env, char **arr)
         
     }
     wait(0);
-    *env = exec_fct_nf(arr, *env); //EXECUTION
+    *env = exec_fct_nf(arr, *env, ex); //EXECUTION
 }

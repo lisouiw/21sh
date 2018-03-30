@@ -1,9 +1,10 @@
+
 #include "../twenty.h"
 
-t_env	*exec_fct_nf(char **cut, t_env *env)
+t_env	*exec_fct_nf(char **cut, t_env *env, t_cmd **ex)
 {
-	int		i = 0;
-
+	if (ex)
+		;
 	if (ft_strcmp("echo", cut[0]) == 0)
 	{
 		print_tab(cut, 0);
@@ -11,38 +12,34 @@ t_env	*exec_fct_nf(char **cut, t_env *env)
 	}
 	else if (ft_strcmp("env", cut[0]) == 0)
 		ecriture_info(env);
+		// builtin_env(cut, env);
 	else if (ft_strcmp("setenv", cut[0]) == 0)
-	{
-		while (cut[1] && cut[++i])
-			b_export(cut[i], &env);
-	}
+		b_setenv(cut, env);
 	else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
 		b_unset(cut, &env, 0);
 	else if (ft_strcmp("cd", cut[0]) == 0)
 		b_cd(cut[1], &env);
 	 if (ft_strcmp(cut[0], "exit") == 0) // && free_for_exit(line, cut, env))
     {
-        printf("exit\n");
-        exit(0);
+		free_tab(cut);
+		free_list(&env);
+		free_all_ex(ex);
+		free_for_exit();
     }
 	else
 		b_other_nf(cut, env);
     return (env);
 }
 
-t_env	*exec_fct(char **cut, t_env *env)
+t_env	*exec_fct(char **cut, t_env *env, t_exec *s)
 {
-	int		i = 0;
-	
 	if (ft_strcmp("echo", cut[0]) == 0)
 		print_tab(cut, 0);
 	else if (ft_strcmp("env", cut[0]) == 0)
 		ecriture_info(env);
+		// builtin_env(cut, env);
 	else if (ft_strcmp("setenv", cut[0]) == 0)
-	{
-		while (cut[1] && cut[++i])
-			b_export(cut[i], &env);
-	}
+		b_setenv(cut, env);
 	else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
 		b_unset(cut, &env, 0);
 	else if (ft_strcmp("cd", cut[0]) == 0)
@@ -52,18 +49,17 @@ t_env	*exec_fct(char **cut, t_env *env)
 		free_tab(cut);
 		free_list(&env);
 		free_for_exit();
-		exit(0);
 	}
-		// free_for_exit()
     else
-		b_other(cut, env);
+		b_other(cut, env, s);
     return (env);
 }
 
-void	b_other(char **cut, t_env *env)
+void	b_other(char **cut, t_env *env, t_exec *s)
 {
 	char	**tab_env;
     pid_t      pid;
+	int			status;
 
 	if ((tab_env = list_to_tab(env, NULL)))
 	{
@@ -73,13 +69,17 @@ void	b_other(char **cut, t_env *env)
 		{
 			if (wait(0) && give_path_nf(env, cut, -1, tab_env) == -1)
 			{
+				s->ok = 0;
 				ft_putstr_fd("sh: command not found: ", 2);
 				ft_putendl_fd(cut[0], 2);
 				exit(-1);
 			}
 		}
 		else 
-			wait(NULL);
+		{
+			waitpid(-1, &status, 0);
+			s->ok = WEXITSTATUS(status) == 0 ? 1 : 0;
+		}
 	}
 	free_tab(tab_env);
 }
@@ -93,6 +93,7 @@ void	b_other_nf(char **cut, t_env *env)
 		if (wait(0) && execve(cut[0], cut, tab_env) == -1)
 			if (give_path_nf(env, cut, -1, tab_env) == -1)
 			{
+				//add ER || &&
 				ft_putstr_fd("sh: command not found: ", 2);
 				ft_putendl_fd(cut[0], 2);
 				exit(-1);

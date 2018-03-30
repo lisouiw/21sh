@@ -11,7 +11,6 @@ int     parsing_dup_out(char *s, int n, t_cmd *ex)
     {
         s[len] = '\0';
         dup2(ft_atoi(s), n);
-        // redirection_check_create(ex->next);    
         close(n);
     }
     else
@@ -32,7 +31,6 @@ int     parsing_dup_in(char *s, int n, t_cmd *ex)
     {
         s[len] = '\0';
         dup2(n, ft_atoi(s));
-        // redirection_check_create(ex->next);        
         close(ft_atoi(s));
     }
     else
