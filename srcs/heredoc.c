@@ -78,14 +78,14 @@ void    add_doc_s(t_froz *fz, char *s)      //add doc
 		fz->here->ok[0] = 1;
 		fd = open("/tmp/in", O_CREAT | O_RDWR | O_TRUNC, 0644);
 		if (fz->here->doc && fz->here->doc != NULL)
-			write(fd, fz->here->doc, ft_strlen(fz->here->doc));
+			ft_putendl_fd(fz->here->doc, fd);
 		close(fd);
 		free(s);
 	}
 	else if (fz->here->doc == NULL)
 		fz->here->doc = s;
 	else
-		fz->here->doc = strjoin_free(strjoin_free(fz->here->doc, "\n", 1), s, 3);
+		fz->here->doc = strjoin_free(s ,strjoin_free( "\n", fz->here->doc, 2), 3);
 
 }
 

@@ -1,5 +1,17 @@
 #include "../twenty.h"
 
+void    redirection_no_cmd(t_cmd **ex, t_env **env, t_exec *s) //redirection for pipe
+{
+    s->in = dup(0);
+    s->out = dup(1);
+    if (redirection_check_create(*ex))
+        redirecting_exec(ex, env, NULL);
+    // else
+    //     exit(0);
+    dup2(1, s->out);
+    dup2(0, s->in);
+}
+
 void    redirection(t_cmd **ex, t_env **env, t_exec *s) //redirection for pipe
 {
     char    **arr;
@@ -20,8 +32,6 @@ void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
     char    **arr;
     pid_t   pid;
 
-    if (s || env)
-        ;
     s->in = dup(0);
     s->out = dup(1);
     arr = ft_strsplit((*ex)->cmd, ' ');
@@ -35,6 +45,7 @@ void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
         else
             exit(0);
     }
+
     wait(0);
     dup2(1, s->out);
     dup2(0, s->in);
@@ -66,14 +77,16 @@ void    redirecting_exec(t_cmd **ex, t_env **env, char **arr)
     int         nw;
     char        **tmp;
     
-    if (env)
-        ;
+    
     if ((tmp = give_seven(*ex)) != NULL)
     {
         nw = (tmp[2] == NULL) ? open(tmp[1], O_RDONLY) : open(tmp[2], O_RDONLY);
         dup2(nw, (arr[2] == NULL ? 0 : ft_atoi(tmp[0])));
-        
+        // close(nw);
     }
-    wait(0);
-    *env = exec_fct_nf(arr, *env, ex); //EXECUTION
+    if (arr != NULL)
+    {
+        wait(0);
+        *env = exec_fct_nf(arr, *env, ex); //EXECUTION
+    }
 }

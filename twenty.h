@@ -16,7 +16,6 @@
 void	sig_child(int sig);
 
 
-
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -320,6 +319,7 @@ void    redirection(t_cmd **ex, t_env **env, t_exec *s);
 void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s);
 void    redirecting_exec(t_cmd **ex, t_env **env, char **arr);
 char    **give_red_input(t_cmd *ex);
+void    redirection_no_cmd(t_cmd **ex, t_env **env, t_exec *s);
 
 
 //  signal
