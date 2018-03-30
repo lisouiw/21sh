@@ -58,27 +58,42 @@ int env_flags_check(char **cut)
 		return (5);
 }
 
-void builtin_env(char **cut, t_env *env)
+void set_new_env(char **cut, t_env *env, t_exec *s)
 {
-	int flags;
-	t_env *cpy;
+	int i;
 
-	cpy = NULL;
-	flags = env_flags_check(cut);
-	if (flags)
-		cpy = t_env_tmp(env);
+	i = -1;
+	while (cut[++i] && ft_strchr(cut[i], '='))
+		b_export(cut[i], &env);
+	if (cut[i])
+		env = exec_fct(&cut[i], env, s);
 	else
 		ecriture_info(env);
-	if (flags == 1)
-		;
+}
+
+void builtin_env(char **cut, t_env *env, t_exec *s)
+{
+	int flags;
+	t_env *env_cpy;
+	t_env *env_empty;
+
+	env_cpy = NULL;
+	env_empty = NULL;
+	flags = env_flags_check(cut);
+	if (!flags)
+		ecriture_info(env);
 	if (flags == 2)
-		env = exec_fct(&cut[2], NULL, NULL);
+	{
+		set_new_env(cut + 2, env_empty, s);
+		free_list(&env_empty);
+	}
+
 	if (flags == 3 || flags == 4)
 	{
-		b_export(cut[1], &cpy);
-		if (flags == 3)
-			ecriture_info(cpy);
-		else if (flags == 4)
-			exec_fct(cut + 2, cpy, NULL);
+		env_cpy = t_env_tmp(env);
+		set_new_env(cut + 1, env_cpy, s);
+		free_list(&env_cpy);
 	}
+	if (flags == 5)
+		ft_putendl("usage: env [-i] [NAME=value ...] [utility [argument ...]]");
 }

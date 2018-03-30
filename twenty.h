@@ -170,11 +170,11 @@ t_env	*give_env(t_env *env);
 void    b_setenv(char **cut, t_env *env);
 
 //env2
-
 void    lst_add_tenv(t_env **alst, t_env *new);
 t_env   *t_env_tmp(t_env *env);
 int     env_flags_check(char **cut);
-void    builtin_env(char **cut, t_env *env);
+void    set_new_env(char **cut, t_env *env, t_exec *s);
+void    builtin_env(char **cut, t_env *env, t_exec *s);
 
 //error
 int     error_syntax(t_froz *fz);

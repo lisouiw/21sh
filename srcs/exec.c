@@ -9,8 +9,8 @@ t_env	*exec_fct_nf(char **cut, t_env *env, t_cmd **ex, t_exec *s)
 		exit(0);//tuer le process en inutilise
 	}
 	else if (ft_strcmp("env", cut[0]) == 0)
-		ecriture_info(env);
-		// builtin_env(cut, env);
+		builtin_env(cut, env, s);
+		// ecriture_info(env);
 	else if (ft_strcmp("setenv", cut[0]) == 0)
 		b_setenv(cut, env);
 	else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
@@ -34,7 +34,9 @@ t_env	*exec_fct(char **cut, t_env *env, t_exec *s)
 	if (ft_strcmp("echo", cut[0]) == 0)
 		print_tab(cut, 0);
 	else if (ft_strcmp("env", cut[0]) == 0)
-		ecriture_info(env);
+		builtin_env(cut, env, s);
+	
+		// ecriture_info(env);
 		// builtin_env(cut, env);
 	else if (ft_strcmp("setenv", cut[0]) == 0)
 		b_setenv(cut, env);
