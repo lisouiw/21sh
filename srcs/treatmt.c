@@ -62,11 +62,15 @@ void    redirection_no_cmd(t_cmd **ex, t_env **env, t_exec *s) //redirection for
 		*ex = (*ex)->next;
 }
 
-void     move_on(t_cmd **ex)
+void     move_on(t_cmd **ex, int i)
 {
 	*ex = (*ex)->next;
-    while ((*ex)->type != 3 && (*ex)->type != 5 && (*ex)->type != 13 && (*ex)->type != 42)
-	    *ex = (*ex)->next;
+    if (i == 5)
+        while ((*ex)->type != 3 && (*ex)->type != 5 && (*ex)->type != 13 && (*ex)->type != 42)
+	        *ex = (*ex)->next;
+    if (i == 5)
+        while ((*ex)->type != 3 && (*ex)->type != 4 && (*ex)->type != 13 && (*ex)->type != 42)
+	        *ex = (*ex)->next;
     // printf("cmd = %s && type = %i\n", (*ex)->cmd, (*ex)->type);
     // sleep(3);
 }
@@ -83,7 +87,9 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
         if (pipe_on(ex)) //je vais avoir des pipes a exec
             env = pipe_fct(&s, &ex, env);
         else if ( ex->type == 4 && s.ok == 0)
-            move_on(&ex);
+            move_on(&ex, 4);
+        else if ( ex->type == 5 && s.ok == 1)
+            move_on(&ex, 5);
         else if (ex->type == 0 && !(ex->next->type >= 6 && ex->next->type <= 11))
         {
             env = exec_fct((arr = ft_strsplit(ex->cmd, ' ')), env, &s);
