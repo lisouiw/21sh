@@ -8,7 +8,10 @@ void       end_pipe(t_cmd **ex, t_exec **s, int pp)
     dup2(1, (*s)->out);
     dup2(0, (*s)->in);
     if (pp == 0)
+    {
         wait(0);
+        // printf("s %i\n", (*s)->ok );
+    }
     if ((*ex)->next->type == 7)
         while ((*ex)->type == 7 || (*ex)->next->type == 7 || (*ex)->type == 3)
             *ex = (*ex)->next;
@@ -49,7 +52,7 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
         if (!(((*ex)->next->type >= 6 && (*ex)->next->type <= 11) || (*ex)->type == 0 ))
                 *ex = (*ex)->next;
         else if ((pid = fork()) == -1)
-            exit(EXIT_FAILURE);
+            exit(-1);
         else if (pid == 0)   /////////////////////////////CHILD///////////////////////////
         {
             dup2(s->in, 0);
@@ -59,7 +62,7 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
             if ((*ex)->next->type >= 6 && (*ex)->next->type <= 11)
                 redirection(&(*ex), &env, &(*s));
             else if ((*ex)->type == 0)
-                env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env, ex);
+                env = exec_fct_nf(ft_strsplit((*ex)->cmd, ' '), env, ex, s);
         }
         else  //////////////////////PARENT////////////////////////////////
         {

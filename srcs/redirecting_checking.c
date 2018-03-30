@@ -41,8 +41,6 @@ int     parsing_dup_in(char *s, int n, t_cmd *ex)
     return(1);
 }
 
-
-
 int     redirection_check_create(t_cmd *ex)
 {
     while ((ex)->type >= 6 && (ex)->type <= 11)

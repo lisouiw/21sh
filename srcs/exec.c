@@ -1,10 +1,8 @@
 
 #include "../twenty.h"
 
-t_env	*exec_fct_nf(char **cut, t_env *env, t_cmd **ex)
+t_env	*exec_fct_nf(char **cut, t_env *env, t_cmd **ex, t_exec *s)
 {
-	if (ex)
-		;
 	if (ft_strcmp("echo", cut[0]) == 0)
 	{
 		print_tab(cut, 0);
@@ -27,7 +25,7 @@ t_env	*exec_fct_nf(char **cut, t_env *env, t_cmd **ex)
 		free_for_exit();
     }
 	else
-		b_other_nf(cut, env);
+		b_other_nf(cut, env, s);
     return (env);
 }
 
@@ -69,7 +67,6 @@ void	b_other(char **cut, t_env *env, t_exec *s)
 		{
 			if (wait(0) && give_path_nf(env, cut, -1, tab_env) == -1)
 			{
-				s->ok = 0;
 				ft_putstr_fd("sh: command not found: ", 2);
 				ft_putendl_fd(cut[0], 2);
 				exit(-1);
@@ -84,16 +81,17 @@ void	b_other(char **cut, t_env *env, t_exec *s)
 	free_tab(tab_env);
 }
 
-void	b_other_nf(char **cut, t_env *env)
+void	b_other_nf(char **cut, t_env *env, t_exec *s)
 {
 	char	**tab_env;
 	
+	if (s)
+		;
 	if ((tab_env = list_to_tab(env, NULL)))
 	{
 		if (wait(0) && execve(cut[0], cut, tab_env) == -1)
 			if (give_path_nf(env, cut, -1, tab_env) == -1)
 			{
-				//add ER || &&
 				ft_putstr_fd("sh: command not found: ", 2);
 				ft_putendl_fd(cut[0], 2);
 				exit(-1);

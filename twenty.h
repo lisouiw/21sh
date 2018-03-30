@@ -187,9 +187,9 @@ void	print_tab(char **ta, int i);
 // exec
 void	b_other(char **cut, t_env *env, t_exec *s);
 // void	b_other(char **cut, t_env *env);
-void	b_other_nf(char **cut, t_env *env);
+void	b_other_nf(char **cut, t_env *env, t_exec *s);
 int		give_path_nf(t_env *env, char **cut, int i, char **tab_env);
-t_env	*exec_fct_nf(char **cut, t_env *env, t_cmd **ex);
+t_env	*exec_fct_nf(char **cut, t_env *env, t_cmd **ex, t_exec *s);
 t_env	*exec_fct(char **cut, t_env *env, t_exec *s);
 
 //free
@@ -317,7 +317,8 @@ int     parsing_dup_in(char *s, int n, t_cmd *ex);
 //  redirecting
 void    redirection(t_cmd **ex, t_env **env, t_exec *s);
 void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s);
-void    redirecting_exec(t_cmd **ex, t_env **env, char **arr);
+void    redirecting_exec(t_cmd **ex, t_env **env, char **arr, t_exec *s);
+// void    redirecting_exec(t_cmd **ex, t_env **env, char **arr);
 char    **give_red_input(t_cmd *ex);
 void    redirection_no_cmd(t_cmd **ex, t_env **env, t_exec *s);
 
@@ -364,7 +365,6 @@ void     add_his(t_his **hs, t_his *nw, t_froz *fz);
 t_env   *launchcmd(t_cmd *ex, t_env *env);
 // t_env	*exec_fct(char **ar, t_env *env);
 char    **give_tab(char **ar, t_cmd **ex);
-// t_env	*exec_fct_nf(char **cut, t_env *env);
 
 
 // void    redirecting_out_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s);

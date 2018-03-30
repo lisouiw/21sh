@@ -3,16 +3,22 @@
 void    redirection(t_cmd **ex, t_env **env, t_exec *s) //redirection for pipe
 {
 	char    **arr;
+	int			status;
 	
 	if (s)
 		;
 	arr = ft_strsplit((*ex)->cmd, ' ');
 	*ex = (*ex)->next;
 	if (redirection_check_create(*ex))
-		redirecting_exec(ex, env, arr);
+		redirecting_exec(ex, env, arr, s);
 	else
-		exit(0);
+	{
+		s->ok = 0;
+		exit(-1);
+	}
 	free_tab(arr);
+	waitpid(-1, &status, 0);
+	s->ok = WEXITSTATUS(status) == 0 ? 1 : 0;
 	while ((*ex)->type >= 6 && (*ex)->type <= 11)
 		*ex = (*ex)->next;
 }
@@ -20,6 +26,7 @@ void    redirection(t_cmd **ex, t_env **env, t_exec *s) //redirection for pipe
 void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
 {
 	char    **arr;
+	int			status;
 	pid_t   pid;
 
 	s->in = dup(0);
@@ -31,11 +38,13 @@ void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
 	else if (pid == 0)
 	{
 		if (redirection_check_create(*ex))
-			redirecting_exec(ex, env, arr);
+			redirecting_exec(ex, env, arr, s);
 		else
-			exit(0);
+			exit(-1);
 	}
 	wait(0);
+	waitpid(-1, &status, 0);
+	s->ok = WEXITSTATUS(status) == 0 ? 1 : 0;
 	dup2(1, s->out);
 	dup2(0, s->in);
 	free_tab(arr);
@@ -63,7 +72,7 @@ char    **give_seven(t_cmd *ex)
 	return (ft_strsplit(ex->cmd, ' '));
 }
 
-void    redirecting_exec(t_cmd **ex, t_env **env, char **arr)
+void    redirecting_exec(t_cmd **ex, t_env **env, char **arr, t_exec *s)
 {
 	int         nw;
 	char        **tmp;
@@ -77,6 +86,6 @@ void    redirecting_exec(t_cmd **ex, t_env **env, char **arr)
 	if (arr != NULL)
 	{
 		wait(0);
-		*env = exec_fct_nf(arr, *env, ex); //EXECUTION
+		*env = exec_fct_nf(arr, *env, ex, s); //EXECUTION
 	}
 }

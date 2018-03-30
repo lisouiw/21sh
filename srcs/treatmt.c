@@ -55,7 +55,7 @@ void    redirection_no_cmd(t_cmd **ex, t_env **env, t_exec *s) //redirection for
     s->in = dup(0);
     s->out = dup(1);
     if (redirection_check_create(*ex))
-        redirecting_exec(ex, env, NULL);
+        redirecting_exec(ex, env, NULL, s);
     dup2(/*1, */s->out, 1);
     dup2(/*0,*/ s->in, 0);
     while ((*ex)->type >= 6 && (*ex)->type <= 11)

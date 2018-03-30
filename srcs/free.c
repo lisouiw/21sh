@@ -84,6 +84,6 @@ void    free_for_exit(void)
     }
     free(fz->here);
     free(fz);
-	exit(EXIT_FAILURE);
+	exit(-1);
     // free_init_fz(fz);
 }
