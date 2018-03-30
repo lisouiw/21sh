@@ -55,7 +55,12 @@ void	ls_signal(int i)
 {
 	signal(SIGCONT, sig_quite);
     
-    if (i != 0)
+    if (i == 44)
+    {
+        signal(SIGINT, SIG_DFL);
+        signal(SIGCHLD, SIG_DFL);
+    }
+    else if (i != 0)
     {
         signal(SIGINT, sig_int3);
         signal(SIGCHLD, SIG_DFL);

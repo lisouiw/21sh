@@ -50,6 +50,26 @@ void     add_his(t_his **hs, t_his *nw, t_froz *fz)
     *hs = (*hs)->next;
 }
 
+void    redirection_no_cmd(t_cmd **ex, t_env **env, t_exec *s) //redirection for pipe
+{
+    s->in = dup(0);
+    s->out = dup(1);
+    if (redirection_check_create(*ex))
+        redirecting_exec(ex, env, NULL);
+    dup2(/*1, */s->out, 1);
+    dup2(/*0,*/ s->in, 0);
+    while ((*ex)->type >= 6 && (*ex)->type <= 11)
+		*ex = (*ex)->next;
+}
+
+void     move_on(t_cmd **ex)
+{
+	*ex = (*ex)->next;
+    while ((*ex)->type != 3 && (*ex)->type != 5 && (*ex)->type != 13 && (*ex)->type != 42)
+	    *ex = (*ex)->next;
+    // printf("cmd = %s && type = %i\n", (*ex)->cmd, (*ex)->type);
+    // sleep(3);
+}
 
 t_env   *launchcmd(t_cmd *ex, t_env *env)
 {
@@ -62,11 +82,8 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
         // printf("cmd = %s && type = %i\n", ex->cmd, ex->type);
         if (pipe_on(ex)) //je vais avoir des pipes a exec
             env = pipe_fct(&s, &ex, env);
-        // else if ( ex->prev->type == 4 && s.ok == 0)
-        // {
-        //     ex = ex->next;
-        //     // while (ex->prev->type == 4)
-        // }
+        else if ( ex->type == 4 && s.ok == 0)
+            move_on(&ex);
         else if (ex->type == 0 && !(ex->next->type >= 6 && ex->next->type <= 11))
         {
             env = exec_fct((arr = ft_strsplit(ex->cmd, ' ')), env, &s);
@@ -75,14 +92,8 @@ t_env   *launchcmd(t_cmd *ex, t_env *env)
         }
         else if (ex->type == 0 && ex->next->type >= 6 && ex->next->type <= 11)
             redirection_fork(&ex, &env, &s);
-        // else if (ex->type >= 6 && ex->type <= 11)
-        // {
-        //     redirection_no_cmd(&ex, &env, &s);
-            
-        //     // printf("JE ME SUIS PERDU\n");
-        //     while (ex->type >= 6 && ex->type <= 11)
-        //         ex = ex->next;
-        // }
+        else if (ex->type >= 6 && ex->type <= 11)
+            redirection_no_cmd(&ex, &env, &s);
         else
             ex = ex->next;
     }
