@@ -12,13 +12,9 @@ void       end_pipe(t_cmd **ex, t_exec **s, int pp)
         wait(0);
         // printf("s %i\n", (*s)->ok );
     }
-    if ((*ex)->next->type == 7)
-        while ((*ex)->type == 7 || (*ex)->next->type == 7 || (*ex)->type == 3)
+    printf("HOLA\n");
+    while ((*ex)->type != 3 && (*ex)->type != 4 && (*ex)->type != 5 && (*ex)->type != 13 && (*ex)->type != 42)
             *ex = (*ex)->next;
-    else if ((*ex)->next->next != NULL)
-        *ex = (*ex)->next->next;
-    else if ((*ex)->next != NULL)
-        *ex = (*ex)->next;
     (*s)->in = (*s)->p[0];
 }
 
@@ -38,6 +34,7 @@ int     pipe_on(t_cmd *ex)
 
 t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
 {
+    int     i= 0;
     int     pp = 1;
     pid_t   pid;
     
@@ -70,6 +67,8 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
                 wait(NULL);
             end_pipe(&(*ex), &s, pp);
         }
+        if (++i > 10)
+            exit(0);
     }
     // wait(0);
     return (env);
