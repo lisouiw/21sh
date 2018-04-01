@@ -9,10 +9,10 @@ t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex) //sub and put into ex
     tmp = NULL;
     if (i == in)
         return (ex);
-    if (ex->cmd == NULL && ex->prev->type == 42 && ex->next->type == 42)
+    // if (ex->cmd == NULL && ex->prev->type == 42 && ex->next->type == 42)
+    if (ex->cmd == NULL && ex->prev && ex->next && ex->prev->type == 42 && ex->next->type == 42)
     {
         in = in  + white_space(tmp = ft_strsub(s, in , i - in));
-        
         if (tmp)
             free(tmp);
         ex->cmd = ft_strsub(s, in , i - in);
