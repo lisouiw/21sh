@@ -41,7 +41,9 @@ t_cmd   *parse_ampersand(t_cmd *ex)
     else if (ft_strcmp(ex->cmd, "&") == 0)
         ex->type = -20;    
     else if (ft_strcmp(ex->cmd, "&<") == 0 || ft_strcmp(ex->cmd, "&>") == 0)
-        ex->type = -1;    
+        ex->type = -1; 
+    else
+        ex->type = -1;
     return (ex);
 }
 

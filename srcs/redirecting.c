@@ -3,7 +3,7 @@
 void    redirection(t_cmd **ex, t_env **env, t_exec *s) //redirection for pipe
 {
 	char    **arr;
-	int			status;
+	// int			status;
 	
 	if (s)
 		;
@@ -12,13 +12,8 @@ void    redirection(t_cmd **ex, t_env **env, t_exec *s) //redirection for pipe
 	if (redirection_check_create(*ex))
 		redirecting_exec(ex, env, arr, s);
 	else
-	{
-		s->ok = 0;
 		exit(-1);
-	}
 	free_tab(arr);
-	waitpid(-1, &status, 0);
-	s->ok = WEXITSTATUS(status) == 0 ? 1 : 0;
 	while ((*ex)->type >= 6 && (*ex)->type <= 11)
 		*ex = (*ex)->next;
 }
@@ -42,9 +37,12 @@ void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
 		else
 			exit(-1);
 	}
-	wait(0);
-	waitpid(-1, &status, 0);
-	s->ok = WEXITSTATUS(status) == 0 ? 1 : 0;
+	else
+	{
+		waitpid(-1, &status, 0);
+		s->ok = WEXITSTATUS(status) == 0 ? 1 : 0;
+	}
+	
 	dup2(1, s->out);
 	dup2(0, s->in);
 	free_tab(arr);

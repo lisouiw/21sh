@@ -128,5 +128,5 @@ void    init_launch(t_exec *dot, t_cmd **ex)
     dot->cmd = 0;
     dot->out = 1;
     dot->in = 0;
-    dot->ok = 1;
+    dot->ok = 0;
 }
