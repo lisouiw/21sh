@@ -156,12 +156,15 @@ int     parsing_op(char *s, t_cmd **ex, t_env *env, t_froz *fz) //get all op ctr
         ;
     while (s[i] && s[i] == ' ')
         ++i;
+    
     s = quote_variable(s, NULL, env);
     *ex = separate_cmd(s, i, i, *ex);   //separate by simple word and metacharactere
-    i = parse_type(ex);                 // give at first a type as cmd(0) or a op ctrl(1)
+    // printf("%s\n",s);
+    // print_ex_up(*ex);
+   
+   i = parse_type(ex);                 // give at first a type as cmd(0) or a op ctrl(1)
                                         //parse variable environnement
     *ex = parse_op_int(*ex, s);         // give all op ctrl specifique type | join n>&n
-    // print_ex_up(*ex);
     if ((i = parse_synthaxe(*ex)) != 0)
     {
         free(s);

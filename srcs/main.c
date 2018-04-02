@@ -1,5 +1,55 @@
 #include "../twenty.h"
 
+/*
+        A fix:
+        - Lancez la commande "$> cd /tmp; sort << EOF | cat -e > sorted_poem ; sed -e 's/Roses/Turnips/' < sorted_poem > better_poem; cd -; echo "I prefer turnips anyway" >> /tmp/better_poem; cat /tmp/better_poem"
+        et entrez le poème suivant à l'invite du heredoc (sans les triple guillemets) :
+        """
+        Roses are red
+        Violets are blue
+        All my base are belong to you
+        I love you
+        """
+        La sortie doit être (toujours sans les triples guillemets) :
+        """
+        All my bases are belong to you$
+        I love you$
+        Turnips are red$
+        Violets are blue$
+        I prefer turnips anyway
+        """
+        - Lancez la commande "$> cat -e << EOF", puis entrez le texte
+        suivant sans les triples guillemets mais en respectant les
+        sauts de lignes :
+        """
+        Roses are red
+        Violets are blue
+        All my base are belong to you
+        And so are you
+        """
+        Appuyez ensuite sur ctrl+d pour terminer votre entrée.
+        La sortie de la commande doit être exactement :
+        Roses are red
+        Violets are blue
+        All my base are belong to you
+        And so are you
+
+        - Lancez la commande "$> cat -e << EOF >> /tmp/test.txt" puis
+        entrez à nouveau le poème du test précédent. Vérifiez que le
+        fichier /tmp/test.txt contient bien 6 lignes :
+        Testing redirections,
+        with multiple lines
+        Roses are red
+        Violets are blue
+        All my base are belong to you
+        And so are you
+        - Lancez la commande "$> cat", tapez quelques caractères puis
+        appuyez sur ctrl+D deux fois. Le premier appui doit afficher
+        les caractères tapés, le second doit rendre le prompt.
+
+*/
+
+
 int         main(void)
 {
     t_env   *env = NULL;

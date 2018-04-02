@@ -76,9 +76,11 @@ int		white_space(char *s)
 	int		i;
 
 	i = -1;
-	if (s[i + 1] != ' ' && s[i + 1] != '\t' && s[i + 1] != '\n')
+	// if (s[i + 1] != ' ' && s[i + 1] != '\t' && s[i + 1] != '\n')
+	if (s[i + 1] != ' ' && s[i + 1] != '\t')
 		return(0);
-	while (s[++i] && (s[i] == ' ' || s[i] == '\t' || s[i] == '\n'))
+	// while (s[++i] && (s[i] == ' ' || s[i] == '\t' || s[i] == '\n'))
+	while (s[++i] && (s[i] == ' ' || s[i] == '\t'))
 		;
 	return (i);
 }

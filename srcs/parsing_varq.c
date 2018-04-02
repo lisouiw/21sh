@@ -55,11 +55,32 @@ t_varq  *add_varq_loop(char *s, t_varq *v, t_env *env)
     return (v);
 }
 
+
+char    *replace_nwl_spc(char *s)
+{
+    int     i;
+    int     q;
+
+    q = 0;
+    i = -1;
+    while (s[++i])
+    {
+        if (s[i] == 39 && q != 2)
+            q = (q == 1) ? 0 : 1;
+        else if (s[i] == 34 && q != 1)
+            q = (q == 2) ? 0 : 2;
+        else if (s[i] == '\n' && q == 0)
+            s[i] = ' ';
+    }
+    return (s);
+}
+
 char    *quote_variable(char *s, t_varq *v, t_env *env)
 {
     char    *nw;
 
     nw = NULL;
+    s = replace_nwl_spc(s);
     v = add_varq_loop(s, NULL, env); //add les modif
     if (v != NULL)
         nw = change_w_varq(s, v); //coller les modif

@@ -9,7 +9,7 @@ t_env   *treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
         *cmd = (*cmd)->next;
     if ((*fz)->nb[0] % g_nb->tb[0] != 1) //eviter de fausser les calcul
         ft_putchar('\n');
-    if ((*fz)->mode[3] != 6 && (*cmd)->c[0] == '\0' || (if_only_i(ed_str(*cmd, NULL, (*fz)->nb[0] - giv_last(*fz)),' ') && (*fz)->cmd == NULL)) //&& (*fz)->mode[3] != 0)  // quand il n'y a rien
+    if ((*fz)->mode[3] != 6 && ((*cmd)->c[0] == '\0' || (if_only_i(ed_str(*cmd, NULL, (*fz)->nb[0] - giv_last(*fz)),' '))) && (*fz)->cmd == NULL) //&& (*fz)->mode[3] != 0)  // quand il n'y a rien
         return(env);
     else if (parsing(*cmd, *fz, &ex, env) == 1) // parsing. OK go loop
     {
