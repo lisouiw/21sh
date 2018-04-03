@@ -74,8 +74,10 @@ t_env   *pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
         {
             if (pp == 0)
             {
-                    waitpid(-1, &status, 0);
-                    s->ok = WEXITSTATUS(status) == 0 ? 1 : 0;
+                waitpid(-1, &status, 0);
+                s->ok = WEXITSTATUS(status) == 0 ? 1 : 0;
+                wait(NULL);
+                    
             }
             // if (pp == 0) //derniere commande./
             //     wait(NULL);
