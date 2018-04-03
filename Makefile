@@ -13,7 +13,7 @@ parsing_type.c parsing_type_fct.c parsing_tools.c free.c \
 exec_tools.c pipe.c redirecting.c redirecting_checking.c \
 parsing_varq.c parsing_varq_fct.c parsing_varq_tools.c \
 parsing_varq_rpl.c signal.c cd.c heredoc.c print.c aggregation.c \
-error.c env2.c
+error.c env2.c treatmt_here.c 
 
 SRC_N = $(addprefix $(SRCDIR)/, $(SRCS))
 

@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:27:15 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 14:11:12 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 15:58:51 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,39 @@ void	sig_int3(int sig)
 
 void	sig_int2(int sig)
 {
+	int		fd;
+	
+	fd = 0;
 	sig = 0;
 	while (ed->rpz[0] == 0)
 		ed = ed->next;
 	if (ed->rpz[0] == 1 && ed->rpz[1] != 1)
 		return ;
-	// fz->mode[3] = 0;
-	// add_his(&hs, NULL, fz);
-	// write(1, "\n", 1);
-	// init_for_new(&hs, &fz, &ed);
+	while (fz->here->prev != NULL)
+		fz->here = fz->here->prev;
+		
+	if (fz->here->next == NULL)
+		exit(0);
+		
+	while (fz->here->prev != NULL)
+		fz->here = fz->here->prev;
+	while (fz->here->ok[0] == 1)
+		fz->here = fz->here->next;
+	fz->here->ok[0] = 1;
+	fd = open("/tmp/in", O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (fz->here->doc && fz->here->doc != NULL)
+		ft_putendl_fd(fz->here->doc, fd);
+	close(fd);
+	while (fz->here->prev != NULL)
+		fz->here = fz->here->prev;
+	if (check_struct(fz) == 0)
+	{
+		cursor_end(ed);
+		env = treat_cmd_here(env, &ed, &hs, &fz);
+		fz->mode[3] = check_struct(fz);
+		init_for_new(&hs, &fz, &ed);
+		init_data(&fz);
+	}
 }
 
 void	sig_child(int sig)

@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 12:55:03 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 14:01:42 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 14:25:27 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 int		main(void)
 {
-	t_env	*env;
-
+	// t_env	*env;
 	env = NULL;
 	g_nb = init_shell(&fz, &env, &ed, &hs);
 	while (42)

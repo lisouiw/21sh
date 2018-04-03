@@ -20,6 +20,8 @@ void	sig_child(int sig);
 #include <sys/wait.h>
 
 ///GLOBALE
+
+struct  s_env       *env;
 struct  s_his       *hs;
 struct  termios		term;
 struct  s_froz       *fz;
@@ -133,6 +135,17 @@ typedef struct      s_varq
     char            *cmd;
     struct  s_varq  *next;
 }                   t_varq;
+
+
+
+
+
+
+
+int		parsing_here(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env);
+t_env	*treat_cmd_here(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz);
+
+
 
 //aggreagation
 void    aggregation_out(char **t, t_cmd *ex);
@@ -271,9 +284,12 @@ char    *translate_dquote(char *s, t_env *env);
 void    free_varq(t_varq *v);
 
 // parsing
+
+int     check_struct(t_froz *fz);
 t_cmd   *sub_into_ex(char *s, int i, int in, t_cmd *ex);
 t_cmd   *separate_cmd(char *s, int i, int in ,t_cmd *ex);
 // int     parsing_op(char *s, t_cmd **ex, t_env *env);
+void	join_ex(t_cmd **ex);
 int     parsing_quote(char *s);
 int     parsing(t_edit *ed, t_froz *fz, t_cmd **ex, t_env *env);
 void    join_redirecting(t_cmd **ex);
