@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 11:47:44 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 11:52:16 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 17:59:11 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,8 @@ void	free_ed(t_edit **ed, t_froz *fz)
 	(*ed)->next = *ed;
 }
 
-void	modif_edit(t_edit **ed, t_edit **nw)
+void	modif_ed_nw(t_edit **ed, t_edit **nw)
 {
-	t_edit *tmp;
-
-	tmp = *ed;
 	(*nw)->rpz[0] = 0;
 	if ((*ed)->rpz[0] == 1)
 	{
@@ -48,18 +45,28 @@ void	modif_edit(t_edit **ed, t_edit **nw)
 	(*nw)->rpz[4] = 0;
 	(*ed)->rpz[3] = (*nw)->rpz[3] + 1;
 	(*ed)->rpz[2] = (*ed)->rpz[2] + 1;
+}
+
+void	modif_edit(t_edit **ed, t_edit **nw)
+{
+	t_edit *tmp;
+
+	tmp = *ed;
+	modif_ed_nw(ed, nw);
 	if (tmp->rpz[1] == 0 && tmp->rpz[3] >= tmp->next->rpz[3])
 	{
 		while (tmp->rpz[1] == 0)
 		{
 			tmp = tmp->next;
 			if (tmp->prev->c[0] == '\n' && tmp->prev->rpz[3] % g_nb->tb[0] != 0)
-				tmp->rpz[3] = (((tmp->prev->rpz[3] / g_nb->tb[0]) + 1) * g_nb->tb[0]) + 1;
+				tmp->rpz[3] = (((tmp->prev->rpz[3] / g_nb->tb[0]) + 1)
+					* g_nb->tb[0]) + 1;
 			else
 				tmp->rpz[3] = tmp->prev->rpz[3] + 1;
 		}
 		if (tmp->prev->c[0] == '\n' && tmp->prev->rpz[3] % g_nb->tb[0] != 0)
-			tmp->rpz[3] = (((tmp->prev->rpz[3] / g_nb->tb[0]) + 1) * g_nb->tb[0]) + 1;
+			tmp->rpz[3] = (((tmp->prev->rpz[3] / g_nb->tb[0]) + 1)
+				* g_nb->tb[0]) + 1;
 	}
 }
 

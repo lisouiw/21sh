@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 12:58:19 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 14:05:25 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 22:21:44 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,23 @@
 
 t_cmd	*parse_redirec(t_cmd *ex, char *s)
 {
-	char	*tmp1;
 	char	*tmp2;
 	t_cmd	*tmp;
 
-	if (ex->prev->cmd != NULL && ex->prev != NULL && isnumber(ex->prev->cmd) && s[ex->start - 1] != ' ')
+	if (ex->prev->cmd != NULL && ex->prev != NULL && isnumber(ex->prev->cmd)
+		&& s[ex->start - 1] != ' ')
 	{
 		tmp = ex->prev;
-		tmp1 = ft_strjoin(" ", ex->cmd);
-		tmp2 = ft_strjoin(ex->prev->cmd, tmp1);
-		free(ex->cmd);
+		tmp2 = strjoin_free_n(ex->prev->cmd,
+			strjoin_free_n(" ", ex->cmd, 2), 3);
 		ex->cmd = tmp2;
 		ex->prev->prev->next = ex;
 		ex->prev = ex->prev->prev;
-		free(tmp1);
-		free(tmp->cmd);
 		free(tmp);
 	}
 	if (ex->next != NULL && ex->next->type != 42 && ex->next->type == 0)
 	{
-		tmp1 = ft_strjoin(" ", ex->next->cmd);
-		tmp2 = ft_strjoin(ex->cmd, tmp1);
-		free(tmp1);
-		free(ex->cmd);
+		tmp2 = strjoin_free_n(ex->cmd, ft_strjoin(" ", ex->next->cmd), 3);
 		ex->cmd = tmp2;
 	}
 	return (ex);

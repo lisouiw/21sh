@@ -6,11 +6,20 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 12:46:25 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 15:33:47 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 18:53:19 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../twenty.h"
+
+void	malloc_here(t_froz *fz)
+{
+	fz->here->next = (t_here*)malloc(sizeof(t_here));
+	fz->here->next->prev = fz->here;
+	fz->here = fz->here->next;
+	fz->here->delim = NULL;
+	fz->here->next = NULL;
+}
 
 void	add_here_struct(t_froz *fz, char *s)
 {
@@ -23,22 +32,14 @@ void	add_here_struct(t_froz *fz, char *s)
 		fz->here->doc = NULL;
 		fz->here->ok[0] = 0;
 		fz->here->prev = NULL;
-		fz->here->next = (t_here*)malloc(sizeof(t_here));
-		fz->here->next->prev = fz->here;
-		fz->here = fz->here->next;
-		fz->here->delim = NULL;
-		fz->here->next = NULL;
+		malloc_here(fz);
 	}
 	else if (fz->here->delim == NULL)
 	{
 		fz->here->delim = ft_strdup(t[1]);
 		fz->here->doc = NULL;
 		fz->here->ok[0] = 0;
-		fz->here->next = (t_here*)malloc(sizeof(t_here));
-		fz->here->next->prev = fz->here;
-		fz->here = fz->here->next;
-		fz->here->delim = NULL;
-		fz->here->next = NULL;
+		malloc_here(fz);
 	}
 	else
 		fz->here = fz->here->next;
@@ -91,7 +92,8 @@ void	add_doc_s(t_froz *fz, char *s)
 	else if (fz->here->doc == NULL)
 		fz->here->doc = s;
 	else
-		fz->here->doc = strjoin_free(s, strjoin_free("\n", fz->here->doc, 2), 3);
+		fz->here->doc = strjoin_free(s,
+			strjoin_free("\n", fz->here->doc, 2), 3);
 }
 
 int		add_doc(t_froz *fz, char *s)

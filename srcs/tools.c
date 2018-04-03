@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:31:51 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 13:33:09 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 18:48:27 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,24 @@ char	*strjoin_free(char *nw, char *sub, int i)
 	else if (nw && sub)
 	{
 		tmp = ft_strjoin(sub, nw);
+		if (i == 1 || i == 3)
+			free(nw);
+		if (i == 2 || i == 3)
+			free(sub);
+		return (tmp);
+	}
+	return (sub);
+}
+
+char	*strjoin_free_n(char *nw, char *sub, int i)
+{
+	char	*tmp;
+
+	if (nw && sub == NULL)
+		sub = nw;
+	else if (nw && sub)
+	{
+		tmp = ft_strjoin(nw, sub);
 		if (i == 1 || i == 3)
 			free(nw);
 		if (i == 2 || i == 3)

@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:15:05 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 13:16:45 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 22:58:14 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,17 @@ void	free_cut(t_edit **ed, t_froz *fz)
 		while ((*ed)->rpz[1] == 0)
 		{
 			(*ed) = (*ed)->next;
-			if ((*ed)->prev->c[0] == '\n' && tmp->prev->rpz[3] % g_nb->tb[0] != 0)
-				(*ed)->rpz[3] = ((((*ed)->prev->rpz[3] / g_nb->tb[0]) + 1) * g_nb->tb[0]) + 1;
+			if ((*ed)->prev->c[0] == '\n' && tmp->prev->rpz[3] %
+				g_nb->tb[0] != 0)
+				(*ed)->rpz[3] = ((((*ed)->prev->rpz[3] / g_nb->tb[0]) + 1)
+					* g_nb->tb[0]) + 1;
 			else
 				(*ed)->rpz[3] = (*ed)->prev->rpz[3] + 1;
 		}
-		if ((*ed)->prev->c[0] == '\n' && (*ed)->prev->rpz[3] % g_nb->tb[0] != 0)
-			(*ed)->rpz[3] = ((((*ed)->prev->rpz[3] / g_nb->tb[0]) + 1) * g_nb->tb[0]) + 1;
+		if ((*ed)->prev->c[0] == '\n' && (*ed)->prev->rpz[3] %
+			g_nb->tb[0] != 0)
+			(*ed)->rpz[3] = ((((*ed)->prev->rpz[3] / g_nb->tb[0]) + 1)
+				* g_nb->tb[0]) + 1;
 	}
 }
 

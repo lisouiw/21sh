@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:27:15 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 15:58:51 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 23:02:28 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ void	sig_int3(int sig)
 	add_his(&hs, NULL, fz);
 	write(1, "\n", 1);
 	init_for_new(&hs, &fz, &ed);
- }
+}
 
 void	sig_int2(int sig)
 {
 	int		fd;
-	
+
 	fd = 0;
 	sig = 0;
 	while (ed->rpz[0] == 0)
@@ -54,10 +54,8 @@ void	sig_int2(int sig)
 		return ;
 	while (fz->here->prev != NULL)
 		fz->here = fz->here->prev;
-		
 	if (fz->here->next == NULL)
 		exit(0);
-		
 	while (fz->here->prev != NULL)
 		fz->here = fz->here->prev;
 	while (fz->here->ok[0] == 1)

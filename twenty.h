@@ -24,7 +24,7 @@ void	sig_child(int sig);
 struct  s_env       *env;
 struct  s_his       *hs;
 struct  termios		term;
-struct  s_froz       *fz;
+struct  s_froz      *fz;
 struct  s_edit      *ed;
 
 typedef struct		s_num
@@ -159,13 +159,15 @@ void	cd_simple(t_env **env, char *cd, char *buf, char *real);
 void	b_cd(char *cd, t_env **env);
 
 //  ctrl 
-void    ctrl_touch(t_edit **ed, t_froz **fz, char c, t_his *hs);
-void    ctrl_de_test(t_edit *ed, t_froz *fz, char c, t_his *hs);
-t_edit  *move_word(t_edit *ed, char c);
+void	ctrl_touch(t_edit **ed, t_froz **fz, char c);
+
 t_edit  *up_down(t_edit *ed, char c);
 // t_edit  *home_end(t_edit *ed, char c, t_froz *fz);
 t_edit  *home_end(t_edit *ed,t_froz *fz);
 
+
+t_edit	*move_word_right(t_edit *ed);
+t_edit	*move_word_left(t_edit *ed);
 
 //ed
 void    modif_edit(t_edit **ed, t_edit **nw);
@@ -217,6 +219,7 @@ void    free_for_exit(void);
 char    *join_cmd_nw(char *cmd, t_edit *ed, t_froz *fz);
 char    *ed_str(t_edit *cmd, char *s, int nb);
 char    *join_cmd(char *cmd, t_edit *ed, t_froz *fz);
+char	*strjoin_free_n(char *nw, char *sub, int i);
 
 //heredoc
 int    add_delim(t_froz *fz, t_cmd *ex);

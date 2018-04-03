@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:09:16 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 15:16:13 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 22:55:06 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ t_cmd	*sub_into_ex(char *s, int i, int in, t_cmd *ex)
 	tmp = NULL;
 	if (i == in)
 		return (ex);
-	if (ex->cmd == NULL && ex->prev && ex->next && ex->prev->type == 42 && ex->next->type == 42)
+	if (ex->cmd == NULL && ex->prev && ex->next && ex->prev->type == 42
+		&& ex->next->type == 42)
 	{
 		tmp = ft_strsub(s, in, i - in);
 		in = in + white_space(tmp);
@@ -55,16 +56,19 @@ t_cmd	*separate_cmd(char *s, int i, int in, t_cmd *ex)
 	int		q;
 
 	q = 0;
-	if (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>' && s[i] != '<') && s[i])
+	if (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>'
+		&& s[i] != '<') && s[i])
 	{
-		while (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>' && s[i] != '<') && s[i])
+		while (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>'
+			&& s[i] != '<') && s[i])
 			++i;
 		ex = sub_into_ex(s, i, in, ex);
 		in = i;
 	}
 	while (s[i])
 	{
-		while ((s[i] && (s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != ' ' && s[i] != '>' && s[i] != '<')) || (s[i] && q != 0))
+		while ((s[i] && (s[i] != '&' && s[i] != '|' && s[i] != ';' &&
+			s[i] != ' ' && s[i] != '>' && s[i] != '<')) || (s[i] && q != 0))
 		{
 			if (s[i] == 39 && q != 2)
 				q = (q == 0) ? 1 : 0;
@@ -77,7 +81,8 @@ t_cmd	*separate_cmd(char *s, int i, int in, t_cmd *ex)
 		while (s[i] == ' ')
 			++i;
 		in = i;
-		while (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>' && s[i] != '<') && s[i])
+		while (!(s[i] != '&' && s[i] != '|' && s[i] != ';' && s[i] != '>'
+			&& s[i] != '<') && s[i])
 			++i;
 		ex = sub_into_ex(s, i, in, ex);
 		in = i;

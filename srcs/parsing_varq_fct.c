@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:02:57 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 13:03:44 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 22:30:37 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,14 @@ t_varq	*varq_env(char *s, int *i, t_varq *v, t_env *env)
 	else
 	{
 		y = *i + 1;
-		while (s[++(*i)] && s[*i] != ' ' && s[*i] != '$' && s[*i] != 34 && s[*i] != 39)
+		while (s[++(*i)] && s[*i] != ' ' && s[*i] != '$' && s[*i] != 34
+			&& s[*i] != 39)
 			;
 		if (y - *i == 0)
 			v = add_struct_varq(ft_strsub(s, y - 1, 1), v);
 		else
-			v = add_struct_varq(search_var_env(ft_strsub(s, y, *i - y), env), v);
+			v = add_struct_varq(search_var_env(ft_strsub(s, y, *i - y),
+				env), v);
 	}
 	return (v);
 }

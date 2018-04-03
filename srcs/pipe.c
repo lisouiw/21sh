@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:17:26 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 13:19:34 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 22:55:56 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,24 @@
 
 void	end_pipe(t_cmd **ex, t_exec **s, int pp)
 {
+	signal(SIGCHLD, SIG_DFL);
 	if (ex && pp)
 		;
-	signal(SIGCHLD, SIG_DFL);
+	if (pp)
+		wait(0);
 	close((*s)->p[1]);
 	dup2(1, (*s)->out);
 	dup2(0, (*s)->in);
-	while ((*ex)->type != 3 && (*ex)->type != 4 && (*ex)->type != 5 && (*ex)->type != 13 && (*ex)->type != 42)
+	while ((*ex)->type != 3 && (*ex)->type != 4 && (*ex)->type != 5
+		&& (*ex)->type != 13 && (*ex)->type != 42)
 		*ex = (*ex)->next;
 	(*s)->in = (*s)->p[0];
 }
 
 int		pipe_on(t_cmd *ex)
 {
-	while (ex->type != 3 && ex->type != 4 && ex->type != 5 && ex->type != 13 && ex->type != 42)
+	while (ex->type != 3 && ex->type != 4 && ex->type != 5 && ex->type != 13
+		&& ex->type != 42)
 		ex = ex->next;
 	if (ex->type == 3 && ex->next->type == 0)
 	{
@@ -86,8 +90,6 @@ t_env	*pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
 			}
 			end_pipe(&(*ex), &s, pp);
 		}
-		if (++i > 10)
-			exit(0);
 	}
 	return (env);
 }

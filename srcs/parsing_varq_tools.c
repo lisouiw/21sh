@@ -6,24 +6,11 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:04:42 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 13:06:28 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 22:22:08 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../twenty.h"
-
-void	print_varq(t_varq *tmp)
-{
-	if (tmp)
-	{
-		while (tmp->next != NULL)
-		{
-			printf("{%s}\n", tmp->cmd);
-			tmp = tmp->next;
-		}
-		printf("{%s}\n", tmp->cmd);
-	}
-}
 
 char	*search_var_env(char *sub, t_env *env)
 {

@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:36:32 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 14:28:22 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 23:00:29 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ t_env	*treat_cmd(t_env *env, t_edit **cmd, t_his **hs, t_froz **fz)
 		*cmd = (*cmd)->next;
 	if ((*fz)->nb[0] % g_nb->tb[0] != 1)
 		ft_putchar('\n');
-	if ((*fz)->mode[3] != 6 && ((*cmd)->c[0] == '\0' || (if_only_i(ed_str(*cmd, NULL, (*fz)->nb[0] - giv_last(*fz)), ' '))) && (*fz)->cmd == NULL)
+	if ((*fz)->mode[3] != 6 && ((*cmd)->c[0] == '\0' || (if_only_i(ed_str(*cmd,
+		NULL, (*fz)->nb[0] - giv_last(*fz)), ' '))) && (*fz)->cmd == NULL)
 		return (env);
 	else if (parsing(*cmd, *fz, &ex, env) == 1)
 	{
@@ -47,7 +48,8 @@ void	add_his(t_his **hs, t_his *nw, t_froz *fz)
 	nw->cmd = ft_strdup(fz->cmd);
 	while ((*hs)->prev != NULL)
 		*hs = (*hs)->prev;
-	if (if_only(nw->cmd, ' ') || ((*hs)->next->cmd && ft_strcmp(nw->cmd, (*hs)->next->cmd) == 0))
+	if (if_only(nw->cmd, ' ') || ((*hs)->next->cmd && ft_strcmp(nw->cmd,
+		(*hs)->next->cmd) == 0))
 	{
 		free(nw->cmd);
 		free(nw);
@@ -76,10 +78,10 @@ void	move_on(t_cmd **ex, int i)
 {
 	*ex = (*ex)->next;
 	if (i == 4)
-		while ((*ex)->type != 3 && (*ex)->type != 5 && (*ex)->type != 13 && (*ex)->type != 42)
+		while ((*ex)->type != 5 && (*ex)->type != 13 && (*ex)->type != 42)
 			*ex = (*ex)->next;
 	else if (i == 5)
-		while ((*ex)->type != 3 && (*ex)->type != 4 && (*ex)->type != 13 && (*ex)->type != 42)
+		while ((*ex)->type != 4 && (*ex)->type != 13 && (*ex)->type != 42)
 			*ex = (*ex)->next;
 }
 
@@ -97,7 +99,8 @@ t_env	*launchcmd(t_cmd *ex, t_env *env)
 			move_on(&ex, 4);
 		else if (ex->type == 5 && s.ok == 1)
 			move_on(&ex, 5);
-		else if (ex->type == 0 && !(ex->next->type >= 6 && ex->next->type <= 11))
+		else if (ex->type == 0 && !(ex->next->type >= 6 &&
+			ex->next->type <= 11))
 		{
 			arr = ft_strsplit(ex->cmd, ' ');
 			env = exec_fct(arr, env, &s);

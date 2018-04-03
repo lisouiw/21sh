@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:22:04 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 13:24:56 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 23:01:20 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,11 @@ void	redirection_file_create(t_cmd *ex)
 
 	arr = ft_strsplit((ex)->cmd, ' ');
 	if ((ex)->type == 8)
-		nw = (arr[2] == NULL) ? open(arr[1], O_CREAT | O_RDWR | O_TRUNC, 0644) : open(arr[2], O_CREAT | O_RDWR | O_TRUNC, 0644);
+		nw = (arr[2] == NULL) ? open(arr[1], O_CREAT | O_RDWR | O_TRUNC, 0644)
+			: open(arr[2], O_CREAT | O_RDWR | O_TRUNC, 0644);
 	else
-		nw = (arr[2] == NULL) ? open(arr[1], O_CREAT | O_RDWR | O_APPEND, 0644) : open(arr[2], O_CREAT | O_RDWR | O_APPEND, 0644);
+		nw = (arr[2] == NULL) ? open(arr[1], O_CREAT | O_RDWR | O_APPEND, 0644)
+			: open(arr[2], O_CREAT | O_RDWR | O_APPEND, 0644);
 	dup2(nw, (arr[2] == NULL ? 1 : ft_atoi(arr[0])));
 	free_tab(arr);
 	close(nw);

@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:33:45 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 13:35:28 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 22:57:08 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_edit	*touch(t_edit **ed, t_froz **fz, t_his **hs)
 	if ((*fz)->buf[1] == 0 && (*fz)->buf[2] == 0)
 	{
 		if ((*fz)->buf[0] > 0 && (*fz)->buf[0] < 27)
-			ctrl_touch(&(*ed), &(*fz), (*fz)->buf[0], *hs);
+			ctrl_touch(&(*ed), &(*fz), (*fz)->buf[0]);
 		else if ((*fz)->buf[0] == 127)
 		{
 			while ((*ed)->rpz[2] == 0)
@@ -26,7 +26,8 @@ t_edit	*touch(t_edit **ed, t_froz **fz, t_his **hs)
 			{
 				*ed = erase_ed(*ed);
 				(*fz)->nb[0] = (*fz)->nb[0] - 1;
-				if ((*ed)->rpz[0] == 1 && (*ed)->rpz[1] == 1 && (*ed)->rpz[2] == 3)
+				if ((*ed)->rpz[0] == 1 && (*ed)->rpz[1] == 1 &&
+					(*ed)->rpz[2] == 3)
 					(*fz)->mode[2] = 1;
 			}
 		}
@@ -43,11 +44,14 @@ t_edit	*extern_touch(t_edit *ed, t_froz **fz, t_his **hs)
 {
 	while (ed->rpz[2] == 0)
 		ed = ed->next;
-	if ((*fz)->buf[0] == 27 && (*fz)->buf[1] == 91 && ((*fz)->buf[2] == 72 || (*fz)->buf[2] == 70))
+	if ((*fz)->buf[0] == 27 && (*fz)->buf[1] == 91 && ((*fz)->buf[2] == 72
+		|| (*fz)->buf[2] == 70))
 		ed = home_end(ed, *fz);
-	else if ((*fz)->buf[0] == 27 && (*fz)->buf[1] == 91 && ((*fz)->buf[2] == 68 || (*fz)->buf[2] == 67))
+	else if ((*fz)->buf[0] == 27 && (*fz)->buf[1] == 91 && ((*fz)->buf[2] == 68
+		|| (*fz)->buf[2] == 67))
 		ed = left_right(ed, *fz);
-	else if (*hs && (*fz)->mode[2] > 0 && (*fz)->buf[0] == 27 && (*fz)->buf[1] == 91 && ((*fz)->buf[2] == 65 || (*fz)->buf[2] == 66))
+	else if (*hs && (*fz)->mode[2] > 0 && (*fz)->buf[0] == 27 &&
+		(*fz)->buf[1] == 91 && ((*fz)->buf[2] == 65 || (*fz)->buf[2] == 66))
 		*hs = histo(*hs, (*fz)->buf[2], &ed, &(*fz));
 	return (ed);
 }

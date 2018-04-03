@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 12:44:12 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 12:46:05 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 18:43:32 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ char	*join_cmd_nw(char *cmd, t_edit *ed, t_froz *fz)
 			tmp = ft_strjoin(cmd, "\0");
 		else
 		{
-			nw = ft_strjoin_free("\n", ed_str(ed, NULL, fz->nb[0] - giv_last(fz)), 2);
+			nw = ft_strjoin_free("\n",
+				ed_str(ed, NULL, fz->nb[0] - giv_last(fz)), 2);
 			tmp = ft_strjoin_free(cmd, nw, 2);
 		}
 		free(cmd);
