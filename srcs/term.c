@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   term.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/03 13:30:19 by ltran             #+#    #+#             */
+/*   Updated: 2018/04/03 13:31:20 by ltran            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../twenty.h"
 
-int		init(void)		//EXECUTION
+int		init(void)
 {
 	char				*name_term;
 	struct termios		term;
@@ -14,17 +26,14 @@ int		init(void)		//EXECUTION
 	term.c_lflag |= (ECHO);
 	term.c_lflag |= (ICANON);
 	term.c_lflag &= ~(ECHOCTL);
-	// term.c_cc[VEOF] = 3;
-	// term.c_cc[VINTR] = 4;
 	term.c_cc[VEOF] = 4;
 	term.c_cc[VINTR] = 3;
-
 	if (tcsetattr(0, TCSANOW, &term) == -1)
 		return (-1);
 	return (1);
 }
 
-int		set_up_term(void) ///TERMINAL
+int		set_up_term(void)
 {
 	char	*name_term;
 
@@ -37,7 +46,6 @@ int		set_up_term(void) ///TERMINAL
 	term.c_lflag &= ~(ECHO);
 	term.c_lflag &= ~(ECHOCTL);
 	term.c_lflag &= ~(ICANON);
-	// term.c_lflag |= (ISIG);
 	term.c_cc[VEOF] = 3;
 	term.c_cc[VINTR] = 4;
 	term.c_cc[VSTART] = 17;
@@ -48,7 +56,7 @@ int		set_up_term(void) ///TERMINAL
 	return (1);
 }
 
-int		set_up_term_prompt(void) ///TERMINAL_PROMPT_SPECIAL
+int		set_up_term_prompt(void)
 {
 	char	*name_term;
 
@@ -60,8 +68,6 @@ int		set_up_term_prompt(void) ///TERMINAL_PROMPT_SPECIAL
 		return (-1);
 	term.c_lflag &= ~(ECHO);
 	term.c_lflag &= ~(ICANON);
-	// term.c_cc[VEOF] = 3;
-	// term.c_cc[VINTR] = 4;
 	term.c_cc[VEOF] = 4;
 	term.c_cc[VINTR] = 3;
 	if (tcsetattr(0, TCSANOW, &term) == -1)

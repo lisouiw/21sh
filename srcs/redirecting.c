@@ -1,12 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirecting.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/03 13:25:25 by ltran             #+#    #+#             */
+/*   Updated: 2018/04/03 13:26:14 by ltran            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../twenty.h"
 
-void    redirection(t_cmd **ex, t_env **env, t_exec *s) //redirection for pipe
+void	redirection(t_cmd **ex, t_env **env, t_exec *s)
 {
-	char    **arr;
-	// int			status;
-	
-	if (s)
-		;
+	char	**arr;
+
 	arr = ft_strsplit((*ex)->cmd, ' ');
 	*ex = (*ex)->next;
 	if (redirection_check_create(*ex))
@@ -18,11 +27,11 @@ void    redirection(t_cmd **ex, t_env **env, t_exec *s) //redirection for pipe
 		*ex = (*ex)->next;
 }
 
-void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
+void	redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
 {
-	char    **arr;
-	int			status;
-	pid_t   pid;
+	char	**arr;
+	int		status;
+	pid_t	pid;
 
 	s->in = dup(0);
 	s->out = dup(1);
@@ -42,7 +51,6 @@ void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
 		waitpid(-1, &status, 0);
 		s->ok = WEXITSTATUS(status) == 0 ? 1 : 0;
 	}
-	
 	dup2(1, s->out);
 	dup2(0, s->in);
 	free_tab(arr);
@@ -50,9 +58,7 @@ void    redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
 		*ex = (*ex)->next;
 }
 
-// problem stockage here
-
-char    **give_seven(t_cmd *ex)
+char	**give_seven(t_cmd *ex)
 {
 	while (ex->next->type >= 6 &&  ex->next->type <= 11)
 		ex = ex->next;
@@ -70,11 +76,11 @@ char    **give_seven(t_cmd *ex)
 	return (ft_strsplit(ex->cmd, ' '));
 }
 
-void    redirecting_exec(t_cmd **ex, t_env **env, char **arr, t_exec *s)
+void	redirecting_exec(t_cmd **ex, t_env **env, char **arr, t_exec *s)
 {
 	int         nw;
 	char        **tmp;
-	
+
 	if ((tmp = give_seven(*ex)) != NULL)
 	{
 		nw = (tmp[2] == NULL) ? open(tmp[1], O_RDWR) : open(tmp[2], O_RDONLY);
@@ -84,6 +90,6 @@ void    redirecting_exec(t_cmd **ex, t_env **env, char **arr, t_exec *s)
 	if (arr != NULL)
 	{
 		wait(0);
-		*env = exec_fct_nf(arr, *env, ex, s); //EXECUTION
+		*env = exec_fct_nf(arr, *env, ex, s);
 	}
 }

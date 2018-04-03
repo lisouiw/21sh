@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env2.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/03 11:54:54 by ltran             #+#    #+#             */
+/*   Updated: 2018/04/03 11:58:03 by ltran            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../twenty.h"
 
-void		lst_add_tenv(t_env **alst, t_env *new)
+void	lst_add_tenv(t_env **alst, t_env *new)
 {
 	t_env	*lst;
 
@@ -17,7 +29,7 @@ void		lst_add_tenv(t_env **alst, t_env *new)
 	}
 }
 
-t_env *t_env_tmp(t_env *env)
+t_env	*t_env_tmp(t_env *env)
 {
 	t_env *tmp;
 	t_env *cpy_head;
@@ -29,16 +41,16 @@ t_env *t_env_tmp(t_env *env)
 	tmp = env;
 	while (tmp)
 	{
-			cpy_tmp = ft_memalloc(sizeof(t_env));
-			cpy_tmp->name = ft_strdup(tmp->name);
-			cpy_tmp->ctn = ft_strdup(tmp->ctn);
-			lst_add_tenv(&cpy_head, cpy_tmp);
-			tmp = tmp->next;
+		cpy_tmp = ft_memalloc(sizeof(t_env));
+		cpy_tmp->name = ft_strdup(tmp->name);
+		cpy_tmp->ctn = ft_strdup(tmp->ctn);
+		lst_add_tenv(&cpy_head, cpy_tmp);
+		tmp = tmp->next;
 	}
 	return (cpy_head);
 }
 
-int env_flags_check(char **cut)
+int		env_flags_check(char **cut)
 {
 	if (!cut[1])
 		return (0);
@@ -58,7 +70,7 @@ int env_flags_check(char **cut)
 		return (5);
 }
 
-void set_new_env(char **cut, t_env *env, t_exec *s)
+void	set_new_env(char **cut, t_env *env, t_exec *s)
 {
 	int i;
 
@@ -71,11 +83,11 @@ void set_new_env(char **cut, t_env *env, t_exec *s)
 		ecriture_info(env);
 }
 
-void builtin_env(char **cut, t_env *env, t_exec *s)
+void	builtin_env(char **cut, t_env *env, t_exec *s)
 {
-	int flags;
-	t_env *env_cpy;
-	t_env *env_empty;
+	int		flags;
+	t_env	*env_cpy;
+	t_env	*env_empty;
 
 	env_cpy = NULL;
 	env_empty = NULL;
@@ -87,7 +99,6 @@ void builtin_env(char **cut, t_env *env, t_exec *s)
 		set_new_env(cut + 2, env_empty, s);
 		free_list(&env_empty);
 	}
-
 	if (flags == 3 || flags == 4)
 	{
 		env_cpy = t_env_tmp(env);

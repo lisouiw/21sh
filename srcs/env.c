@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/03 11:53:54 by ltran             #+#    #+#             */
+/*   Updated: 2018/04/03 11:54:10 by ltran            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../twenty.h"
 
 void	free_elem(t_env *tmp)
@@ -6,7 +18,6 @@ void	free_elem(t_env *tmp)
 	ft_strdel(&tmp->ctn);
 	free(tmp);
 }
-
 
 void	b_setenv(char **cut, t_env *env)
 {
@@ -100,13 +111,9 @@ t_env	*add_env(char *environ, t_env *env, size_t one, size_t all)
 t_env	*give_env(t_env *env)
 {
 	int				i;
-	// struct ttysize	ts;
 	extern char		**environ;
 
 	i = -1;
-	// ioctl(1, TIOCGSIZE, &ts);
-	// g_nb->tb[0] = ts.ts_cols;
-	// g_nb->tb[1] = ts.ts_lines;
 	while (environ[++i])
 	{
 		env = add_env(environ[i], env, ft_strlen(ft_strchr(environ[i], '=')),

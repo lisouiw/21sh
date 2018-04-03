@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_shell.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/03 13:19:49 by ltran             #+#    #+#             */
+/*   Updated: 2018/04/03 13:20:41 by ltran            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../twenty.h"
 
 int		ft_put(int c)
 {
-		write(0, &c, 1);
-		return (1);
+	write(0, &c, 1);
+	return (1);
 }
 
 void	my_tputs(t_edit *ed, t_froz *fz)
@@ -18,9 +30,9 @@ void	my_tputs(t_edit *ed, t_froz *fz)
 	tputs(tgetstr("ue", NULL), 0, ft_put);
 }
 
-void    print_shell(t_edit *ed, t_froz *fz)
+void	print_shell(t_edit *ed, t_froz *fz)
 {
-    tputs(tgetstr("rc", NULL), 0, ft_put);
+	tputs(tgetstr("rc", NULL), 0, ft_put);
 	tputs(tgetstr("cd", NULL), 0, ft_put);
 	put_prompt(fz);
 	while (ed->rpz[0] == 0)
@@ -40,7 +52,7 @@ void	put_cursor(t_edit *ed)
 {
 	int		div;
 
-    while (ed->rpz[2] == 0)
+	while (ed->rpz[2] == 0)
 		ed = ed->next;
 	div = ed->rpz[3] / g_nb->tb[0];
 	if (ed->rpz[3] > g_nb->tb[0] && ed->rpz[3] % g_nb->tb[0] != 0)
@@ -49,8 +61,6 @@ void	put_cursor(t_edit *ed)
 		put_my_cur(div - 1, 'B');
 	if (ed->rpz[3] % g_nb->tb[0] != 1)
 		put_my_cur((ed->rpz[3] - 1) % g_nb->tb[0], 'C');
-	// else
-	// 	ft_putstr(ft_strjoin("\033[", ft_strjoin(ft_itoa(g_nb->tb[0]), "D")));// jai add ca
 }
 
 void	save_init(t_edit *ed)

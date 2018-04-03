@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_type_fct.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/03 12:58:19 by ltran             #+#    #+#             */
+/*   Updated: 2018/04/03 12:58:22 by ltran            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../twenty.h"
 
 t_cmd   *parse_redirec(t_cmd *ex, char *s)
@@ -6,9 +18,6 @@ t_cmd   *parse_redirec(t_cmd *ex, char *s)
     char    *tmp2;
     t_cmd   *tmp;
 
-    // printf("===========REDIRECTION==========\n");
-    // print_ex_up(ex);
-    
     if (ex->prev->cmd != NULL && ex->prev != NULL && isnumber(ex->prev->cmd) && s[ex->start -1] != ' ')
     {
         tmp = ex->prev;
@@ -30,7 +39,6 @@ t_cmd   *parse_redirec(t_cmd *ex, char *s)
         free(ex->cmd);
         ex->cmd = tmp2;
     }
-    // print_ex(ex);
     return (ex);
 }
 
@@ -93,9 +101,9 @@ t_cmd   *parse_less_than(t_cmd *ex, char *s)
 
 t_cmd   *parse_pipe_or(t_cmd *ex)
 {
-    if (ft_strcmp(ex->cmd, "|") == 0) // prompt
+    if (ft_strcmp(ex->cmd, "|") == 0)
         ex->type = 3;
-    else if (ft_strcmp(ex->cmd, "||") == 0) // prompt
+    else if (ft_strcmp(ex->cmd, "||") == 0)
         ex->type = 5;
     else
         ex->type = -1;

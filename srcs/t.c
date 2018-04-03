@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   t.c                                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/03 13:29:28 by ltran             #+#    #+#             */
+/*   Updated: 2018/04/03 13:29:51 by ltran            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../twenty.h"
 
 void	free_list(t_env **env)
 {
-	t_env		*tmp;
+	t_env	*tmp;
 
 	while (*env != NULL)
 	{
@@ -41,11 +53,3 @@ void	free_tab(char **array)
 	free(array);
 	array = NULL;
 }
-
-// int		free_for_exit(char *line, char **cut, t_env *env)
-// {
-// 	ft_strdel(&line);
-// 	free_tab(cut);
-// 	free_list(&env);
-// 	return (1);
-// }

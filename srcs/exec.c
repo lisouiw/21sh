@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/03 11:59:51 by ltran             #+#    #+#             */
+/*   Updated: 2018/04/03 12:01:48 by ltran            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../twenty.h"
 
@@ -6,27 +17,26 @@ t_env	*exec_fct_nf(char **cut, t_env *env, t_cmd **ex, t_exec *s)
 	if (ft_strcmp("echo", cut[0]) == 0)
 	{
 		print_tab(cut, 0);
-		exit(0);//tuer le process en inutilise
+		exit(0);
 	}
 	else if (ft_strcmp("env", cut[0]) == 0)
 		builtin_env(cut, env, s);
-		// ecriture_info(env);
 	else if (ft_strcmp("setenv", cut[0]) == 0)
 		b_setenv(cut, env);
 	else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
 		b_unset(cut, &env, 0);
 	else if (ft_strcmp("cd", cut[0]) == 0)
 		b_cd(cut[1], &env);
-	 if (ft_strcmp(cut[0], "exit") == 0) // && free_for_exit(line, cut, env))
-    {
+	if (ft_strcmp(cut[0], "exit") == 0)
+	{
 		free_tab(cut);
 		free_list(&env);
 		free_all_ex(ex);
 		free_for_exit();
-    }
+	}
 	else
 		b_other_nf(cut, env, s);
-    return (env);
+	return (env);
 }
 
 t_env	*exec_fct(char **cut, t_env *env, t_exec *s)
@@ -35,37 +45,34 @@ t_env	*exec_fct(char **cut, t_env *env, t_exec *s)
 		print_tab(cut, 0);
 	else if (ft_strcmp("env", cut[0]) == 0)
 		builtin_env(cut, env, s);
-	
-		// ecriture_info(env);
-		// builtin_env(cut, env);
 	else if (ft_strcmp("setenv", cut[0]) == 0)
 		b_setenv(cut, env);
 	else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
 		b_unset(cut, &env, 0);
 	else if (ft_strcmp("cd", cut[0]) == 0)
 		b_cd(cut[1], &env);
-	else if (ft_strcmp(cut[0], "exit") == 0) // && free_for_exit(line, cut, env))
+	else if (ft_strcmp(cut[0], "exit") == 0)
 	{
 		free_tab(cut);
 		free_list(&env);
 		free_for_exit();
 	}
-    else
+	else
 		b_other(cut, env, s);
-    return (env);
+	return (env);
 }
 
 void	b_other(char **cut, t_env *env, t_exec *s)
 {
 	char	**tab_env;
-    pid_t      pid;
-	int			status;
+	pid_t	pid;
+	int		status;
 
 	if ((tab_env = list_to_tab(env, NULL)))
 	{
 		if ((pid = fork()) == -1)
 			exit(EXIT_FAILURE);
-		else if (pid == 0  && wait(0) && execve(cut[0], cut, tab_env) == -1)
+		else if (pid == 0 && wait(0) && execve(cut[0], cut, tab_env) == -1)
 		{
 			if (wait(0) && give_path_nf(env, cut, -1, tab_env) == -1)
 			{
@@ -74,7 +81,7 @@ void	b_other(char **cut, t_env *env, t_exec *s)
 				exit(-1);
 			}
 		}
-		else 
+		else
 		{
 			waitpid(-1, &status, 0);
 			s->ok = WEXITSTATUS(status) == 0 ? 1 : 0;
@@ -86,7 +93,7 @@ void	b_other(char **cut, t_env *env, t_exec *s)
 void	b_other_nf(char **cut, t_env *env, t_exec *s)
 {
 	char	**tab_env;
-	
+
 	if (s)
 		;
 	if ((tab_env = list_to_tab(env, NULL)))
