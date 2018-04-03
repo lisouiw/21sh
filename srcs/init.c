@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 12:49:37 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 12:52:03 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 14:01:42 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ void	init_for_new(t_his **hs, t_froz **fz, t_edit **ed)
 	int		status;
 
 	wait(&status);
-	(*fz)->mode[3] == 0 ? set_up_term() : set_up_term_prompt();
+	set_up_term();
+	// (*fz)->mode[3] == 0 ? set_up_term() : set_up_term_prompt();
 	wait(0);
 	tputs(tgetstr("sc", NULL), 0, ft_put);
 	wait(0);

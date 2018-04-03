@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 12:55:03 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 12:56:09 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 14:01:42 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int		main(void)
 		}
 		else if (fz->buf[0] == 3)
 		{
+			fz->mode[3] = 0;
+			add_his(&hs, NULL, fz);
 			write(1, "\n", 1);
 			init_for_new(&hs, &fz, &ed);
 		}

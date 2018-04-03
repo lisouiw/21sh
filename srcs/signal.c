@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:27:15 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 13:28:51 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 14:01:39 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,26 @@ void	sig_int(int sig)
 
 void	sig_int3(int sig)
 {
-	ls_signal(0);
-	fz->mode[3] = 0;
 	sig = 0;
+	while (ed->rpz[0] == 0)
+		ed = ed->next;
+	if (ed->rpz[0] == 1 && ed->rpz[1] != 1)
+		return ;
+	fz->mode[3] = 0;
 	add_his(&hs, NULL, fz);
 	write(1, "\n", 1);
 	init_for_new(&hs, &fz, &ed);
-}
+ }
+
+// void	sig_int3(int sig)
+// {
+// 	ls_signal(0);
+// 	fz->mode[3] = 0;
+// 	sig = 0;
+// 	add_his(&hs, NULL, fz);
+// 	write(1, "\n", 1);
+// 	init_for_new(&hs, &fz, &ed);
+// }
 
 void	sig_child(int sig)
 {

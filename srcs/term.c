@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:30:19 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 13:31:20 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 14:01:40 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int		set_up_term(void)
 	term.c_lflag &= ~(ICANON);
 	term.c_cc[VEOF] = 3;
 	term.c_cc[VINTR] = 4;
-	term.c_cc[VSTART] = 17;
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;
 	if (tcsetattr(0, TCSANOW, &term) == -1)

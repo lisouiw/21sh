@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:25:25 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 13:26:14 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/03 14:03:19 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	redirection_fork(t_cmd **ex, t_env **env, t_exec *s)
 
 char	**give_seven(t_cmd *ex)
 {
-	while (ex->next->type >= 6 &&  ex->next->type <= 11)
+	while (ex->next->type >= 6 && ex->next->type <= 11)
 		ex = ex->next;
 	while (ex->type >= 8 && ex->type <= 11)
 		ex = ex->prev;
@@ -78,8 +78,8 @@ char	**give_seven(t_cmd *ex)
 
 void	redirecting_exec(t_cmd **ex, t_env **env, char **arr, t_exec *s)
 {
-	int         nw;
-	char        **tmp;
+	int		nw;
+	char	**tmp;
 
 	if ((tmp = give_seven(*ex)) != NULL)
 	{
