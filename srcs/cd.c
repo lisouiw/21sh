@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 18:16:28 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 11:35:29 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 15:11:22 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,15 @@ void	cd_name(t_env **env, char *cd, char *user, char *buf)
 	}
 	else
 	{
-		ft_putstr("cd: no such user or named directory: ");
-		ft_putendl(cd);
+		ft_putstr_fd("cd: no such user or named directory: ", 2);
+		ft_putendl_fd(cd, 2);
 	}
 	free(user);
 }
 
 void	cd_simple(t_env **env, char *cd, char *buf, char *real)
 {
-	char	*b;
+	char		*b;
 
 	if (chdir(cd) == 0)
 	{
@@ -104,8 +104,11 @@ void	cd_simple(t_env **env, char *cd, char *buf, char *real)
 	}
 	else
 	{
-		ft_putstr("cd: no such file or directory: ");
-		ft_putendl(real);
+		if (access(cd, F_OK) == 0)
+			ft_putstr_fd("cd: permission denied: ", 2);
+		else
+			ft_putstr_fd("cd: no such file or directory: ", 2);
+		ft_putendl_fd(real, 2);
 	}
 }
 
