@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:36:32 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 23:26:11 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 13:20:25 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,20 @@ void	move_on(t_cmd **ex, int i)
 			*ex = (*ex)->next;
 }
 
+t_env	*exec_fct_re(t_cmd **ex, t_env *env, t_exec *s)
+{
+	char	**arr;
+
+	arr = ft_strsplit((*ex)->cmd, ' ');
+	env = exec_fct(arr, env, s);
+	free_tab(arr);
+	*ex = (*ex)->next;
+	return (env);
+}
+
 t_env	*launchcmd(t_cmd *ex, t_env *env)
 {
 	t_exec	s;
-	char	**arr;
 
 	init_launch(&s, &ex);
 	while (ex->next != NULL)
@@ -101,12 +111,7 @@ t_env	*launchcmd(t_cmd *ex, t_env *env)
 			move_on(&ex, 5);
 		else if (ex->type == 0 && !(ex->next->type >= 6 &&
 			ex->next->type <= 11))
-		{
-			arr = ft_strsplit(ex->cmd, ' ');
-			env = exec_fct(arr, env, &s);
-			free_tab(arr);
-			ex = ex->next;
-		}
+			env = exec_fct_re(&ex, env, &s);
 		else if (ex->type == 0 && ex->next->type >= 6 && ex->next->type <= 11)
 			redirection_fork(&ex, &env, &s);
 		else if (ex->type >= 6 && ex->type <= 11)

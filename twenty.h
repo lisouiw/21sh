@@ -390,8 +390,8 @@ char    **give_tab(char **ar, t_cmd **ex);
 // void    redirecting_in_child(t_cmd **ex, t_env **env, int nw, pid_t *pid, t_exec *s);
 
 
+char	*change_w_varq(char *s, t_varq *v, int i, char *nw);
 
-char    *change_w_varq(char *s, t_varq *v);
 
 #endif
 

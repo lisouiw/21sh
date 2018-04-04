@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 12:46:25 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 18:53:19 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 13:20:54 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	malloc_here(t_froz *fz)
 {
-	fz->here->next = (t_here*)malloc(sizeof(t_here));
+	if (!(fz->here->next = (t_here*)malloc(sizeof(t_here))))
+		return ;
 	fz->here->next->prev = fz->here;
 	fz->here = fz->here->next;
 	fz->here->delim = NULL;

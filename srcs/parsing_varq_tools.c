@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:04:42 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 22:22:08 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 11:21:41 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*translate_dquote(char *s, t_env *env)
 			v = varq_env(s, &i, v, env);
 	}
 	if (v != NULL)
-		sub = change_w_varq(s, v);
+		sub = change_w_varq(s, v, 0, NULL);
 	else
 		return (s);
 	free(s);

@@ -6,18 +6,11 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 12:01:58 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 18:17:30 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 11:19:11 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../twenty.h"
-
-void	free_ex(t_cmd **ex)
-{
-	if (*ex != NULL)
-		free(*ex);
-	return ;
-}
 
 void	free_all_ex(t_cmd **ex)
 {

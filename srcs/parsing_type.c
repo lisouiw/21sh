@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 12:58:46 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 22:51:55 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 10:31:14 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ int		parse_synthaxe(t_cmd *ex)
 			return (-ex->type);
 		else if (ex->type >= 6 && ex->type <= 11 && ex->next->type != 0)
 			return (-ex->type);
-		else if (ex->type == 13 && ex->prev->type >= 3 && ex->prev->type <= 5)
+		else if (ex->type == 13 && ((ex->prev->type >= 3 && ex->prev->type <= 5)
+			|| ex->prev->type == 13))
 			return (-ex->type);
 		else if (ex->type < 0)
 			return (ex->type);

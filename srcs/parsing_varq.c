@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:08:03 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 22:11:57 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 13:20:17 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ t_varq	*add_struct_varq(char *s, t_varq *v)
 
 	if (v == NULL)
 	{
-		v = (t_varq*)malloc(sizeof(t_varq));
+		if (!(v = (t_varq*)malloc(sizeof(t_varq))))
+			return (NULL);
 		v->cmd = s;
 		v->next = NULL;
 	}
@@ -28,7 +29,8 @@ t_varq	*add_struct_varq(char *s, t_varq *v)
 		tmp = v;
 		while (tmp->next != NULL)
 			tmp = tmp->next;
-		tmp2 = (t_varq*)malloc(sizeof(t_varq));
+		if (!(tmp2 = (t_varq*)malloc(sizeof(t_varq))))
+			return (NULL);
 		tmp2->cmd = s;
 		tmp2->next = NULL;
 		tmp->next = tmp2;
@@ -91,7 +93,7 @@ char	*quote_variable(char *s, t_varq *v, t_env *env)
 	s = replace_nwl_spc(s);
 	v = add_varq_loop(s, NULL, env);
 	if (v != NULL)
-		nw = change_w_varq(s, v);
+		nw = change_w_varq(s, v, 0, NULL);
 	else
 		return (s);
 	free(s);

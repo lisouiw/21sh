@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:15:05 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 22:58:14 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 13:25:49 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,8 @@ t_edit	*copy(t_edit *ed, t_froz **fz)
 	return (ed);
 }
 
-void	free_cut(t_edit **ed, t_froz *fz)
+void	free_cut1(t_edit **ed, t_edit *tmp)
 {
-	t_edit	*tmp;
-
 	while ((*ed)->rpz[0] == 0)
 		*ed = (*ed)->next;
 	while ((*ed)->rpz[4] == 0)
@@ -71,6 +69,14 @@ void	free_cut(t_edit **ed, t_froz *fz)
 	(*ed)->rpz[2] = (*ed)->rpz[3];
 	while ((*ed)->rpz[0] == 0)
 		*ed = (*ed)->next;
+}
+
+void	free_cut(t_edit **ed, t_froz *fz)
+{
+	t_edit	*tmp;
+
+	tmp = NULL;
+	free_cut1(ed, tmp);
 	(*ed)->rpz[3] = giv_last(fz);
 	while ((*ed)->rpz[1] == 0)
 	{
@@ -118,12 +124,10 @@ void	cut(t_edit **ed, t_froz **fz)
 		(*ed)->rpz[4] = 1;
 }
 
-char	*keep_paste(t_edit **ed, char *s)
+int		give_paste_in(t_edit **ed)
 {
 	int		i;
-	int		a;
 
-	a = -1;
 	i = 0;
 	while ((*ed)->rpz[0] == 0)
 		*ed = (*ed)->next;
@@ -134,6 +138,16 @@ char	*keep_paste(t_edit **ed, char *s)
 		++i;
 		*ed = (*ed)->next;
 	}
+	return (i);
+}
+
+char	*keep_paste(t_edit **ed, char *s)
+{
+	int		i;
+	int		a;
+
+	a = -1;
+	i = give_paste_in(ed);
 	while ((*ed)->rpz[0] == 0)
 		*ed = (*ed)->next;
 	while ((*ed)->rpz[4] == 0)
