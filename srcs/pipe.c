@@ -16,10 +16,9 @@ void	end_pipe(t_cmd **ex, t_exec **s, int pp)
 {
 	int		status;
 
-	signal(SIGCHLD, SIG_DFL);
 	if (pp == 0)
 	{
-		waitpid(-1, &status, 0);
+		waitpid(-1, &status, WNOHANG);
 		(*s)->ok = WEXITSTATUS(status) == 0 ? 1 : 0;
 		wait(NULL);
 	}
@@ -73,6 +72,7 @@ t_env	*pipe_fct(t_exec *s, t_cmd **ex, t_env *env)
 	i = 0;
 	pp = 1;
 	s->in = 0;
+	signal(SIGCHLD, SIG_DFL);
 	while (pp == 1)
 	{
 		s->out = dup(1);
