@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:27:15 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 23:33:45 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 16:06:11 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	sig_int3(int sig)
 	init_for_new(&hs, &fz, &ed);
 }
 
-void	sig_int2_2(void)
+void	sig_int_here_2(void)
 {
 	while (ed->rpz[0] == 0)
 		ed = ed->next;
@@ -59,9 +59,9 @@ void	sig_int2_2(void)
 	fz->here->ok[0] = 1;
 }
 
-void	sig_int2(int sig)
+void	sig_int_here(int sig)
 {
-	sig_int2_2();
+	sig_int_here_2();
 	sig = open("/tmp/in", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fz->here->doc && fz->here->doc != NULL)
 		ft_putendl_fd(fz->here->doc, sig);
@@ -78,23 +78,11 @@ void	sig_int2(int sig)
 	}
 }
 
-void	sig_child(int sig)
-{
-	int		status;
-
-	status = 0;
-	ls_signal(0);
-	sig = 0;
-	wait(&status);
-	if (WTERMSIG(status) == 13)
-		write(1, "\n", 1);
-}
-
 void	ls_signal(int i)
 {
 	if (i == 6)
 	{
-		signal(SIGINT, sig_int2);
+		signal(SIGINT, sig_int_here);
 		signal(SIGCHLD, SIG_DFL);
 	}
 	else if (i != 0)

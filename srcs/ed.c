@@ -6,30 +6,11 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 11:47:44 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 17:59:11 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 15:24:33 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../twenty.h"
-
-void	free_ed(t_edit **ed, t_froz *fz)
-{
-	if ((*ed)->rpz[0] == 1 && (*ed)->rpz[1] == 1)
-		return ;
-	while ((*ed)->rpz[0] == 0)
-		*ed = (*ed)->next;
-	while ((*ed)->rpz[1] == 0)
-	{
-		*ed = (*ed)->next;
-		free((*ed)->prev);
-	}
-	(*ed)->rpz[0] = 1;
-	(*ed)->rpz[2] = giv_last(fz);
-	(*ed)->rpz[3] = giv_last(fz);
-	(*ed)->rpz[4] = 0;
-	(*ed)->prev = *ed;
-	(*ed)->next = *ed;
-}
 
 void	modif_ed_nw(t_edit **ed, t_edit **nw)
 {

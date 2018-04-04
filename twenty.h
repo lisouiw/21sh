@@ -11,7 +11,7 @@
 # include <sys/ioctl.h>
 # include <dirent.h>
 # include <limits.h>
-
+#include <sys/stat.h> 
 
 void	sig_child(int sig);
 
@@ -244,7 +244,7 @@ char    ***list_to_arr_zero(t_cmd **ex, char ****arr, t_cmd *count, int a); // p
 void    cursor_end(t_edit *ed);
 void    put_my_cur(int nb, char c);
 
-
+void	free_ed(t_edit **ed, t_froz *fz);
 
 // parsing_tools
 

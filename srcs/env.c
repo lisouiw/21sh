@@ -6,18 +6,11 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 11:53:54 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 17:59:17 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 15:17:43 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../twenty.h"
-
-void	free_elem(t_env *tmp)
-{
-	ft_strdel(&tmp->name);
-	ft_strdel(&tmp->ctn);
-	free(tmp);
-}
 
 void	b_setenv(char **cut, t_env *env)
 {

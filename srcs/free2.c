@@ -1,16 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t.c                                                :+:      :+:    :+:   */
+/*   free2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/03 13:29:28 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 13:29:51 by ltran            ###   ########.fr       */
+/*   Created: 2018/04/04 15:20:12 by ltran             #+#    #+#             */
+/*   Updated: 2018/04/04 15:33:14 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../twenty.h"
+
+void	free_ed(t_edit **ed, t_froz *fz)
+{
+	if ((*ed)->rpz[0] == 1 && (*ed)->rpz[1] == 1)
+		return ;
+	while ((*ed)->rpz[0] == 0)
+		*ed = (*ed)->next;
+	while ((*ed)->rpz[1] == 0)
+	{
+		*ed = (*ed)->next;
+		free((*ed)->prev);
+	}
+	(*ed)->rpz[0] = 1;
+	(*ed)->rpz[2] = giv_last(fz);
+	(*ed)->rpz[3] = giv_last(fz);
+	(*ed)->rpz[4] = 0;
+	(*ed)->prev = *ed;
+	(*ed)->next = *ed;
+}
 
 void	free_list(t_env **env)
 {

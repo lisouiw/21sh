@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:17:26 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/04 10:27:08 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 16:04:17 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	end_pipe(t_cmd **ex, t_exec **s, int pp)
 	{
 		waitpid(-1, &status, 0);
 		(*s)->ok = WEXITSTATUS(status) == 0 ? 1 : 0;
-		wait(NULL);
+		wait(0);
 	}
 	close((*s)->p[1]);
 	dup2(1, (*s)->out);

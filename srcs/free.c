@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 12:01:58 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/04 11:19:11 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 15:22:42 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,11 @@ void	free_for_exit(void)
 	free(fz->here);
 	free(fz);
 	exit(-1);
+}
+
+void	free_elem(t_env *tmp)
+{
+	ft_strdel(&tmp->name);
+	ft_strdel(&tmp->ctn);
+	free(tmp);
 }
