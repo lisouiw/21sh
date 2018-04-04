@@ -7,14 +7,15 @@ SRCDIR = srcs
 
 FLAGS = -Wall -Werror -Wextra -g
 
-SRCS =  main.c term.c ed.c env.c touch.c print_shell.c treatmt.c t.c exec.c \
+SRCS =  main.c term.c ed.c env.c touch.c print_shell.c treatmt.c exec.c \
 ctrl.c tools.c init.c parsing.c prompt.c giv_str.c pascutcopy.c \
 parsing_type.c parsing_type_fct.c parsing_tools.c free.c \
 exec_tools.c pipe.c redirecting.c redirecting_checking.c \
 parsing_varq.c parsing_varq_fct.c parsing_varq_tools.c \
-parsing_varq_rpl.c signal.c cd.c heredoc.c print.c aggregation.c \
+parsing_varq_rpl.c signal.c cd.c heredoc.c aggregation.c \
 error.c env2.c treatmt_here.c separate_cmd.c free2.c init2.c \
-join.c	parse_synthaxe.c
+join.c	parse_synthaxe.c tools2.c free_cut.c histo.c \
+add_doc_delim.c
 
 SRC_N = $(addprefix $(SRCDIR)/, $(SRCS))
 

@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:36:32 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/04 13:20:25 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 16:09:25 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,17 +72,6 @@ void	redirection_no_cmd(t_cmd **ex, t_env **env, t_exec *s)
 	dup2(s->in, 0);
 	while ((*ex)->type >= 6 && (*ex)->type <= 11)
 		*ex = (*ex)->next;
-}
-
-void	move_on(t_cmd **ex, int i)
-{
-	*ex = (*ex)->next;
-	if (i == 4)
-		while ((*ex)->type != 5 && (*ex)->type != 13 && (*ex)->type != 42)
-			*ex = (*ex)->next;
-	else if (i == 5)
-		while ((*ex)->type != 4 && (*ex)->type != 13 && (*ex)->type != 42)
-			*ex = (*ex)->next;
 }
 
 t_env	*exec_fct_re(t_cmd **ex, t_env *env, t_exec *s)

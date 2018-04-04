@@ -6,13 +6,13 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 11:58:30 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 18:00:27 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 16:23:49 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../twenty.h"
 
-int	error_syntax(t_froz *fz)
+int		error_syntax(t_froz *fz)
 {
 	if (fz->mode[3] == -1 || fz->mode[3] == -2 ||
 		(fz->mode[3] <= -6 && fz->mode[3] >= -11))
