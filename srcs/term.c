@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:30:19 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/04 16:40:22 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 17:09:05 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int		init(void)
 
 int		set_up_term(void)
 {
-	char	*name_term;
+	char				*name_term;
+	struct termios		term;
 
 	if ((name_term = getenv("TERM")) == NULL)
 		return (-1);

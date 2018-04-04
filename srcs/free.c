@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 12:01:58 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/04 15:22:42 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 17:17:06 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,38 +58,38 @@ void	free_init_fz(t_froz *fz)
 
 void	free_for_hs(void)
 {
-	while (hs->prev != NULL)
-		hs = hs->prev;
-	while (hs->next != NULL)
+	while (g_hs->prev != NULL)
+		g_hs = g_hs->prev;
+	while (g_hs->next != NULL)
 	{
-		free(hs->cmd);
-		hs = hs->next;
-		free(hs->prev);
+		free(g_hs->cmd);
+		g_hs = g_hs->next;
+		free(g_hs->prev);
 	}
-	free(hs);
+	free(g_hs);
 }
 
 void	free_for_exit(void)
 {
 	free_for_hs();
-	if (fz->cmd)
-		free(fz->cmd);
-	if (fz->paste)
-		free(fz->paste);
-	while (fz->here->prev != NULL)
-		fz->here = fz->here->prev;
-	while (fz->here->next != NULL)
+	if (g_fz->cmd)
+		free(g_fz->cmd);
+	if (g_fz->paste)
+		free(g_fz->paste);
+	while (g_fz->here->prev != NULL)
+		g_fz->here = g_fz->here->prev;
+	while (g_fz->here->next != NULL)
 	{
-		if (fz->here->delim)
-			free(fz->here->delim);
-		if (fz->here->doc)
-			free(fz->here->doc);
-		fz->here = fz->here->next;
-		free(fz->here->prev);
-		fz->here->prev = NULL;
+		if (g_fz->here->delim)
+			free(g_fz->here->delim);
+		if (g_fz->here->doc)
+			free(g_fz->here->doc);
+		g_fz->here = g_fz->here->next;
+		free(g_fz->here->prev);
+		g_fz->here->prev = NULL;
 	}
-	free(fz->here);
-	free(fz);
+	free(g_fz->here);
+	free(g_fz);
 	exit(-1);
 }
 

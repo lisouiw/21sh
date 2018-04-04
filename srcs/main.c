@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 12:55:03 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/03 23:25:46 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/04 17:17:04 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,30 @@
 
 int		main(void)
 {
-	env = NULL;
-	g_nb = init_shell(&fz, &env, &ed, &hs);
+	g_env = NULL;
+	g_nb = init_shell(&g_fz, &g_env, &g_ed, &g_hs);
 	while (42)
 	{
-		ls_signal(fz->mode[3]);
-		read(0, &fz->buf, 4);
-		if (fz->buf[0] == 10)
+		ls_signal(g_fz->mode[3]);
+		read(0, &g_fz->buf, 4);
+		if (g_fz->buf[0] == 10)
 		{
-			cursor_end(ed);
-			env = treat_cmd(env, &ed, &hs, &fz);
-			init_for_new(&hs, &fz, &ed);
+			cursor_end(g_ed);
+			g_env = treat_cmd(g_env, &g_ed, &g_hs, &g_fz);
+			init_for_new(&g_hs, &g_fz, &g_ed);
 		}
-		else if (fz->buf[0] == 3)
+		else if (g_fz->buf[0] == 3)
 		{
-			fz->mode[3] = 0;
-			add_his(&hs, NULL, fz);
+			g_fz->mode[3] = 0;
+			add_his(&g_hs, NULL, g_fz);
 			write(1, "\n", 1);
-			init_for_new(&hs, &fz, &ed);
+			init_for_new(&g_hs, &g_fz, &g_ed);
 		}
-		else if (fz->buf[0] == 0 && fz->buf[1] == 0 && fz->buf[2] == 0)
+		else if (g_fz->buf[0] == 0 && g_fz->buf[1] == 0 && g_fz->buf[2] == 0)
 			free_for_exit();
 		else
-			ed = touch(&ed, &fz, &hs);
-		init_data(&fz);
+			g_ed = touch(&g_ed, &g_fz, &g_hs);
+		init_data(&g_fz);
 	}
 }
 
