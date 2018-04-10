@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 18:16:28 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/04 15:11:22 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/10 10:52:44 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	cd_home(t_env **env, char *buf)
 			b_export((b = ft_strjoin("PWD=", buf)), &(*env));
 			free(b);
 		}
-		else
+		else if (tmp->ctn != NULL && ft_strcmp(tmp->ctn, "\0") != 0)
 		{
 			ft_putstr("cd: no such file or directory: ");
 			ft_putendl(tmp->ctn);
@@ -72,8 +72,12 @@ void	cd_home(t_env **env, char *buf)
 void	cd_name(t_env **env, char *cd, char *user, char *buf)
 {
 	char	*b;
+	t_env	*tmp;
 
-	user = ft_strjoin("/Users/", &cd[1]);
+	tmp = *env;
+	while (tmp && tmp->next != NULL && ft_strcmp(tmp->name, "HOME=") != 0)
+		tmp = tmp->next;
+	user = ft_strjoin(tmp->ctn, &cd[1]);
 	if (chdir(user) == 0)
 	{
 		b_export((b = ft_strjoin("OLDPWD=", buf)), &(*env));

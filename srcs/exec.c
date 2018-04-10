@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 11:59:51 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/04 10:27:34 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/10 10:51:02 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,25 @@ t_env	*exec_fct_nf(char **cut, t_env *env, t_cmd **ex, t_exec *s)
 		exit(0);
 	}
 	else if (ft_strcmp("env", cut[0]) == 0)
+	{
 		builtin_env(cut, env, s);
+		exit(0);
+	}
 	else if (ft_strcmp("setenv", cut[0]) == 0)
+	{
 		b_setenv(cut, env);
+		exit(0);
+	}
 	else if (env && ft_strcmp("unsetenv", cut[0]) == 0)
+	{
 		b_unset(cut, &env, 0);
+		exit(0);
+	}
 	else if (ft_strcmp("cd", cut[0]) == 0)
+	{
 		b_cd(cut[1], &env);
+		exit(0);
+	}
 	if (ft_strcmp(cut[0], "exit") == 0)
 	{
 		free_tab(cut);

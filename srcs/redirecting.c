@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:25:25 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/04 11:42:40 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/10 11:00:06 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	**give_seven(t_cmd *ex)
 		ex = ex->prev;
 	if (ex->type == 6)
 	{
-		dup2(open("/tmp/in", O_RDONLY), 0);
+		dup2(open("/tmp/fd_for_heredoc", O_RDONLY), 0);
 		while ((ex->type >= 6 && ex->type <= 11) || ex->type == 0)
 			ex = ex->next;
 		return (NULL);

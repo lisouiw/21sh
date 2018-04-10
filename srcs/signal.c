@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 13:27:15 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/04 17:16:44 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/10 10:59:05 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	sig_int_here_2(void)
 void	sig_int_here(int sig)
 {
 	sig_int_here_2();
-	sig = open("/tmp/in", O_CREAT | O_RDWR | O_TRUNC, 0644);
+	sig = open("/tmp/fd_for_heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (g_fz->here->doc && g_fz->here->doc != NULL)
 		ft_putendl_fd(g_fz->here->doc, sig);
 	close(sig);

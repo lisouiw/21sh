@@ -6,7 +6,7 @@
 /*   By: ltran <ltran@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/04 16:15:51 by ltran             #+#    #+#             */
-/*   Updated: 2018/04/04 16:18:29 by ltran            ###   ########.fr       */
+/*   Updated: 2018/04/10 10:57:56 by ltran            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	add_doc_s(t_froz *fz, char *s)
 	if (ft_strcmp(s, fz->here->delim) == 0)
 	{
 		fz->here->ok[0] = 1;
-		fd = open("/tmp/in", O_CREAT | O_RDWR | O_TRUNC, 0644);
+		fd = open("/tmp/fd_for_heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
 		if (fz->here->doc && fz->here->doc != NULL)
 			ft_putendl_fd(fz->here->doc, fd);
 		close(fd);
